@@ -542,3 +542,93 @@ function fixDocxAnchors(root){
         </div>`;
     });
 })();
+// Hero "Recent articles" popup: smooth crossfade with avatar
+(function heroPop(){
+  const holder = document.getElementById('hero-pop-stack');
+  const shell  = document.getElementById('hero-pop');
+  if (!holder || !shell) return;
+
+  const BASE  = document.querySelector('base')?.getAttribute('href') || './';
+  const FEED  = new URL('data/articles.json?v=' + Date.now(), location.origin + BASE).href;
+
+  // Helpers
+  const esc = s => String(s||'').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+  const pick = (obj, path, fallback='') => {
+    try { return path.split('.').reduce((o,k)=>o?.[k], obj) ?? fallback; } catch(_) { return fallback; }
+  };
+
+  fetch(FEED, { cache:'no-store' })
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(payload => {
+      const list = Array.isArray(payload) ? payload : (payload.articles || []);
+      if (!list.length){
+        holder.innerHTML = `<div class="pop-slide is-active"><div></div><div class="pop-main"><div class="hero-pop__title">No articles yet</div><div class="hero-pop__deck">New posts will appear here.</div></div></div>`;
+        return;
+      }
+
+      const items = list.slice(0,6).map(a => ({
+        title: esc(a.title || 'Untitled'),
+        deck : esc(a.deck || a.excerpt || ''),
+        href : a.href || a.url || '#',
+        date : a.date ? new Date(a.date).toDateString() : '',
+        tag  : a.tags?.[0] || '',
+        avatar: pick(a,'author.avatar','assets/authors/juan-daniel-removebg-preview.png'),
+        author: pick(a,'author.name', a.author || 'Carbon-Sense')
+      }));
+
+      holder.innerHTML = `
+        <div class="pop-slide is-active"></div>
+        <div class="pop-slide"></div>
+      `;
+      const slides = holder.querySelectorAll('.pop-slide');
+      let idx = 0, active = 0, timer = null;
+
+      function tpl(it){
+        return `
+          <img class="pop-avatar" src="${esc(it.avatar)}" alt="">
+          <div class="pop-main">
+            <a class="hero-pop__card" href="${it.href}">
+              <div class="hero-pop__meta">
+                ${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ''}
+                ${it.date ? `<time>${esc(it.date)}</time>` : ''}
+              </div>
+              <h3 class="hero-pop__title">${it.title}</h3>
+              <p class="hero-pop__deck">${it.deck || '—'}</p>
+            </a>
+          </div>`;
+      }
+
+      function render(slot, it){ slot.innerHTML = tpl(it); }
+
+      render(slides[0], items[0]);
+      if (items[1]) render(slides[1], items[1]);
+
+      function step(){
+        idx = (idx + 1) % items.length;
+        const next = 1 - active;           // hidden slide
+        render(slides[next], items[idx]);
+        slides[active].classList.remove('is-active');
+        slides[next].classList.add('is-active');
+        active = next;
+        schedule();
+      }
+
+      function schedule(){
+        clearTimeout(timer);
+        timer = setTimeout(step, 6000);    // change interval here
+      }
+
+      // pause on hover/focus
+      function pause(){ clearTimeout(timer); }
+      function resume(){ schedule(); }
+      shell.addEventListener('mouseenter', pause);
+      shell.addEventListener('mouseleave', resume);
+      shell.addEventListener('focusin',   pause);
+      shell.addEventListener('focusout',  resume);
+
+      schedule();
+    })
+    .catch(() => {
+      holder.innerHTML = `<div class="pop-slide is-active"><div></div><div class="pop-main"><div class="hero-pop__title">Recent articles</div><div class="hero-pop__deck">Couldn’t load the feed.</div></div></div>`;
+    });
+})();

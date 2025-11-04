@@ -1042,3 +1042,77 @@ ul.bullets li{ margin:.4rem 0; }
     max-width: none;
   }
 }
+/* --- Hero popup (top-right over video) --- */
+.hero-media-frame { position: relative; }
+
+.hero-pop{
+  position:absolute;
+  right:18px; bottom:18px; z-index:4;
+  max-width:min(420px, 44vw);
+  border-radius:16px;
+  padding:10px 10px 12px;
+  background:rgba(12, 24, 20, 0.70);
+  border:1px solid rgba(255,255,255,0.12);
+  box-shadow:0 12px 30px rgba(0,0,0,0.25);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  color:#EAF3EF;
+}
+
+.hero-pop__titlebar{
+  font:600 11px/1 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  letter-spacing:.06em; text-transform:uppercase;
+  color:rgba(234,243,239,.8);
+  margin:2px 2px 8px;
+}
+
+/* Stack for crossfade slides */
+.hero-pop__stack{ position:relative; min-height:72px; }
+
+/* Each slide (absolute, crossfade + slide-up) */
+.pop-slide{
+  position:absolute; inset:0;
+  display:grid; grid-template-columns:36px 1fr; gap:10px; align-items:start;
+  opacity:0; transform:translateY(6px);
+  transition:opacity .45s ease, transform .45s ease;
+  pointer-events:none;
+}
+.pop-slide.is-active{ opacity:1; transform:translateY(0); pointer-events:auto; }
+
+.pop-avatar{
+  width:36px; height:36px; border-radius:50%;
+  object-fit:cover; background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.18);
+}
+.pop-main{ min-width:0; }
+
+.hero-pop__card{
+  display:block; text-decoration:none; color:inherit;
+}
+
+.hero-pop__meta{
+  display:flex; align-items:center; gap:8px;
+  font-size:11px; color:rgba(234,243,239,.75); margin:0 0 3px;
+}
+.hero-pop__meta .tag{
+  padding:2px 8px; border-radius:999px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.12);
+  font-size:10px;
+}
+
+.hero-pop__title{
+  font-weight:600; font-size:14px; line-height:1.25; color:#fff; margin:0 0 2px;
+}
+.hero-pop__deck{
+  font-size:12px; line-height:1.35; color:rgba(234,243,239,.9);
+  overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+}
+
+/* Pause visual focus */
+.hero-pop:focus-within, .hero-pop:hover{ border-color:rgba(255,255,255,.2); }
+
+/* Mobile */
+@media (max-width:720px){
+  .hero-pop{ right:12px; top:12px; left:12px; max-width:none; }
+}
