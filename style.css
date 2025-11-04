@@ -671,65 +671,6 @@ ul.bullets li{ margin:.4rem 0; }
   box-shadow: 0 30px 60px rgba(0,0,0,.35);
 }
 
-/* --- Hero article popup --- */
-.hero-media-frame { position: relative; }
-
-.hero-pop{
-  position:absolute;
-  left:auto; bottom:18px;right: 18px;top: auto;
-  max-width:min(520px, 55vw);
-  z-index:5;
-  pointer-events:auto;
-}
-
-.hero-pop__card{
-  display:block;
-  text-decoration:none;
-  color:inherit;
-  border-radius:14px;
-  padding:14px 16px;
-  backdrop-filter: blur(8px);
-  background: linear-gradient(
-    180deg,
-    rgba(10,16,14,.78) 0%,
-    rgba(10,16,14,.82) 100%
-  );
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow: 0 10px 30px rgba(0,0,0,.35);
-  transform: translateY(8px);
-  opacity:0;
-  transition: opacity .45s ease, transform .45s ease;
-}
-
-.hero-pop--show .hero-pop__card{
-  opacity:1;
-  transform: translateY(0);
-}
-
-.hero-pop__meta{
-  display:flex; gap:10px; align-items:center;
-  font-size:.8rem; color:#a9b6ad;
-  margin-bottom:6px;
-}
-
-.hero-pop__title{
-  font-family:"Playfair Display", serif;
-  font-size:1.25rem; line-height:1.25;
-  margin:0 0 6px 0; color:#f4f7f2;
-}
-
-.hero-pop__deck{
-  margin:0; color:#cdd7d0; font-size:.95rem;
-}
-
-@media (max-width: 720px){
-  .hero-pop{ left:12px; right:12px; bottom:12px; max-width:unset; }
-}
-
-@media (prefers-reduced-motion: reduce){
-  .hero-pop__card{ transition:none; }
-}
-
 
 /* Carousel */
 .hero-carousel{
@@ -916,203 +857,43 @@ ul.bullets li{ margin:.4rem 0; }
 #author-articles .meta-left img{ width:24px; height:24px; }
 #author-articles .meta-right{ font-size:.86rem; gap:6px; }
 
-/* Put the hero bubble in the TOP-RIGHT corner of the video */
-.hero-media-frame { position: relative; }       /* already present, keep it */
-
-.hero-bubble {
-  left: auto;          /* stop anchoring to the left/bottom */
-  bottom: auto;
-  right: 18px;         /* anchor to the right… */
-  top: 18px;           /* …and the top */
-}
-
-/* Optional: give the pill a bit more room from the header on small screens */
-@media (max-width: 720px){
-  .hero-bubble{
-    right: 12px;
-    top: 12px;        /* bump this up if your header overlaps, e.g. 56–72px */
-  }
-}
-/* Bubble container */
-.hero-media-frame { position: relative; }
-
-.hero-bubble {
-  position: absolute;
-  left: 18px;
-  bottom: 18px;
-  z-index: 3;
-  max-width: min(420px, 42vw);
-  padding: 12px;
-  border-radius: 16px;
-  background: rgba(12, 24, 20, 0.70);
-  border: 1px solid rgba(255,255,255,0.10);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: #eaf3ef;
-}
-
-/* Title strip */
-.hero-bubble .bubble-title {
-  font-size: 12px;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: rgba(234,243,239,0.8);
-  margin: 2px 2px 10px;
-}
-
-/* Crossfade stack */
-.bubble-track {
-  position: relative;
-  min-height: 64px;         /* avoids jump during first swap */
-}
-
-/* Each slide is stacked and crossfades */
-.bubble-slide {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: 36px 1fr;
-  gap: 10px;
-  align-items: start;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity .45s ease, transform .45s ease;
-  pointer-events: none;
-}
-
-.bubble-slide.is-active {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-/* Avatar */
-.bubble-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid rgba(255,255,255,0.25);
-  background: rgba(255,255,255,0.05);
-}
-
-/* Text block */
-.bubble-main { min-width: 0; }
-.bubble-head {
-  display: block;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 1.25;
-  color: #ffffff;
-  margin: -2px 0 2px;
-  text-decoration: none;
-}
-.bubble-deck {
-  font-size: 12px;
-  color: rgba(234,243,239,0.85);
-  line-height: 1.35;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;     /* 2-line clamp */
-  -webkit-box-orient: vertical;
-}
-
-/* tag + meta row (optional, if you add later) */
-.bubble-meta {
-  margin-top: 6px;
-  font-size: 11px;
-  color: rgba(234,243,239,0.7);
-  display: flex; gap: 8px; align-items: center;
-}
-.bubble-tag {
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 999px;
-  padding: 2px 8px;
-  font-size: 10px;
-}
-
-/* Small screens */
-@media (max-width: 720px) {
-  .hero-bubble {
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    max-width: none;
-  }
-}
-/* --- Hero popup (top-right over video) --- */
+/* === HERO POPUP — canonical (top-right over video) === */
 .hero-media-frame { position: relative; }
 
 .hero-pop{
-  position:absolute;
-  right:18px; bottom:18px; z-index:4;
-  max-width:min(420px, 44vw);
-  border-radius:16px;
-  padding:10px 10px 12px;
-  background:rgba(12, 24, 20, 0.70);
-  border:1px solid rgba(255,255,255,0.12);
-  box-shadow:0 12px 30px rgba(0,0,0,0.25);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  color:#EAF3EF;
+  position:absolute; top:18px; right:18px; left:auto; bottom:auto;
+  z-index:5; max-width:min(520px,55vw);
 }
-
-.hero-pop__titlebar{
-  font:600 11px/1 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  letter-spacing:.06em; text-transform:uppercase;
-  color:rgba(234,243,239,.8);
-  margin:2px 2px 8px;
-}
-
-/* Stack for crossfade slides */
-.hero-pop__stack{ position:relative; min-height:72px; }
-
-/* Each slide (absolute, crossfade + slide-up) */
-.pop-slide{
-  position:absolute; inset:0;
-  display:grid; grid-template-columns:36px 1fr; gap:10px; align-items:start;
-  opacity:0; transform:translateY(6px);
-  transition:opacity .45s ease, transform .45s ease;
-  pointer-events:none;
-}
-.pop-slide.is-active{ opacity:1; transform:translateY(0); pointer-events:auto; }
-
-.pop-avatar{
-  width:36px; height:36px; border-radius:50%;
-  object-fit:cover; background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.18);
-}
-.pop-main{ min-width:0; }
 
 .hero-pop__card{
   display:block; text-decoration:none; color:inherit;
+  border-radius:14px; padding:14px 16px;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  background: linear-gradient(180deg, rgba(10,16,14,.78), rgba(10,16,14,.82));
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  transform: translateY(6px);
+  opacity:0; transition: opacity .45s ease, transform .45s ease;
 }
+.hero-pop--show .hero-pop__card{ opacity:1; transform: translateY(0); }
 
-.hero-pop__meta{
-  display:flex; align-items:center; gap:8px;
-  font-size:11px; color:rgba(234,243,239,.75); margin:0 0 3px;
-}
-.hero-pop__meta .tag{
-  padding:2px 8px; border-radius:999px;
-  background:rgba(255,255,255,.10);
+.hero-pop__head{ display:flex; justify-content:flex-end; margin-bottom:4px; }
+.hero-pop__label{
+  font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
+  color:#bcd1c9; background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.12);
-  font-size:10px;
+  padding:2px 8px; border-radius:999px;
 }
 
-.hero-pop__title{
-  font-weight:600; font-size:14px; line-height:1.25; color:#fff; margin:0 0 2px;
-}
-.hero-pop__deck{
-  font-size:12px; line-height:1.35; color:rgba(234,243,239,.9);
-  overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
-}
+.hero-pop__meta{ display:flex; gap:10px; align-items:center; font-size:.82rem; color:#a9b6ad; margin:4px 0 6px; }
+.hero-pop__title{ font-family:"Playfair Display", serif; font-size:1.22rem; line-height:1.25; margin:0 0 4px; color:#f4f7f2; }
+.hero-pop__deck{ margin:0 0 8px; color:#cdd7d0; font-size:.95rem; }
 
-/* Pause visual focus */
-.hero-pop:focus-within, .hero-pop:hover{ border-color:rgba(255,255,255,.2); }
+.hero-pop__by{ display:flex; align-items:center; gap:8px; }
+.hero-pop__avatar{ width:24px; height:24px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,.25); }
+.hero-pop__author{ color:#dbe6e1; font-size:.9rem; }
 
-/* Mobile */
 @media (max-width:720px){
-  .hero-pop{ right:12px; top:12px; left:12px; max-width:none; }
+  .hero-pop{ right:12px; top:12px; left:12px; max-width:unset; }
 }
+
