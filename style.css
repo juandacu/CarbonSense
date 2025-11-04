@@ -676,7 +676,7 @@ ul.bullets li{ margin:.4rem 0; }
 
 .hero-pop{
   position:absolute;
-  left:16px; bottom:16px;
+  left:auto; bottom:auto;right: 18px;top: 18px;
   max-width:min(520px, 55vw);
   z-index:5;
   pointer-events:auto;
