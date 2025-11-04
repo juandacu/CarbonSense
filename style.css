@@ -916,3 +916,20 @@ ul.bullets li{ margin:.4rem 0; }
 #author-articles .meta-left img{ width:24px; height:24px; }
 #author-articles .meta-right{ font-size:.86rem; gap:6px; }
 
+/* Put the hero bubble in the TOP-RIGHT corner of the video */
+.hero-media-frame { position: relative; }       /* already present, keep it */
+
+.hero-bubble {
+  left: auto;          /* stop anchoring to the left/bottom */
+  bottom: auto;
+  right: 18px;         /* anchor to the right… */
+  top: 18px;           /* …and the top */
+}
+
+/* Optional: give the pill a bit more room from the header on small screens */
+@media (max-width: 720px){
+  .hero-bubble{
+    right: 12px;
+    top: 12px;        /* bump this up if your header overlaps, e.g. 56–72px */
+  }
+}
