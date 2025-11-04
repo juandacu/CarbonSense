@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Juan Acuña — Carbon-Sense</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css"/>
+    <link rel="stylesheet" href="/style.css"/>
   </head>
 <body>
   <header class="site-header solid" data-header>
@@ -16,11 +16,11 @@
         <img src="assets/logo.png" alt="Carbon-Sense">
       </a>  
       <nav class="nav" data-nav>
-        <a href="../about.html">About</a>
+        <a href="/about.html">About</a>
         <a class="active" href="/articles.html">Articles</a>
-        <a href="../news.html">News</a>
-        <a href="../coffee.html">Buy me a Coffee</a>
-        <a href="../contact.html" class="btn btn-outline pill">Contact Us</a>
+        <a href="/news.html">News</a>
+        <a href="/coffee.html">Buy me a Coffee</a>
+        <a href="/contact.html" class="btn btn-outline pill">Contact Us</a>
       </nav>
       <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" data-menu-btn>
         <span></span><span></span><span></span>
@@ -37,7 +37,7 @@
   <section class="section" data-animate>
     <div class="container">
       <div class="bio-card">
-        <img src="../assets/authors/juan-daniel-removebg-preview.png" alt="Portrait of Juan Daniel Acuña-Román" class="bio-avatar" onerror="this.style.display='none'">
+        <img src="/assets/authors/juan-daniel-removebg-preview.png" alt="Portrait of Juan Daniel Acuña-Román" class="bio-avatar" onerror="this.style.display='none'">
         <div class="prose">
           <p>Juan Daniel Acuña-Román is one of the many economists working on energy, climate, and sustainable development. He often tries to turn data into policy and the other way around if it makes sense - sometimes it even sees daylight. His work covers greenhouse-gas accounting, transition finance, green-jobs metrics, just-transition design, and place-based decarbonization.</p>
           <p>He has worked with UN agencies and international partners across the Americas, advising governments, improving emissions accounting, shaping core policies, and laying groundwork for sustainable finance. He has also worked on workforce and green-jobs analysis, policy evaluation, energy modelling, climate-risk regulation, and evidence for subsidy reform, transition planning, and climate-finance systems.</p>
@@ -58,7 +58,7 @@
     <div class="container foot-bottom"><small>© <span data-year></span> YourOrg</small></div>
   </footer>
 
-  <script src="../scripts.js"></script>
+  <script src="/scripts.js"></script>
   <script>
     (function(){
       const grid  = document.getElementById("author-articles");
@@ -75,7 +75,7 @@
         return (needsUp ? "../" : "") + p.replace(/^\/+/,"");
       }
     
-      const url = "../data/articles.json?v=" + Date.now();
+      const url = "/data/articles.json?v=" + Date.now();
     
       fetch(url, { cache: "no-store" })
         .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
@@ -123,4 +123,5 @@
     
 </body>
 </html>
+
 
