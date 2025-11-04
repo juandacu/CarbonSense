@@ -466,3 +466,79 @@ function fixDocxAnchors(root){
     })
     .catch(()=>{ wrap.style.display='none'; });
 })();
+(function heroRecentBubble(){
+  const track = document.getElementById('bubbleTrack');
+  if (!track) return;
+
+  const BASE = document.querySelector('base')?.getAttribute('href') || './';
+  const dataUrl = new URL('data/articles.json?v=' + Date.now(), location.origin + BASE).href;
+
+  const FAVATAR = (src) => `<img class="bubble-avatar" src="${src}" alt="">`;
+  const clean = s => String(s || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  fetch(dataUrl, { cache: 'no-store' })
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(payload => {
+      const arr = Array.isArray(payload) ? payload : (payload.articles || []);
+      if (!arr.length) {
+        track.innerHTML = `<div class="bubble-slide is-active"><div></div><div class="bubble-main"><strong class="bubble-head">No articles yet</strong><div class="bubble-deck">New posts will appear here.</div></div></div>`;
+        return;
+      }
+
+      // Build normalized items with fallbacks
+      const items = arr.slice(0, 6).map(a => ({
+        title: clean(a.title || 'Untitled'),
+        deck: clean(a.deck || a.excerpt || ''),
+        href: a.href || a.url || '#',
+        avatar: (a.author && a.author.avatar) ? a.author.avatar :
+                (a.authorAvatar || 'assets/authors/juan-daniel-removebg-preview.png'),
+        author: (a.author && a.author.name) ? a.author.name : (a.author || 'Carbon-Sense')
+      }));
+
+      // Prepare two stacked slides
+      track.innerHTML = `
+        <div class="bubble-slide is-active"></div>
+        <div class="bubble-slide"></div>
+      `;
+      const slides = track.querySelectorAll('.bubble-slide');
+      let idx = 0;
+      let active = 0;
+
+      function renderInto(el, item){
+        el.innerHTML = `
+          ${FAVATAR(item.avatar)}
+          <div class="bubble-main">
+            <a class="bubble-head" href="${item.href}">${item.title}</a>
+            <div class="bubble-deck">${item.deck || '—'}</div>
+          </div>
+        `;
+      }
+
+      renderInto(slides[0], items[0]);
+      if (items[1]) renderInto(slides[1], items[1]);
+
+      function next(){
+        idx = (idx + 1) % items.length;
+        const show = 1 - active;           // the hidden slide
+        renderInto(slides[show], items[idx]);
+
+        // crossfade
+        slides[active].classList.remove('is-active');
+        slides[show].classList.add('is-active');
+        active = show;
+      }
+
+      // rotate every 6s (adjust to taste)
+      setInterval(next, 6000);
+    })
+    .catch(() => {
+      track.innerHTML = `
+        <div class="bubble-slide is-active">
+          <div></div>
+          <div class="bubble-main">
+            <strong class="bubble-head">Recent articles</strong>
+            <div class="bubble-deck">Could not load the feed.</div>
+          </div>
+        </div>`;
+    });
+})();
