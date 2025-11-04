@@ -397,3 +397,72 @@ function fixDocxAnchors(root){
   });
 }
 
+(function heroArticlePopups(){
+  const wrap  = document.getElementById('hero-pop');
+  if (!wrap) return;
+
+  const elLink = document.getElementById('hero-pop-link');
+  const elTag  = document.getElementById('hero-pop-tag');
+  const elDate = document.getElementById('hero-pop-date');
+  const elT    = document.getElementById('hero-pop-title');
+  const elD    = document.getElementById('hero-pop-deck');
+
+  // Path works on GitHub Pages because <base href="/CarbonSense/"> is set
+  const url = 'data/articles.json?v=' + Date.now();
+
+  fetch(url, {cache:'no-store'})
+    .then(r => r.json())
+    .then(payload => {
+      const items = Array.isArray(payload) ? payload : (payload.articles || []);
+      if (!items.length) { wrap.style.display='none'; return; }
+
+      // Sort newest first; take top 3
+      const newsy = items
+        .slice()
+        .sort((a,b)=> new Date(b.date) - new Date(a.date))
+        .slice(0,3)
+        .map(a => ({
+          href: a.href || a.url || '#',
+          title: a.title || 'Untitled',
+          deck:  a.deck || a.excerpt || '',
+          tag:   (a.tags && a.tags[0]) || '',
+          date:  a.date ? new Date(a.date) : null
+        }));
+
+      let i = 0;
+      let timer = null;
+
+      function formatDate(d){
+        if (!d) return '';
+        return d.toLocaleDateString(undefined,{year:'numeric', month:'short', day:'2-digit'});
+      }
+
+      function render(idx){
+        const x = newsy[idx];
+        elLink.href    = x.href;
+        elT.textContent= x.title;
+        elD.textContent= x.deck || '';
+        elTag.textContent = x.tag || '';
+        elTag.style.display = x.tag ? '' : 'none';
+        elDate.textContent = formatDate(x.date);
+        wrap.classList.add('hero-pop--show');
+      }
+
+      function next(){
+        wrap.classList.remove('hero-pop--show');          // fade out
+        setTimeout(() => { render(i); }, 220);            // swap content mid-fade
+        i = (i + 1) % newsy.length;
+        timer = setTimeout(next, 6200);                   // dwell time
+      }
+
+      // Start
+      render(i);
+      i = (i + 1) % newsy.length;
+      timer = setTimeout(next, 6200);
+
+      // Pause on hover (desktop)
+      wrap.addEventListener('mouseenter', ()=> { if (timer) { clearTimeout(timer); timer=null; }});
+      wrap.addEventListener('mouseleave', ()=> { if (!timer) timer=setTimeout(next, 6200); });
+    })
+    .catch(()=>{ wrap.style.display='none'; });
+})();

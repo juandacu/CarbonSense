@@ -671,6 +671,66 @@ ul.bullets li{ margin:.4rem 0; }
   box-shadow: 0 30px 60px rgba(0,0,0,.35);
 }
 
+/* --- Hero article popup --- */
+.hero-media-frame { position: relative; }
+
+.hero-pop{
+  position:absolute;
+  left:16px; bottom:16px;
+  max-width:min(520px, 55vw);
+  z-index:5;
+  pointer-events:auto;
+}
+
+.hero-pop__card{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  border-radius:14px;
+  padding:14px 16px;
+  backdrop-filter: blur(8px);
+  background: linear-gradient(
+    180deg,
+    rgba(10,16,14,.78) 0%,
+    rgba(10,16,14,.82) 100%
+  );
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  transform: translateY(8px);
+  opacity:0;
+  transition: opacity .45s ease, transform .45s ease;
+}
+
+.hero-pop--show .hero-pop__card{
+  opacity:1;
+  transform: translateY(0);
+}
+
+.hero-pop__meta{
+  display:flex; gap:10px; align-items:center;
+  font-size:.8rem; color:#a9b6ad;
+  margin-bottom:6px;
+}
+
+.hero-pop__title{
+  font-family:"Playfair Display", serif;
+  font-size:1.25rem; line-height:1.25;
+  margin:0 0 6px 0; color:#f4f7f2;
+}
+
+.hero-pop__deck{
+  margin:0; color:#cdd7d0; font-size:.95rem;
+}
+
+@media (max-width: 720px){
+  .hero-pop{ left:12px; right:12px; bottom:12px; max-width:unset; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .hero-pop__card{ transition:none; }
+}
+
+
 /* Carousel */
 .hero-carousel{
   position: relative;
