@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carbon-Sense — Articles</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header solid" data-header>
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="Carbon-Sense">
+        <img src="assets/logo.png" alt="Carbon-Sense">
+      </a>  
+      <nav class="nav" data-nav>
+        <a href="../about.html">About</a>
+        <a class="active" href="/articles.html">Articles</a>
+        <a href="../news.html">News</a>
+        <a href="../coffee.html">Buy me a Coffee</a>
+        <a href="../contact.html" class="btn btn-outline pill">Contact Us</a>
+      </nav>
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" data-menu-btn>
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+<!-- Hero / intro -->
+<section class="articles-hero">
+  <div class="container">
+    <h1>Articles</h1>
+    <p class="lead">Long-form writing on climate, markets, and finance.</p>
+  </div>
+</section>
+
+<!-- Cards grid -->
+<section class="section" id="articles" data-animate>
+  <div class="container">
+    <div id="articles-grid" class="article-grid"></div>
+  </div>
+</section>
+
+
+  <footer class="site-footer">
+    <div class="container foot-bottom"><small>© <span data-year></span> Carbon-Sense</small></div>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

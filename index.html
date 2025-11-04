@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carbon-Sense — Home</title>
+  <meta name="description" content="Community-led conservation and climate action." />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header transparent" data-header>
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="Carbon-Sense">
+        <img src="assets/logo.png" alt="Carbon-Sense">
+      </a> 
+      <nav class="nav" data-nav>
+        <a href="about.html">About</a>
+        <a href="articles.html">Articles</a>
+        <a href="news.html">News</a>
+        <a href="coffee.html">Buy me a Coffee</a>
+        <a href="contact.html" class="btn btn-outline pill">Contact Us</a>
+      </nav>
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" data-menu-btn>
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+<!-- Hero -->
+<section class="page-hero hero-media" data-animate>
+  <div class="hero-bg"></div>
+
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <h1 class="hero-title">Carbon-Sense Behind Economics.</h1>
+      <p class="hero-sub">Plan language, open methods, and visuals without the fog.</p>
+
+      <!-- CTAs -->
+      <div class="hero-ctas">
+        <a href="coffee.html" class="btn btn-outline pill">Get involved</a>
+        <a href="contact.html" class="btn btn-outline pill">Contact us</a>
+      </div>
+
+    </div>
+
+ <!-- right media: auto-rotating carousel -->
+ <figure class="hero-media-frame">
+  <div class="hero-carousel">
+
+      <!-- Video slide (duration can be inferred or set via data-duration) -->
+      <div class="slide" data-caption="Credits: Kelly" data-duration="7000">
+        <video src="assets/mangrove.mp4"
+                muted playsinline preload="metadata"></video>
+      </div>
+
+      <!-- Video slide (duration can be inferred or set via data-duration) -->
+      <div class="slide" data-caption="Credits: Chris The Island" data-duration="7000">
+        <video src="assets/parkinglot.mp4"
+                muted playsinline preload="metadata"></video>
+      </div>
+  
+
+  </div>
+  <figcaption class="muted hc-caption"></figcaption>
+</figure>
+
+
+  </div>
+
+  <button class="scroll-cue" onclick="window.scrollTo({top: document.querySelector('.section').offsetTop - 24, behavior: 'smooth'})" aria-label="Scroll">
+    ↓
+  </button>
+</section>
+
+
+  <!-- Intro / Cards -->
+  <section class="section" data-animate>
+    <div class="container">
+      <div class="grid cards-3">
+        <a class="card hover" href="about.html">
+          <h3>About</h3>
+          <p>Who we are and what we do.</p>
+        </a>
+        <a class="card hover" href="articles.html">
+          <h3>Articles</h3>
+          <p>Long-form pieces and explainers.</p>
+        </a>
+        <a class="card hover" href="news.html">
+          <h3>News</h3>
+          <p>Updates from the field.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="logo">Carbon-Sense</div>
+        <p class="muted">Nonprofit tagline or short mission.</p>
+      </div>
+      <div>
+        <div class="foot-title">Explore</div>
+        <ul class="foot-links">
+          <li><a href="about.html">About</a></li>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="coffee.html">Buy me a Coffee</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-title">Contact</div>
+        <p class="muted">info@carbon-sense.com</p>
+      </div>
+    </div>
+    <div class="container foot-bottom">
+      <small>© <span data-year></span> Carbon-Sense</small>
+    </div>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

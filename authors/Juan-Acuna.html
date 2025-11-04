@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<base href="../../">
+
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Juan Acuña — Carbon-Sense</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css"/>
+  </head>
+<body>
+  <header class="site-header solid" data-header>
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="Carbon-Sense">
+        <img src="assets/logo.png" alt="Carbon-Sense">
+      </a>  
+      <nav class="nav" data-nav>
+        <a href="../about.html">About</a>
+        <a class="active" href="/articles.html">Articles</a>
+        <a href="../news.html">News</a>
+        <a href="../coffee.html">Buy me a Coffee</a>
+        <a href="../contact.html" class="btn btn-outline pill">Contact Us</a>
+      </nav>
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" data-menu-btn>
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section class="page-hero hero-compact" data-animate>
+    <div class="container">
+      <h1>Juan Acuña</h1>
+      <p class="lead">Sustainable development, energy, and climate policy.</p>
+    </div>
+  </section>
+  <section class="section" data-animate>
+    <div class="container">
+      <div class="bio-card">
+        <img src="../assets/authors/juan-daniel-removebg-preview.png" alt="Portrait of Juan Daniel Acuña-Román" class="bio-avatar" onerror="this.style.display='none'">
+        <div class="prose">
+          <p>Juan Daniel Acuña-Román is one of the many economists working on energy, climate, and sustainable development. He often tries to turn data into policy and the other way around if it makes sense - sometimes it even sees daylight. His work covers greenhouse-gas accounting, transition finance, green-jobs metrics, just-transition design, and place-based decarbonization.</p>
+          <p>He has worked with UN agencies and international partners across the Americas, advising governments, improving emissions accounting, shaping core policies, and laying groundwork for sustainable finance. He has also worked on workforce and green-jobs analysis, policy evaluation, energy modelling, climate-risk regulation, and evidence for subsidy reform, transition planning, and climate-finance systems.</p>
+          <p>Juan holds an MSc in Specialized Economic Analysis: Energy, Climate Change & Sustainability from the Barcelona School of Economics and a BSc in Economics from the Universidad de Costa Rica. Despite being very proficient in R, he still struggles to roll his R’s.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-animate>
+    <div class="container">
+      <h2>Articles by Juan Daniel Acuña-Román</h2>
+      <div id="author-articles" class="grid cards-3"></div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container foot-bottom"><small>© <span data-year></span> YourOrg</small></div>
+  </footer>
+
+  <script src="../scripts.js"></script>
+  <script>
+    (function(){
+      const grid  = document.getElementById("author-articles");
+      if (!grid) return;
+    
+      const AUTHOR = "Juan Daniel Acuña-Román";
+      const norm = s => (s||"").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu,"");
+    
+      // prefix relative assets correctly when this page lives in /authors/
+      function asset(p){
+        if (!p) return "";
+        if (/^https?:\/\//i.test(p)) return p;
+        const needsUp = location.pathname.includes("/authors/");
+        return (needsUp ? "../" : "") + p.replace(/^\/+/,"");
+      }
+    
+      const url = "../data/articles.json?v=" + Date.now();
+    
+      fetch(url, { cache: "no-store" })
+        .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+        .then(payload => {
+          const list = Array.isArray(payload) ? payload : (payload.articles || []);
+          const mine = list.filter(a => norm(a.author?.name || a.author || "") === norm(AUTHOR));
+          grid.classList.add("article-grid");  // enable compact grid styling
+          grid.innerHTML = mine.length ? mine.map(renderAuthorCard).join("") : '<div class="muted">No articles yet.</div>';
+        })
+        .catch(() => { grid.innerHTML = '<div class="muted">Failed to load articles.</div>'; });
+    
+      function renderAuthorCard(a){
+        const thumb = asset(a.image || "assets/mangrove.jpg");
+        const date  = a.date ? new Date(a.date).toDateString() : "";
+        const tag   = a.tags?.[0] ? `<span class="tag">${a.tags[0]}</span>` : "";
+        const read  = a.readTime ? `${a.readTime} min` : "";
+        const href  = a.href || a.url || "#";
+
+        // fix relative link when inside /authors/
+        const link = location.pathname.includes("/authors/") && href && !/^https?:\/\//.test(href)
+          ? "../" + href.replace(/^\/+/,"")
+          : href;
+
+        return `
+          <article class="article-card">
+            <img class="article-thumb" src="${thumb}" alt="">
+            <div class="article-body">
+              <h3>${a.title || "Untitled"}</h3>
+              <p class="article-deck">${a.deck || a.excerpt || ""}</p>
+            </div>
+            <div class="article-meta only-right">
+              <div class="meta-right">
+                ${tag}
+                ${read ? `<span>${read}</span><span aria-hidden="true">•</span>` : ""}
+                ${date ? `<time datetime="${a.date}">${date}</time>` : ""}
+              </div>
+            </div>
+            <a class="cover" href="${link}">Read</a>
+          </article>`;
+        }
+
+    })();
+    </script>
+    
+    
+</body>
+</html>
