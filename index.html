@@ -82,17 +82,27 @@
 
   </div>
   <!-- Article popups over the video -->
-<div class="hero-pop" id="hero-pop" aria-live="polite">
-<a class="hero-pop__card" id="hero-pop-link" href="#">
-  <div class="hero-pop__meta">
-    <span class="tag" id="hero-pop-tag"></span>
-    <time id="hero-pop-date"></time>
+  <div class="hero-pop" id="hero-pop" aria-live="polite">
+    <a class="hero-pop__card" id="hero-pop-link" href="#">
+      <div class="hero-pop__head">
+        <span class="hero-pop__label">Recent articles</span>
+      </div>
+  
+      <div class="hero-pop__meta">
+        <span class="tag" id="hero-pop-tag" hidden></span>
+        <time id="hero-pop-date"></time>
+      </div>
+  
+      <h3 class="hero-pop__title" id="hero-pop-title">Latest article</h3>
+      <p class="hero-pop__deck"  id="hero-pop-deck">Summary appears here.</p>
+  
+      <div class="hero-pop__by">
+        <img id="hero-pop-avatar" class="hero-pop__avatar" src="" alt="" />
+        <span id="hero-pop-author" class="hero-pop__author"></span>
+      </div>
+    </a>
   </div>
-  <h3 class="hero-pop__title" id="hero-pop-title">Latest article</h3>
-  <p class="hero-pop__deck" id="hero-pop-deck">Summary appears here.</p>
-</a>
-</div>
-  <figcaption class="muted hc-caption"></figcaption>
+  
 </figure>
 
 

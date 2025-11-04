@@ -397,238 +397,77 @@ function fixDocxAnchors(root){
   });
 }
 
-(function heroArticlePopups(){
-  const wrap  = document.getElementById('hero-pop');
+(function heroArticlePop(){
+  const wrap   = document.getElementById('hero-pop');
   if (!wrap) return;
 
-  const elLink = document.getElementById('hero-pop-link');
-  const elTag  = document.getElementById('hero-pop-tag');
-  const elDate = document.getElementById('hero-pop-date');
-  const elT    = document.getElementById('hero-pop-title');
-  const elD    = document.getElementById('hero-pop-deck');
-
-  // Path works on GitHub Pages because <base href="/CarbonSense/"> is set
-  const url = 'data/articles.json?v=' + Date.now();
-
-  fetch(url, {cache:'no-store'})
-    .then(r => r.json())
-    .then(payload => {
-      const items = Array.isArray(payload) ? payload : (payload.articles || []);
-      if (!items.length) { wrap.style.display='none'; return; }
-
-      // Sort newest first; take top 3
-      const newsy = items
-        .slice()
-        .sort((a,b)=> new Date(b.date) - new Date(a.date))
-        .slice(0,3)
-        .map(a => ({
-          href: a.href || a.url || '#',
-          title: a.title || 'Untitled',
-          deck:  a.deck || a.excerpt || '',
-          tag:   (a.tags && a.tags[0]) || '',
-          date:  a.date ? new Date(a.date) : null
-        }));
-
-      let i = 0;
-      let timer = null;
-
-      function formatDate(d){
-        if (!d) return '';
-        return d.toLocaleDateString(undefined,{year:'numeric', month:'short', day:'2-digit'});
-      }
-
-      function render(idx){
-        const x = newsy[idx];
-        elLink.href    = x.href;
-        elT.textContent= x.title;
-        elD.textContent= x.deck || '';
-        elTag.textContent = x.tag || '';
-        elTag.style.display = x.tag ? '' : 'none';
-        elDate.textContent = formatDate(x.date);
-        wrap.classList.add('hero-pop--show');
-      }
-
-      function next(){
-        wrap.classList.remove('hero-pop--show');          // fade out
-        setTimeout(() => { render(i); }, 220);            // swap content mid-fade
-        i = (i + 1) % newsy.length;
-        timer = setTimeout(next, 6200);                   // dwell time
-      }
-
-      // Start
-      render(i);
-      i = (i + 1) % newsy.length;
-      timer = setTimeout(next, 6200);
-
-      // Pause on hover (desktop)
-      wrap.addEventListener('mouseenter', ()=> { if (timer) { clearTimeout(timer); timer=null; }});
-      wrap.addEventListener('mouseleave', ()=> { if (!timer) timer=setTimeout(next, 6200); });
-    })
-    .catch(()=>{ wrap.style.display='none'; });
-})();
-(function heroRecentBubble(){
-  const track = document.getElementById('bubbleTrack');
-  if (!track) return;
+  const elLink   = document.getElementById('hero-pop-link');
+  const elTag    = document.getElementById('hero-pop-tag');
+  const elDate   = document.getElementById('hero-pop-date');
+  const elTitle  = document.getElementById('hero-pop-title');
+  const elDeck   = document.getElementById('hero-pop-deck');
+  const elAvatar = document.getElementById('hero-pop-avatar');
+  const elAuthor = document.getElementById('hero-pop-author');
 
   const BASE = document.querySelector('base')?.getAttribute('href') || './';
-  const dataUrl = new URL('data/articles.json?v=' + Date.now(), location.origin + BASE).href;
+  const FEED = new URL('data/articles.json?v=' + Date.now(), location.origin + BASE).href;
 
-  const FAVATAR = (src) => `<img class="bubble-avatar" src="${src}" alt="">`;
-  const clean = s => String(s || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const esc = s => String(s||'').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+  const pick = (o,p,f='') => p.split('.').reduce((x,k)=>x && x[k], o) ?? f;
 
-  fetch(dataUrl, { cache: 'no-store' })
+  fetch(FEED, {cache:'no-store'})
     .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(payload => {
-      const arr = Array.isArray(payload) ? payload : (payload.articles || []);
-      if (!arr.length) {
-        track.innerHTML = `<div class="bubble-slide is-active"><div></div><div class="bubble-main"><strong class="bubble-head">No articles yet</strong><div class="bubble-deck">New posts will appear here.</div></div></div>`;
-        return;
+      const items = (Array.isArray(payload) ? payload : payload.articles || [])
+        .slice() // copy
+        .sort((a,b)=> new Date(b.date) - new Date(a.date))
+        .slice(0, 4) // rotate top 3–4
+        .map(a => ({
+          href:   a.href || a.url || '#',
+          title:  esc(a.title || 'Untitled'),
+          deck:   esc(a.deck || a.excerpt || ''),
+          tag:    (a.tags && a.tags[0]) || '',
+          date:   a.date ? new Date(a.date) : null,
+          avatar: pick(a,'author.avatar','assets/authors/juan-daniel-removebg-preview.png'),
+          author: pick(a,'author.name', a.author || 'Carbon-Sense')
+        }));
+
+      if (!items.length) { wrap.style.display = 'none'; return; }
+
+      let i = 0, timer = null;
+
+      const fmtDate = d => d ? d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'2-digit'}) : '';
+
+      function render(ix){
+        const x = items[ix];
+        elLink.href = x.href;
+        elTitle.textContent = x.title;
+        elDeck.textContent  = x.deck;
+        elDate.textContent  = fmtDate(x.date);
+        if (x.tag) { elTag.textContent = x.tag; elTag.hidden = false; } else { elTag.hidden = true; }
+        elAvatar.src = x.avatar; elAvatar.alt = x.author ? `Photo of ${x.author}` : '';
+        elAuthor.textContent = x.author || '';
       }
-
-      // Build normalized items with fallbacks
-      const items = arr.slice(0, 6).map(a => ({
-        title: clean(a.title || 'Untitled'),
-        deck: clean(a.deck || a.excerpt || ''),
-        href: a.href || a.url || '#',
-        avatar: (a.author && a.author.avatar) ? a.author.avatar :
-                (a.authorAvatar || 'assets/authors/juan-daniel-removebg-preview.png'),
-        author: (a.author && a.author.name) ? a.author.name : (a.author || 'Carbon-Sense')
-      }));
-
-      // Prepare two stacked slides
-      track.innerHTML = `
-        <div class="bubble-slide is-active"></div>
-        <div class="bubble-slide"></div>
-      `;
-      const slides = track.querySelectorAll('.bubble-slide');
-      let idx = 0;
-      let active = 0;
-
-      function renderInto(el, item){
-        el.innerHTML = `
-          ${FAVATAR(item.avatar)}
-          <div class="bubble-main">
-            <a class="bubble-head" href="${item.href}">${item.title}</a>
-            <div class="bubble-deck">${item.deck || '—'}</div>
-          </div>
-        `;
-      }
-
-      renderInto(slides[0], items[0]);
-      if (items[1]) renderInto(slides[1], items[1]);
 
       function next(){
-        idx = (idx + 1) % items.length;
-        const show = 1 - active;           // the hidden slide
-        renderInto(slides[show], items[idx]);
-
-        // crossfade
-        slides[active].classList.remove('is-active');
-        slides[show].classList.add('is-active');
-        active = show;
+        wrap.classList.remove('hero-pop--show');     // fade out
+        setTimeout(() => {                           // swap content midway
+          render(i);
+          wrap.classList.add('hero-pop--show');      // fade in
+        }, 250);
+        i = (i + 1) % items.length;
+        timer = setTimeout(next, 6500);
       }
 
-      // rotate every 6s (adjust to taste)
-      setInterval(next, 6000);
+      render(i);
+      wrap.classList.add('hero-pop--show');
+      i = (i + 1) % items.length;
+      timer = setTimeout(next, 6500);
+
+      // pause on hover
+      wrap.addEventListener('mouseenter', () => { if (timer) { clearTimeout(timer); timer = null; }});
+      wrap.addEventListener('mouseleave', () => { if (!timer) timer = setTimeout(next, 6500); });
     })
-    .catch(() => {
-      track.innerHTML = `
-        <div class="bubble-slide is-active">
-          <div></div>
-          <div class="bubble-main">
-            <strong class="bubble-head">Recent articles</strong>
-            <div class="bubble-deck">Could not load the feed.</div>
-          </div>
-        </div>`;
-    });
+    .catch(() => { wrap.style.display = 'none'; });
 })();
-// Hero "Recent articles" popup: smooth crossfade with avatar
-(function heroPop(){
-  const holder = document.getElementById('hero-pop-stack');
-  const shell  = document.getElementById('hero-pop');
-  if (!holder || !shell) return;
 
-  const BASE  = document.querySelector('base')?.getAttribute('href') || './';
-  const FEED  = new URL('data/articles.json?v=' + Date.now(), location.origin + BASE).href;
-
-  // Helpers
-  const esc = s => String(s||'').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-  const pick = (obj, path, fallback='') => {
-    try { return path.split('.').reduce((o,k)=>o?.[k], obj) ?? fallback; } catch(_) { return fallback; }
-  };
-
-  fetch(FEED, { cache:'no-store' })
-    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(payload => {
-      const list = Array.isArray(payload) ? payload : (payload.articles || []);
-      if (!list.length){
-        holder.innerHTML = `<div class="pop-slide is-active"><div></div><div class="pop-main"><div class="hero-pop__title">No articles yet</div><div class="hero-pop__deck">New posts will appear here.</div></div></div>`;
-        return;
-      }
-
-      const items = list.slice(0,6).map(a => ({
-        title: esc(a.title || 'Untitled'),
-        deck : esc(a.deck || a.excerpt || ''),
-        href : a.href || a.url || '#',
-        date : a.date ? new Date(a.date).toDateString() : '',
-        tag  : a.tags?.[0] || '',
-        avatar: pick(a,'author.avatar','assets/authors/juan-daniel-removebg-preview.png'),
-        author: pick(a,'author.name', a.author || 'Carbon-Sense')
-      }));
-
-      holder.innerHTML = `
-        <div class="pop-slide is-active"></div>
-        <div class="pop-slide"></div>
-      `;
-      const slides = holder.querySelectorAll('.pop-slide');
-      let idx = 0, active = 0, timer = null;
-
-      function tpl(it){
-        return `
-          <img class="pop-avatar" src="${esc(it.avatar)}" alt="">
-          <div class="pop-main">
-            <a class="hero-pop__card" href="${it.href}">
-              <div class="hero-pop__meta">
-                ${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ''}
-                ${it.date ? `<time>${esc(it.date)}</time>` : ''}
-              </div>
-              <h3 class="hero-pop__title">${it.title}</h3>
-              <p class="hero-pop__deck">${it.deck || '—'}</p>
-            </a>
-          </div>`;
-      }
-
-      function render(slot, it){ slot.innerHTML = tpl(it); }
-
-      render(slides[0], items[0]);
-      if (items[1]) render(slides[1], items[1]);
-
-      function step(){
-        idx = (idx + 1) % items.length;
-        const next = 1 - active;           // hidden slide
-        render(slides[next], items[idx]);
-        slides[active].classList.remove('is-active');
-        slides[next].classList.add('is-active');
-        active = next;
-        schedule();
-      }
-
-      function schedule(){
-        clearTimeout(timer);
-        timer = setTimeout(step, 6000);    // change interval here
-      }
-
-      // pause on hover/focus
-      function pause(){ clearTimeout(timer); }
-      function resume(){ schedule(); }
-      shell.addEventListener('mouseenter', pause);
-      shell.addEventListener('mouseleave', resume);
-      shell.addEventListener('focusin',   pause);
-      shell.addEventListener('focusout',  resume);
-
-      schedule();
-    })
-    .catch(() => {
-      holder.innerHTML = `<div class="pop-slide is-active"><div></div><div class="pop-main"><div class="hero-pop__title">Recent articles</div><div class="hero-pop__deck">Couldn’t load the feed.</div></div></div>`;
-    });
-})();
