@@ -466,3 +466,49 @@ function fixDocxAnchors(root){
     })
     .catch(()=>{ wrap.style.display='none'; });
 })();
+// Hero bubble: load latest article and show over video
+(function heroBubble(){
+  const bubble = document.getElementById('hero-bubble');
+  if (!bubble) return;
+
+  const tEl = document.getElementById('hb-title');
+  const dEl = document.getElementById('hb-deck');
+
+  // GitHub Pages path robustness
+  const candidates = [
+    'data/articles.json',
+    '/CarbonSense/data/articles.json'
+  ];
+
+  function tryFetch(urls){
+    const [u, ...rest] = urls;
+    if (!u) return Promise.reject(new Error('No articles.json found'));
+    return fetch(u, {cache:'no-store'}).then(r=>{
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return r.json();
+    }).catch(()=>tryFetch(rest));
+  }
+
+  tryFetch(candidates).then(payload=>{
+    const list = Array.isArray(payload) ? payload : (payload.articles || []);
+    if (!list.length) return;
+
+    // pick latest by date if available
+    list.sort((a,b)=> new Date(b.date||0) - new Date(a.date||0));
+    const a = list[0];
+
+    const href = a.href || a.url || 'articles.html';
+    const title = a.title || 'Latest article';
+    const deck  = a.deck || a.excerpt || '';
+
+    tEl.textContent = title;
+    tEl.href = href;
+    dEl.textContent = deck;
+
+    bubble.hidden = false;
+
+    // show after a slight delay, then auto-hide
+    setTimeout(()=> bubble.classList.add('show'), 350);
+    setTimeout(()=> bubble.classList.remove('show'), 8500);
+  }).catch(console.warn);
+})();
