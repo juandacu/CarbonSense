@@ -1044,12 +1044,24 @@ ul.bullets li{ margin:.4rem 0; }
   opacity: 1;
   transform: translateY(0);
 }
+.hero-pop__titlebar{ display:flex; align-items:center; gap:12px; justify-content:space-between; white-space:nowrap; }
+.hero-pop__meta-left{ display:flex; align-items:center; gap:8px; min-width:0; }
+.hero-pop__meta-left time, .hero-pop__meta-left span{ font-size:.72rem; color:rgba(234,243,239,.8); }
 
-/* collapsed state = show only the pill */
-.hero-pop.is-collapsed .hero-pop__meta-left,
-.hero-pop.is-collapsed .hero-pop__grid {
-  display: none;
+/* higher-contrast tag */
+.hero-pop__meta-left .tag{
+  background:#e7fff7; border:1px solid #c3efe2; color:#0e3b30;
+  padding:3px 10px; border-radius:999px; font-size:.7rem; font-weight:500;
 }
+
+/* kill underlines inside the card */
+.hero-pop__card:link, .hero-pop__card:visited, .hero-pop__card:hover, .hero-pop__card:active{ text-decoration:none; color:inherit; }
+.hero-pop__card *{ text-decoration:none; }
+
+
+/* collapsed state: only show the pill */
+.hero-pop.is-collapsed .hero-pop__meta-left,
+.hero-pop.is-collapsed .hero-pop__grid{ display:none; }
 
 .hero-pop.is-collapsed .hero-pop__card{
   padding: 8px 10px;                 /* tighter when collapsed */

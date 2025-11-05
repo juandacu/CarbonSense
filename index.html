@@ -84,12 +84,14 @@
 <!-- Article popups over the video -->
 <div class="hero-pop is-collapsed" id="hero-pop" aria-live="polite">
   <a class="hero-pop__card" id="hero-pop-link" href="#">
-    <div class="hero-pop__top">
-      <span class="tag" id="hp-tag"></span>
-      <time id="hp-date"></time>
-      <span class="dot" aria-hidden="true">•</span>
-      <span id="hp-author"></span>
-      <button id="hp-toggle" class="hero-pop__label" type="button">RECENT ARTICLES</button>
+    <div class="hero-pop__titlebar">
+      <div class="hero-pop__meta-left">
+        <span class="tag" id="hp-tag"></span>
+        <time id="hp-date"></time>
+        <span class="hero-pop__dot" aria-hidden="true">•</span>
+        <span id="hp-author"></span>
+      </div>
+      <span class="hero-pop__label" id="hp-toggle">RECENT ARTICLES</span>
     </div>
 
     <div class="hero-pop__grid" id="hp-grid">
@@ -101,6 +103,7 @@
     </div>
   </a>
 </div>
+
 
 
   

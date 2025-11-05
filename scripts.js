@@ -396,48 +396,6 @@ function fixDocxAnchors(root){
     }, { capture: true });
   });
 }
-
-// --- Hero popup (latest article) ---
-(function heroPopup(){
-  const wrap = document.getElementById('hero-pop');
-  if (!wrap) return;
-
-  const link = document.getElementById('hero-pop-link');
-  const els = {
-    tag:   document.getElementById('hp-tag'),
-    date:  document.getElementById('hp-date'),
-    author:document.getElementById('hp-author'),
-    title: document.getElementById('hp-title'),
-    deck:  document.getElementById('hp-deck'),
-    thumb: document.getElementById('hp-thumb')
-  };
-
-  fetch('data/articles.json', { cache: 'no-store' })
-    .then(r => { if (!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-    .then(payload => {
-      const list = Array.isArray(payload) ? payload : (payload.articles || []);
-      if (!list.length) return;
-
-      const a = list.slice().sort((x,y)=>new Date(y.date||0)-new Date(x.date||0))[0];
-
-      els.tag.textContent   = (a.tags && a.tags[0]) || '';
-      els.date.textContent  = a.date ? new Date(a.date).toLocaleDateString('en-US',
-                                    { month:'short', day:'2-digit', year:'numeric' }) : '';
-      const authorName = (a.author && (a.author.name || a.author)) || 'Carbon-Sense';
-      els.author.textContent = authorName;
-
-      els.title.textContent = a.title || 'Untitled';
-      els.deck.textContent  = a.deck || a.excerpt || '';
-
-      els.thumb.src = a.image || 'assets/placeholders/article.jpg';
-      els.thumb.alt = a.title ? `Thumbnail for ${a.title}` : 'Article thumbnail';
-
-      link.href = a.href || a.url || 'articles.html';
-
-      wrap.classList.add('hero-pop--show');
-    })
-    .catch(err => console.warn('heroPopup:', err));
-})();
 // -------------------------------------------
 // Hero "recent articles" rotator
 // -------------------------------------------
