@@ -1033,3 +1033,14 @@ ul.bullets li{ margin:.4rem 0; }
 .hero-pop__card * {
   text-decoration: none;
 }
+
+/* smooth fade/slide for popup swaps */
+.hero-pop__card{
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.hero-pop--show .hero-pop__card{
+  opacity: 1;
+  transform: translateY(0);
+}

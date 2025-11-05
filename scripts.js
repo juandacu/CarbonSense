@@ -441,83 +441,89 @@ function fixDocxAnchors(root){
 // -------------------------------------------
 // Hero "recent articles" rotator
 // -------------------------------------------
-// === POPUP CAROUSEL (articles) ===
+// === POPUP CAROUSEL (articles) — smooth fade swap ===
 (function(){
-  const pop      = document.getElementById('hero-pop');
+  const pop  = document.getElementById('hero-pop');
   if (!pop) return;
 
-  const link     = document.getElementById('hero-pop-link');
-  const grid     = document.getElementById('hp-grid');
-  const elTag    = document.getElementById('hp-tag');
-  const elDate   = document.getElementById('hp-date');
-  const elAuthor = document.getElementById('hp-author');
-  const elThumb  = document.getElementById('hp-thumb');
-  const elTitle  = document.getElementById('hp-title');
-  const elDeck   = document.getElementById('hp-deck');
+  const card = document.getElementById('hero-pop-link');
 
-  // fetch articles.json once
-  const url = 'data/articles.json?v=' + Date.now();
-  fetch(url, {cache:'no-store'})
-    .then(r => r.json())
-    .then(raw => {
-      const items = Array.isArray(raw) ? raw : (raw.articles || []);
-      const articles = items
-        .filter(a => a && (a.title || a.name))
-        .sort((a,b) => new Date(b.date||0) - new Date(a.date||0));
+  // fields inside the card
+  const el = {
+    tag:    document.getElementById('hp-tag'),
+    date:   document.getElementById('hp-date'),
+    author: document.getElementById('hp-author'),
+    thumb:  document.getElementById('hp-thumb'),
+    title:  document.getElementById('hp-title'),
+    deck:   document.getElementById('hp-deck'),
+  };
 
-      if (!articles.length) return;
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-      let i = 0;
-      render(articles[i], true);
-      pop.classList.add('hero-pop--show');
-
-      // rotate every 7s (change if you want)
-      setInterval(() => {
-        i = (i + 1) % articles.length;
-        render(articles[i], false);
-      }, 7000);
-    })
-    .catch(console.error);
-
-  function render(a, first){
+  function write(a){
     // link
-    const href = a.href || a.url || (a.path ? a.path : '#');
-    link.setAttribute('href', href);
+    card.setAttribute('href', a.href || a.url || a.path || '#');
 
-    // top row
-    const tag = (a.tags && a.tags[0]) || '';
-    elTag.textContent  = tag || 'Article';
-    elDate.textContent = a.date ? new Date(a.date).toLocaleDateString(undefined,
-                          {year:'numeric', month:'short', day:'2-digit'}) : '';
-    elAuthor.textContent = a.author?.name || a.author || '';
-
-    // thumb
-    const thumb = a.image || a.thumb || a.thumbnail || '';
-    if (thumb){
-      elThumb.src = thumb;
-      elThumb.alt = `Thumbnail for ${a.title || 'article'}`;
-      grid.classList.remove('no-thumb');
-    } else {
-      elThumb.removeAttribute('src');
-      elThumb.alt = '';
-      grid.classList.add('no-thumb');
-    }
+    // header row
+    el.tag.textContent = (a.tags && a.tags[0]) || a.tag || 'Article';
+    el.date.textContent = a.date
+      ? new Date(a.date).toLocaleDateString(undefined,{month:'short', day:'2-digit', year:'numeric'})
+      : '';
+    el.author.textContent = (a.author && (a.author.name || a.author)) || '';
 
     // text
-    elTitle.textContent = a.title || 'Untitled';
-    elDeck.textContent  = a.deck || a.excerpt || a.summary || '';
+    el.title.textContent = a.title || 'Untitled';
+    el.deck.textContent  = a.deck || a.excerpt || a.summary || '';
 
-    // subtle fade each swap
-    if (!first){
-      link.style.opacity = 0;
-      link.style.transform = 'translateY(6px)';
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          link.style.transition = 'opacity .35s ease, transform .35s ease';
-          link.style.opacity = 1;
-          link.style.transform = 'translateY(0)';
-        });
-      });
+    // thumb (hide if missing)
+    const src = a.image || a.thumb || a.thumbnail || '';
+    if (src){
+      el.thumb.src = src;
+      el.thumb.alt = `Thumbnail for ${a.title || 'article'}`;
+      el.thumb.style.display = '';
+    } else {
+      el.thumb.removeAttribute('src');
+      el.thumb.alt = '';
+      el.thumb.style.display = 'none';
     }
   }
+
+  async function swapSmooth(a){
+    // fade out
+    pop.classList.remove('hero-pop--show');
+    await sleep(250);            // match your CSS transition (~0.45s total)
+    // write new content
+    write(a);
+    // force reflow so the next class toggle animates
+    void card.offsetWidth;
+    // fade in
+    pop.classList.add('hero-pop--show');
+  }
+
+  function startRotation(list, everyMs = 7000){
+    if (!list.length) return;
+    // first render immediately, then animate future swaps
+    write(list[0]);
+    pop.classList.add('hero-pop--show');
+
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % list.length;
+      swapSmooth(list[i]);
+    }, everyMs);
+  }
+
+  // load data and kick off
+  fetch('data/articles.json?v=' + Date.now(), { cache: 'no-store' })
+    .then(r => r.json())
+    .then(raw => Array.isArray(raw) ? raw : (raw.articles || []))
+    .then(items =>
+      items
+        .filter(a => a && (a.title || a.name))
+        .sort((a,b) => new Date(b.date||0) - new Date(a.date||0))
+        .slice(0, 6)
+    )
+    .then(startRotation)
+    .catch(console.error);
 })();
+
