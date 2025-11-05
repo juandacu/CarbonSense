@@ -555,7 +555,7 @@ function fixDocxAnchors(root){
   toggle.setAttribute('aria-expanded','false');
 
   // auto-open after 3s, once
-  let autoTimer = setTimeout(() => openPop(true), 3000);
+  let autoTimer = setTimeout(() => openPop(true), 1000);
 
   function openPop(withAnim){
     pop.classList.remove('is-collapsed');
