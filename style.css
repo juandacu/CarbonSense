@@ -1114,3 +1114,18 @@ ul.bullets li{ margin:.4rem 0; }
 
 /* Safety: no horizontal scrollbars on narrow screens */
 html, body { overflow-x: hidden; }
+
+/* Plots/images stay inside the paragraph width */
+.prose.docx img,
+.prose.docx iframe.plot-embed {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto;
+  border: 0;
+  margin: 0 auto;
+}
+
+/* Optional: maintain aspect ratio for iframes */
+.embed-16x9 { position: relative; width: 100%; padding-top: 56.25%; }
+.embed-16x9 > iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
