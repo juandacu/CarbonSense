@@ -1114,3 +1114,38 @@ ul.bullets li{ margin:.4rem 0; }
 
 /* Safety: no horizontal scrollbars on narrow screens */
 html, body { overflow-x: hidden; }
+
+/* --- Recent Articles: open/close animation --- */
+.hero-pop{
+  /* start hidden/collapsed */
+  opacity: 0;
+  transform: scale(.96) translateY(-6px);
+  transform-origin: 92% 8px;         /* opens from pill corner */
+  clip-path: inset(0 0 100% 0 round 16px);  /* reveal from top */
+  transition:
+    opacity .45s ease,
+    transform .45s cubic-bezier(.2,.8,.2,1),
+    clip-path .45s ease;
+  pointer-events: none;              /* block clicks while closed */
+}
+
+.hero-pop.hero-pop--show{ pointer-events: auto; }
+
+/* visible + expanded */
+.hero-pop.hero-pop--show:not(.is-collapsed){
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  clip-path: inset(0 0 0 0 round 16px);
+}
+
+/* collapsed state (button only) stays hidden */
+.hero-pop.is-collapsed .hero-pop__card{ display: none; }
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .hero-pop{
+    transition: opacity .1s linear !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}
