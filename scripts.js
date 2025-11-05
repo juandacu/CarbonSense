@@ -397,18 +397,18 @@ function fixDocxAnchors(root){
   });
 }
 
+// --- Hero popup (latest article) ---
 (function heroPopup(){
-  const wrap   = document.getElementById('hero-pop');
+  const wrap = document.getElementById('hero-pop');
   if (!wrap) return;
 
-  const link   = document.getElementById('hero-pop-link');
+  const link = document.getElementById('hero-pop-link');
   const els = {
     tag:   document.getElementById('hp-tag'),
     date:  document.getElementById('hp-date'),
+    author:document.getElementById('hp-author'),
     title: document.getElementById('hp-title'),
     deck:  document.getElementById('hp-deck'),
-    auth:  document.getElementById('hp-author'),
-    ava:   document.getElementById('hp-avatar'),
     thumb: document.getElementById('hp-thumb')
   };
 
@@ -420,16 +420,15 @@ function fixDocxAnchors(root){
 
       const a = list.slice().sort((x,y)=>new Date(y.date||0)-new Date(x.date||0))[0];
 
-      els.tag.textContent  = (a.tags && a.tags[0]) || '';
-      els.date.textContent = a.date ? new Date(a.date).toLocaleDateString('en-US',{month:'short',day:'2-digit',year:'numeric'}) : '';
-      els.title.textContent= a.title || 'Untitled';
-      els.deck.textContent = a.deck || a.excerpt || '';
-      const authorName     = (a.author && (a.author.name || a.author)) || 'Carbon-Sense';
-      els.auth.textContent = authorName;
+      els.tag.textContent   = (a.tags && a.tags[0]) || '';
+      els.date.textContent  = a.date ? new Date(a.date).toLocaleDateString('en-US',
+                                    { month:'short', day:'2-digit', year:'numeric' }) : '';
+      const authorName = (a.author && (a.author.name || a.author)) || 'Carbon-Sense';
+      els.author.textContent = authorName;
 
-      // Paths must be relative to <base href="/CarbonSense/">
-      els.ava.src   = (a.author && a.author.avatar) || 'assets/authors/logo.png';
-      els.ava.alt   = authorName;
+      els.title.textContent = a.title || 'Untitled';
+      els.deck.textContent  = a.deck || a.excerpt || '';
+
       els.thumb.src = a.image || 'assets/placeholders/article.jpg';
       els.thumb.alt = a.title ? `Thumbnail for ${a.title}` : 'Article thumbnail';
 
@@ -437,5 +436,5 @@ function fixDocxAnchors(root){
 
       wrap.classList.add('hero-pop--show');
     })
-    .catch(err => { console.warn('heroPopup:', err); });
+    .catch(err => console.warn('heroPopup:', err));
 })();
