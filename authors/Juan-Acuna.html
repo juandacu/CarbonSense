@@ -52,7 +52,7 @@
   </section>
 
   <footer class="site-footer">
-    <div class="container foot-bottom"><small>© <span data-year></span> YourOrg</small></div>
+    <div class="container foot-bottom"><small>© <span data-year></span> Carbon-Sense</small></div>
   </footer>
 
   <script src="../scripts.js"></script>
@@ -61,7 +61,7 @@
       const grid  = document.getElementById("author-articles");
       if (!grid) return;
     
-      const AUTHOR = "Juan Daniel Acuña-Román";
+      const AUTHOR = "Juan Acuña-Román";
       const norm = s => (s||"").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu,"");
     
       // prefix relative assets correctly when this page lives in /authors/
@@ -85,7 +85,7 @@
         .catch(() => { grid.innerHTML = '<div class="muted">Failed to load articles.</div>'; });
     
       function renderAuthorCard(a){
-        const thumb = asset(a.image || "assets/mangrove.jpg");
+        const thumb = asset(a.image || "../assets/mangrove.jpg");
         const date  = a.date ? new Date(a.date).toDateString() : "";
         const tag   = a.tags?.[0] ? `<span class="tag">${a.tags[0]}</span>` : "";
         const read  = a.readTime ? `${a.readTime} min` : "";
