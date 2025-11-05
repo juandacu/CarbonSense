@@ -1044,3 +1044,23 @@ ul.bullets li{ margin:.4rem 0; }
   opacity: 1;
   transform: translateY(0);
 }
+
+/* collapsed state = show only the pill */
+.hero-pop.is-collapsed .hero-pop__meta-left,
+.hero-pop.is-collapsed .hero-pop__grid {
+  display: none;
+}
+
+.hero-pop.is-collapsed .hero-pop__card{
+  padding: 8px 10px;                 /* tighter when collapsed */
+}
+
+.hero-pop__label{
+  cursor: pointer;
+  user-select: none;
+}
+
+/* optional: small hover feedback on the pill */
+.hero-pop__label:hover{
+  filter: brightness(1.05);
+}
