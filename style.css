@@ -1036,8 +1036,6 @@ ul.bullets li{ margin:.4rem 0; }
 
 /* smooth fade/slide for popup swaps */
 .hero-pop__card{
-  opacity: 0;
-  transform: translateY(6px);
   transition: opacity .45s ease, transform .45s ease;
 }
 .hero-pop--show .hero-pop__card{
@@ -1190,4 +1188,14 @@ html, body { overflow-x: hidden; }
   z-index:6;          /* above .hero-pop__card */
   cursor:pointer;
   user-select:none;
+}
+/* App-like open animation */
+@keyframes hero-pop-open {
+  0%   { opacity: 0; transform: translateY(-6px) scale(.96); }
+  60%  { opacity: 1; transform: translateY(0)    scale(1.02); }
+  100% { opacity: 1; transform: translateY(0)    scale(1); }
+}
+.hero-pop.opening .hero-pop__card{
+  animation: hero-pop-open .48s cubic-bezier(.22,.61,.36,1);
+  transform-origin: top right;
 }
