@@ -1074,3 +1074,43 @@ ul.bullets li{ margin:.4rem 0; }
 .hero-pop__label:hover{
   filter: brightness(1.05);
 }
+
+/* ==== MOBILE HERO FIX (place at end of style.css) ==== */
+@media (max-width: 980px){
+  .hero-inner{
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 56px 0;
+  }
+
+  /* Force the video frame to fill the screen width */
+  .hero-media-frame{
+    justify-self: stretch;
+    width: 100% !important;
+    margin: 0;                /* prevent any lateral overflow */
+  }
+
+  /* Give the media a fixed height and cover fit */
+  .hero-carousel{
+    aspect-ratio: unset;
+    height: clamp(220px, 46vh, 420px);
+  }
+  .hero-carousel .slide,
+  .hero-carousel video,
+  .hero-carousel img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  /* Keep the popup inside the viewport */
+  .hero-pop{
+    left: 12px;
+    right: 12px;
+    max-width: calc(100% - 24px);
+  }
+}
+
+/* Safety: no horizontal scrollbars on narrow screens */
+html, body { overflow-x: hidden; }
