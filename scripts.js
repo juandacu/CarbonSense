@@ -485,82 +485,6 @@ function fixDocxAnchors(root){
     .catch(console.error);
 })();
 
-// --- Open/close behavior for the RECENT ARTICLES pill, with auto-open ---
-// --- Open/close behavior for the RECENT ARTICLES pill, with auto-open + animation ---
-// --- RECENT ARTICLES pill: open/close + 3s auto-open + smooth open ---
-// --- RECENT ARTICLES pill: open/close + 3s auto-open + smooth open (unchanged) ---
-(function(){
-  const pop    = document.getElementById('hero-pop');
-  const toggle = document.getElementById('hp-toggle');
-  if (!pop || !toggle) return;
-
-  pop.classList.add('is-collapsed');
-
-  let autoTimer = setTimeout(() => openPop(true), 3000);
-
-  function openPop(withAnim){
-    pop.classList.remove('is-collapsed');
-    if (withAnim){
-      pop.classList.add('opening');
-      setTimeout(() => pop.classList.remove('opening'), 500);
-    }
-    toggle.setAttribute('aria-expanded','true');
-  }
-  function closePop(){
-    pop.classList.add('is-collapsed');
-    toggle.setAttribute('aria-expanded','false');
-  }
-  function togglePop(e){
-    e.preventDefault();
-    e.stopPropagation();     // never bubble to the article link
-    if (pop.classList.contains('is-collapsed')) openPop(true); else closePop();
-    if (autoTimer){ clearTimeout(autoTimer); autoTimer = null; }
-  }
-  toggle.addEventListener('click', togglePop);
-  toggle.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') togglePop(e);
-  });
-  toggle.addEventListener('mousedown', e => e.stopPropagation());
-})();
-
-// --- POPUP CAROUSEL (articles) — fade only the content grid, not the titlebar ---
-// --- RECENT ARTICLES pill: open/close + auto-open ---
-(function(){
-  const pop    = document.getElementById('hero-pop');
-  const toggle = document.getElementById('hp-toggle');
-  if (!pop || !toggle) return;
-
-  // Initial: show card, keep grid collapsed so the button is visible
-  pop.classList.add('hero-pop--show', 'is-collapsed');
-  toggle.setAttribute('aria-expanded','false');
-
-  let autoTimer = setTimeout(() => openPop(true), 3000);
-
-  function openPop(withAnim){
-    pop.classList.remove('is-collapsed');
-    if (withAnim){
-      pop.classList.add('opening');
-      setTimeout(() => pop.classList.remove('opening'), 500);
-    }
-    toggle.setAttribute('aria-expanded','true');
-  }
-  function closePop(){
-    pop.classList.add('is-collapsed');
-    toggle.setAttribute('aria-expanded','false');
-  }
-  function togglePop(e){
-    e.preventDefault();
-    e.stopPropagation();     // don't bubble into the link
-    if (pop.classList.contains('is-collapsed')) openPop(true); else closePop();
-    if (autoTimer){ clearTimeout(autoTimer); autoTimer = null; }
-  }
-
-  toggle.addEventListener('click', togglePop);
-  toggle.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') togglePop(e);
-  });
-})();
-
 // --- POPUP CAROUSEL (fade only the grid/link area) ---
 (function(){
   const pop   = document.getElementById('hero-pop');
@@ -618,4 +542,53 @@ function fixDocxAnchors(root){
       .slice(0, 6))
     .then(startRotation)
     .catch(console.error);
+})();
+
+// RECENT ARTICLES: single source of truth for open/close + auto-open
+(function(){
+  const pop    = document.getElementById('hero-pop');
+  const toggle = document.getElementById('hp-toggle');
+  if (!pop || !toggle) return;
+
+  // start collapsed so the pill is visible
+  pop.classList.add('is-collapsed');
+  toggle.setAttribute('aria-expanded','false');
+
+  // auto-open after 3s, once
+  let autoTimer = setTimeout(() => openPop(true), 3000);
+
+  function openPop(withAnim){
+    pop.classList.remove('is-collapsed');
+    if (withAnim){
+      pop.classList.add('opening');                 // CSS handles the smooth scale/fade
+      setTimeout(() => pop.classList.remove('opening'), 500);
+    }
+    toggle.setAttribute('aria-expanded','true');
+  }
+  function closePop(){
+    pop.classList.add('is-collapsed');
+    toggle.setAttribute('aria-expanded','false');
+  }
+  function togglePop(e){
+    e.preventDefault();
+    e.stopPropagation();                             // never bubble into the article link
+    if (pop.classList.contains('is-collapsed')) openPop(true);
+    else closePop();
+    if (autoTimer){ clearTimeout(autoTimer); autoTimer = null; }
+  }
+
+  // click/keyboard on the pill
+  toggle.addEventListener('click', togglePop);
+  toggle.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') togglePop(e);
+  });
+
+  // clicks inside the popup card should NOT close it
+  const card = document.getElementById('hero-pop-link');
+  if (card){
+    card.addEventListener('click', e => {
+      // if the grid is collapsed, ignore card clicks (it’s hidden)
+      if (pop.classList.contains('is-collapsed')) { e.preventDefault(); e.stopPropagation(); }
+    });
+  }
 })();
