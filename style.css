@@ -1020,3 +1020,16 @@ ul.bullets li{ margin:.4rem 0; }
   .hero-pop__grid{ grid-template-columns:56px 1fr; }
   .hero-pop__thumb{ width:56px; height:56px; }
 }
+/* Remove link styling from the popup card */
+.hero-pop__card:link,
+.hero-pop__card:visited,
+.hero-pop__card:hover,
+.hero-pop__card:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Belt-and-suspenders: never underline anything inside the card */
+.hero-pop__card * {
+  text-decoration: none;
+}
