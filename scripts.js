@@ -156,7 +156,7 @@ function injectDocxEmbeds(root){
       iframe.src = EMBEDS[key];
       iframe.style.width = "100%";   // full width of the article column
       iframe.style.border = "0";
-      iframe.setAttribute("scrolling", "no");
+      iframe.setAttribute("scrolling", "yes");
       // no fixed height; the child posts its height
       el.replaceWith(iframe);
     }
