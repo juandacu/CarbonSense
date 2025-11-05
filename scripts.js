@@ -24,6 +24,45 @@ async function fetchJSON(rel, { tries = 3, signal } = {}) {
   throw lastErr;
 }
 
+// Resolve any relative path against the current <base>
+function absUrl(rel){ return new URL(rel, document.baseURI).toString(); }
+
+// Normalize an article record from JSON
+function normalizeArticle(a){
+  const href = a.href || a.url || a.path || (a.slug ? `articles/${a.slug}.html` : "");
+  const image = a.image || a.thumb || a.thumbnail || "";
+  return {
+    title: a.title || "Untitled",
+    deck:  a.deck || a.excerpt || a.summary || "",
+    dateISO: a.date || "",
+    dateTxt: a.date ? new Date(a.date).toDateString() : "",
+    tag: (a.tags && a.tags[0]) || "",
+    author: (a.author && (a.author.name || a.author)) || "Carbon-Sense",
+    href: href ? absUrl(href) : "",                          // empty string means “no link”
+    image: image ? absUrl(image) : absUrl("assets/placeholders/article.jpg")
+  };
+}
+
+// tiny image retry (handles occasional aborts on GitHub Pages)
+function imgWithRetry(src, tries=2){
+  const s = JSON.stringify({src, tries}); // for data-* attr
+  return `<img class="article-thumb" loading="lazy" decoding="async" data-img='${s}' src="${src}" alt="">`;
+}
+document.addEventListener("error", (e) => {
+  const img = e.target;
+  if (!(img instanceof HTMLImageElement)) return;
+  const meta = img.dataset.img && JSON.parse(img.dataset.img);
+  if (!meta) { img.src = absUrl("assets/placeholders/article.jpg"); return; }
+  if (meta.tries > 0){
+    meta.tries -= 1;
+    img.dataset.img = JSON.stringify(meta);
+    // short backoff then retry
+    setTimeout(()=>{ img.src = meta.src + (meta.src.includes("?") ? "&r=" : "?r=") + Date.now(); }, 120);
+  } else {
+    img.src = absUrl("assets/placeholders/article.jpg");
+  }
+}, true);
+
 
 // Header behavior: transparent over hero, solid when scrolled
 (function(){
@@ -61,27 +100,43 @@ async function fetchJSON(rel, { tries = 3, signal } = {}) {
   items.forEach(el => io.observe(el));
 })();
 
-// Load Articles (resilient)
+// Load Articles (robust + base-aware)
 (async function(){
   const grid = document.getElementById("articles-grid");
   if (!grid) return;
 
-  const ac = new AbortController();
-  addEventListener('pagehide', () => ac.abort(), { once: true });
-
   try {
-    const raw = await fetchJSON('data/articles.json', { tries: 3, signal: ac.signal });
-    const items = Array.isArray(raw) ? raw : (raw.articles || []);
-    if (!items.length) {
-      grid.innerHTML = `<div class="muted">No articles available.</div>`;
-      return;
-    }
-    grid.innerHTML = items.map(renderCard).join("");
+    const raw  = await fetchJSON("data/articles.json", { tries: 3 });
+    const list = (Array.isArray(raw) ? raw : raw.articles || []).map(normalizeArticle);
+
+    grid.innerHTML = list.map(a => {
+      const maybeLinkStart = a.href ? `<a class="cover" href="${a.href}" aria-label="Read ${escapeHtml(a.title)}"></a>` : "";
+      return `
+        <article class="article-card">
+          ${imgWithRetry(a.image)}
+          <div class="article-body">
+            <h3>${escapeHtml(a.title)}</h3>
+            <p class="article-deck">${escapeHtml(a.deck)}</p>
+          </div>
+          <div class="article-meta">
+            <div class="meta-left">
+              <span class="byline">${escapeHtml(a.author)}</span>
+            </div>
+            <div class="meta-right">
+              ${a.tag ? `<span class="tag">${escapeHtml(a.tag)}</span>` : ""}
+              ${a.dateISO ? `<time datetime="${a.dateISO}">${escapeHtml(a.dateTxt)}</time>` : ""}
+            </div>
+          </div>
+          ${maybeLinkStart}
+        </article>`;
+    }).join("");
+
   } catch (e) {
+    console.error("Articles load error:", e);
     grid.innerHTML = `<div class="muted">Failed to load articles.</div>`;
-    console.error('Articles load error:', e);
   }
 })();
+
 
 
 // Load News (resilient)
