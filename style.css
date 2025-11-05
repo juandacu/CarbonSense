@@ -897,17 +897,22 @@ ul.bullets li{ margin:.4rem 0; }
 }
 
 .hero-pop__meta-left{
+  flex:1;                 /* take remaining space */
+  min-width:0;            /* allow ellipsis */
+  overflow:hidden;
+  text-overflow:ellipsis; /* clamp to one line */
   display:flex;
   align-items:center;
   gap:8px;
-  min-width:0;
 }
 
+
+.hero-pop__meta-left .tag,
 .hero-pop__meta-left time,
 .hero-pop__meta-left span{
-  font-size:.72rem;
-  color:rgba(234,243,239,.8);
+  white-space:nowrap;
 }
+
 
 .hero-pop__meta-left .tag{
   background:rgba(245, 250, 246, 1);
@@ -1244,3 +1249,20 @@ html, body { overflow-x: hidden; }
   100% { opacity: 1; transform: translateY(0)    scale(1); }
 }
 .hero-pop.opening .hero-pop__card{ animation: hero-pop-open .48s cubic-bezier(.22,.61,.36,1); transform-origin: top right; }
+
+
+#hp-toggle{
+  flex:0 0 auto;          /* don’t shrink */
+  z-index:2;              /* sit above text during fades */
+}
+
+/* When grid is collapsed, ensure only the titlebar shows */
+#hero-pop.is-collapsed .hero-pop__grid{
+  display:none;
+}
+
+/* Smooth open animation (paired with JS .opening) */
+#hero-pop.opening .hero-pop__card{
+  transform: translateY(4px) scale(0.98);
+  opacity: 0.6;
+}
