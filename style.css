@@ -1114,25 +1114,3 @@ ul.bullets li{ margin:.4rem 0; }
 
 /* Safety: no horizontal scrollbars on narrow screens */
 html, body { overflow-x: hidden; }
-
-/* ==== Responsive plots/images inside articles (mobile safe) ==== */
-
-/* 2) Kill “full-bleed” behavior on narrow screens */
-@media (max-width: 900px){
-  .prose.docx .embed.full-bleed,
-  .prose.docx iframe.plot-embed{
-    width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    border-left: 0;
-    border-right: 0;
-    transform: none !important;
-  }
-}
-
-/* 3) If an embed is still wider (e.g., big Sankey), allow horizontal scroll instead of cut-off */
-.figure-scroll{
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-.figure-scroll > *{ min-width: 560px; } /* adjust if needed */
