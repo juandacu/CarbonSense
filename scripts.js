@@ -488,18 +488,15 @@ function fixDocxAnchors(root){
 // --- Open/close behavior for the RECENT ARTICLES pill, with auto-open ---
 // --- Open/close behavior for the RECENT ARTICLES pill, with auto-open + animation ---
 // --- RECENT ARTICLES pill: open/close + 3s auto-open + smooth open ---
+// --- RECENT ARTICLES pill: open/close + 3s auto-open + smooth open (unchanged) ---
 (function(){
   const pop    = document.getElementById('hero-pop');
   const toggle = document.getElementById('hp-toggle');
   if (!pop || !toggle) return;
 
-  // Ensure the pill is visible even before data arrives
-  pop.classList.add('is-collapsed');        // start collapsed (pill only)
+  pop.classList.add('is-collapsed');
 
-  let autoTimer = setTimeout(() => {
-    // open once, with animation, 3s after landing
-    openPop(true);
-  }, 3000);
+  let autoTimer = setTimeout(() => openPop(true), 3000);
 
   function openPop(withAnim){
     pop.classList.remove('is-collapsed');
@@ -507,29 +504,84 @@ function fixDocxAnchors(root){
       pop.classList.add('opening');
       setTimeout(() => pop.classList.remove('opening'), 500);
     }
-    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-expanded','true');
   }
-
   function closePop(){
     pop.classList.add('is-collapsed');
-    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-expanded','false');
   }
-
   function togglePop(e){
     e.preventDefault();
-    e.stopPropagation();             // never bubble into the article link
-    // show card (content) by toggling collapsed state only
-    if (pop.classList.contains('is-collapsed')) openPop(true);
-    else closePop();
+    e.stopPropagation();     // never bubble to the article link
+    if (pop.classList.contains('is-collapsed')) openPop(true); else closePop();
     if (autoTimer){ clearTimeout(autoTimer); autoTimer = null; }
   }
-
-  // Click + keyboard on the pill
   toggle.addEventListener('click', togglePop);
-  toggle.addEventListener('keydown', (e) => {
+  toggle.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') togglePop(e);
   });
-
-  // Belt-and-suspenders: block mousedown from bubbling to link
   toggle.addEventListener('mousedown', e => e.stopPropagation());
+})();
+
+// --- POPUP CAROUSEL (articles) — fade only the content grid, not the titlebar ---
+(function(){
+  const pop  = document.getElementById('hero-pop');
+  if (!pop) return;
+
+  const card = document.getElementById('hero-pop-link');
+  const grid = pop.querySelector('.hero-pop__grid');
+
+  const el = {
+    tag:    document.getElementById('hp-tag'),
+    date:   document.getElementById('hp-date'),
+    author: document.getElementById('hp-author'),
+    thumb:  document.getElementById('hp-thumb'),
+    title:  document.getElementById('hp-title'),
+    deck:   document.getElementById('hp-deck'),
+  };
+
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  function write(a){
+    card.setAttribute('href', a.href || a.url || a.path || '#');
+    el.tag.textContent    = (a.tags && a.tags[0]) || a.tag || 'Article';
+    el.date.textContent   = a.date ? new Date(a.date).toLocaleDateString(undefined,{month:'short', day:'2-digit', year:'numeric'}) : '';
+    el.author.textContent = (a.author && (a.author.name || a.author)) || '';
+    el.title.textContent  = a.title || 'Untitled';
+    el.deck.textContent   = a.deck || a.excerpt || a.summary || '';
+
+    const src = a.image || a.thumb || a.thumbnail || '';
+    if (src){ el.thumb.src = src; el.thumb.alt = `Thumbnail for ${a.title || 'article'}`; el.thumb.style.display=''; }
+    else    { el.thumb.removeAttribute('src'); el.thumb.alt=''; el.thumb.style.display='none'; }
+  }
+
+  async function swapSmooth(a){
+    if (grid){ grid.classList.add('swap-out'); await sleep(180); }
+    write(a);
+    if (grid){
+      // force reflow so transition applies
+      void grid.offsetWidth;
+      grid.classList.remove('swap-out');
+    }
+  }
+
+  function startRotation(list, everyMs = 7000){
+    if (!list.length) return;
+    write(list[0]); // initial fill
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % list.length;
+      swapSmooth(list[i]);
+    }, everyMs);
+  }
+
+  fetch('data/articles.json?v=' + Date.now(), { cache: 'no-store' })
+    .then(r => r.json())
+    .then(raw => Array.isArray(raw) ? raw : (raw.articles || []))
+    .then(items => items
+      .filter(a => a && (a.title || a.name))
+      .sort((a,b) => new Date(b.date||0) - new Date(a.date||0))
+      .slice(0, 6))
+    .then(startRotation)
+    .catch(console.error);
 })();

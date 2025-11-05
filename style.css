@@ -1199,3 +1199,48 @@ html, body { overflow-x: hidden; }
   animation: hero-pop-open .48s cubic-bezier(.22,.61,.36,1);
   transform-origin: top right;
 }
+/* Titlebar layout: meta left, pill right, single line with ellipsis */
+.hero-pop__titlebar{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+.hero-pop__meta-left{
+  display:flex; align-items:center; gap:8px; min-width:0; white-space:nowrap; overflow:hidden;
+}
+.hero-pop__meta-left > *{ flex:0 0 auto; }
+.hero-pop__meta-left time{ opacity:.9; }
+.hero-pop__meta-left .tag{
+  background:#e7faf3; border:1px solid #ccefe3; color:#0e4639;
+}
+
+/* The pill button (avoid white default) */
+.hero-pop__label{
+  appearance:none; -webkit-appearance:none;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.10);
+  color:#eaf3ef;
+  padding:6px 10px;
+  border-radius:999px;
+  font:600 11px/1 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  letter-spacing:.08em; text-transform:uppercase;
+  cursor:pointer; white-space:nowrap;
+}
+.hero-pop__label:hover{ background:rgba(255,255,255,.16); border-color:rgba(255,255,255,.28); }
+.hero-pop__label:focus-visible{ outline:2px solid rgba(255,255,255,.5); outline-offset:2px; }
+
+/* Collapsed = show only titlebar */
+.hero-pop.is-collapsed .hero-pop__grid{ display:none; }
+
+/* Crossfade only the content grid, not the titlebar (prevents overlap) */
+.hero-pop__grid{
+  opacity:1; transform:none;
+  transition: opacity .35s ease, transform .35s ease;
+}
+.hero-pop__grid.swap-out{ opacity:0; transform: translateY(6px); }
+
+/* App-like open animation (kept) */
+@keyframes hero-pop-open {
+  0%   { opacity: 0; transform: translateY(-6px) scale(.96); }
+  60%  { opacity: 1; transform: translateY(0)    scale(1.02); }
+  100% { opacity: 1; transform: translateY(0)    scale(1); }
+}
+.hero-pop.opening .hero-pop__card{ animation: hero-pop-open .48s cubic-bezier(.22,.61,.36,1); transform-origin: top right; }
