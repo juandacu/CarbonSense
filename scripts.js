@@ -438,3 +438,98 @@ function fixDocxAnchors(root){
     })
     .catch(err => console.warn('heroPopup:', err));
 })();
+// -------------------------------------------
+// Hero "recent articles" rotator
+// -------------------------------------------
+(function(){
+  const pop    = document.getElementById("hero-pop");
+  const card   = document.getElementById("hero-pop-link");
+  const elTag  = document.getElementById("hp-tag");
+  const elDate = document.getElementById("hp-date");
+  const elAuth = document.getElementById("hp-author");
+  const elTitle= document.getElementById("hp-title");
+  const elDeck = document.getElementById("hp-deck");
+  const elThumb= document.getElementById("hp-thumb");
+
+  if (!pop || !card) return;
+
+  const FEED_URL = "/CarbonSense/data/articles.json?v=" + Date.now();
+  let items = [];
+  let idx   = 0;
+  const INTERVAL = 8000; // 8s
+
+  fetch(FEED_URL)
+    .then(r => r.json())
+    .then(json => {
+      // normalize shape
+      items = Array.isArray(json) ? json : (json.articles || []);
+      // keep ones that have a title
+      items = items.filter(x => x && x.title);
+      if (!items.length) return;
+      // show first
+      render(items[0]);
+      pop.classList.add("hero-pop--show");
+      // start timer
+      setInterval(next, INTERVAL);
+    })
+    .catch(() => {
+      // silent fail
+    });
+
+  function next(){
+    if (!items.length) return;
+    idx = (idx + 1) % items.length;
+    // fade-out
+    pop.classList.remove("hero-pop--show");
+    setTimeout(() => {
+      render(items[idx]);
+      pop.classList.add("hero-pop--show");
+    }, 350); // must match CSS transition
+  }
+
+  function render(a){
+    // tag
+    if (elTag) {
+      const tag = (a.tags && a.tags[0]) ? a.tags[0] : "Article";
+      elTag.textContent = tag;
+      elTag.style.display = tag ? "inline-flex" : "none";
+    }
+    // date
+    if (elDate) {
+      if (a.date) {
+        const d = new Date(a.date);
+        elDate.textContent = d.toLocaleDateString("en-US", {
+          month: "short", day: "2-digit", year: "numeric"
+        });
+      } else {
+        elDate.textContent = "";
+      }
+    }
+    // author (your JSON sometimes has author as string, sometimes as object)
+    if (elAuth) {
+      const auth = typeof a.author === "string"
+        ? a.author
+        : (a.author && a.author.name) ? a.author.name
+        : "";
+      elAuth.textContent = auth;
+      elAuth.style.display = auth ? "inline" : "none";
+    }
+    // title
+    if (elTitle) elTitle.textContent = a.title || "";
+    // deck
+    if (elDeck) elDeck.textContent = a.deck || a.excerpt || "";
+    // thumb
+    if (elThumb) {
+      if (a.image) {
+        elThumb.src = a.image;
+        elThumb.style.display = "";
+      } else {
+        elThumb.style.display = "none";
+      }
+    }
+    // link
+    if (card) {
+      card.href = a.href || a.url || "#";
+    }
+  }
+})();
