@@ -982,3 +982,41 @@ ul.bullets li{ margin:.4rem 0; }
   .hero-pop__title{ white-space:normal; }
   .hero-pop__titlebar{ flex-wrap:wrap; }
 }
+
+/* Popup layout: meta row on one line */
+.hero-pop__top{
+  display:flex; align-items:center; gap:10px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  margin:0 0 8px;
+  font-size:.85rem; color:rgba(234,243,239,.9);
+}
+.hero-pop__top .tag{
+  background:#e7fff7;             /* higher contrast */
+  color:#0e3b30;
+  border-color:#c3efe2;
+}
+.hero-pop__label{ margin-left:auto; font-size:.78rem; letter-spacing:.06em; }
+
+/* Grid: small thumb left, text right */
+.hero-pop__grid{
+  display:grid; grid-template-columns:72px 1fr; gap:12px; align-items:start;
+}
+.hero-pop__thumb{
+  width:72px; height:72px; object-fit:cover; border-radius:10px;
+  background:#1b2623; border:1px solid rgba(255,255,255,.14);
+}
+
+/* Title/deck sizing */
+.hero-pop__title{ margin:0 0 2px; font-size:1.05rem; line-height:1.25; color:#fff; }
+.hero-pop__deck{ margin:0; font-size:.92rem; line-height:1.35; color:rgba(234,243,239,.92); }
+
+/* Hide thumb cleanly when missing */
+.hero-pop__grid.no-thumb{ grid-template-columns:1fr; }
+.hero-pop__grid.no-thumb .hero-pop__thumb{ display:none; }
+
+/* Keep popup compact on small screens */
+@media (max-width:720px){
+  .hero-pop{ left:12px; right:12px; top:12px; max-width:none; }
+  .hero-pop__grid{ grid-template-columns:56px 1fr; }
+  .hero-pop__thumb{ width:56px; height:56px; }
+}
