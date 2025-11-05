@@ -83,24 +83,28 @@
   </div>
   <!-- Article popups over the video -->
   <div class="hero-pop" id="hero-pop" aria-live="polite">
-    <a class="hero-pop__card" id="hero-pop-link" href="#">
-      <div class="hero-pop__head">
-        <span class="hero-pop__label">Recent articles</span>
+    <div class="hero-pop__card" id="hero-pop-link">
+      <div class="hero-pop__titlebar">
+        <div class="hero-pop__meta-left">
+          <span class="tag" id="hp-tag"></span>
+          <time id="hp-date"></time>
+        </div>
+        <span class="hero-pop__label">RECENT ARTICLES</span>
       </div>
-  
-      <div class="hero-pop__meta">
-        <span class="tag" id="hero-pop-tag" hidden></span>
-        <time id="hero-pop-date"></time>
+    
+      <div class="hero-pop__grid">
+        <img id="hp-thumb" class="hero-pop__thumb" alt="">
+        <div class="hero-pop__text">
+          <h3 class="hero-pop__title" id="hp-title"></h3>
+          <p class="hero-pop__deck" id="hp-deck"></p>
+          <div class="hero-pop__byline">
+            <img id="hp-avatar" class="hero-pop__avatar" alt="">
+            <span id="hp-author" class="hero-pop__author"></span>
+          </div>
+        </div>
       </div>
-  
-      <h3 class="hero-pop__title" id="hero-pop-title">Latest article</h3>
-      <p class="hero-pop__deck"  id="hero-pop-deck">Summary appears here.</p>
-  
-      <div class="hero-pop__by">
-        <img id="hero-pop-avatar" class="hero-pop__avatar" src="" alt="" />
-        <span id="hero-pop-author" class="hero-pop__author"></span>
-      </div>
-    </a>
+    </div>
+    
   </div>
   
 </figure>

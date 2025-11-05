@@ -471,3 +471,48 @@ function fixDocxAnchors(root){
     .catch(() => { wrap.style.display = 'none'; });
 })();
 
+(function heroPopup(){
+  const wrap   = document.getElementById('hero-pop');
+  if (!wrap) return;
+  const link   = document.getElementById('hero-pop-link'); // anchor wrapper
+  const tagEl  = document.getElementById('hp-tag');
+  const dateEl = document.getElementById('hp-date');
+  const titEl  = document.getElementById('hp-title');
+  const deckEl = document.getElementById('hp-deck');
+  const authEl = document.getElementById('hp-author');
+  const avaEl  = document.getElementById('hp-avatar');
+  const thEl   = document.getElementById('hp-thumb');
+
+  fetch('data/articles.json', { cache: 'no-store' })
+    .then(r => r.json())
+    .then(payload => {
+      const list = Array.isArray(payload) ? payload : (payload.articles || []);
+      if (!list.length) return;
+
+      // choose the most recent with required fields
+      const a = list
+        .slice()
+        .sort((x,y) => new Date(y.date||0)-new Date(x.date||0))[0];
+
+      // content
+      tagEl.textContent  = (a.tags && a.tags[0]) || '';
+      dateEl.textContent = a.date ? new Date(a.date).toLocaleDateString('en-US', { month:'short', day:'2-digit', year:'numeric' }) : '';
+      titEl.textContent  = a.title || 'Untitled';
+      deckEl.textContent = a.deck  || a.excerpt || '';
+
+      authEl.textContent = (a.author && (a.author.name || a.author)) || 'Carbon-Sense';
+      avaEl.src = (a.author && a.author.avatar) || 'assets/authors/logo.png';
+      avaEl.alt = authEl.textContent;
+
+      thEl.src = a.image || 'assets/placeholders/article.jpg';
+      thEl.alt = a.title ? `Thumbnail for ${a.title}` : 'Article thumbnail';
+
+      // link
+      const href = a.href || a.url || '#';
+      link.setAttribute('href', href);
+
+      // reveal
+      wrap.classList.add('hero-pop--show');
+    })
+    .catch(()=>{/* silent */});
+})();
