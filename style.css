@@ -1181,3 +1181,13 @@ html, body { overflow-x: hidden; }
 
 /* Collapsed state hides only the card, not the pill */
 .hero-pop.is-collapsed .hero-pop__card{ display:none; }
+
+/* Position the Recent Articles pill above the card */
+#hp-toggle.hero-pop__label{
+  position:absolute;
+  top:12px;
+  right:12px;
+  z-index:6;          /* above .hero-pop__card */
+  cursor:pointer;
+  user-select:none;
+}
