@@ -1117,16 +1117,6 @@ html, body { overflow-x: hidden; }
 
 /* ==== Responsive plots/images inside articles (mobile safe) ==== */
 
-/* 1) Never let media exceed the column */
-.prose.docx img,
-.prose.docx svg,
-.prose.docx canvas,
-.prose.docx iframe {
-  max-width: 100% !important;
-  height: auto;
-  display: block;
-}
-
 /* 2) Kill “full-bleed” behavior on narrow screens */
 @media (max-width: 900px){
   .prose.docx .embed.full-bleed,
