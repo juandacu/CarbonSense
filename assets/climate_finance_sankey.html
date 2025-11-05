@@ -17,17 +17,10 @@
 </body>
 </html>
 <script>
-(function(){
-  function post() {
-    var h = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
-    parent && parent.postMessage({ type: 'plot-size', height: h }, '*');
+  function reportHeight(){
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    parent.postMessage({type:"plot-size", height:h}, "*");
   }
-  window.addEventListener('load', post);
-  // in case webfonts/layout change after load
-  window.addEventListener('resize', post);
-  // throttle a bit
-  let t; new MutationObserver(()=>{ clearTimeout(t); t = setTimeout(post, 60); })
-    .observe(document.documentElement, { childList:true, subtree:true, attributes:true });
-})();
+  reportHeight();
+  addEventListener("resize", reportHeight);
 </script>
-

@@ -139,61 +139,29 @@ function setReadingTime(rootSelector, outSelector){
 }
     
 // Replace [ SANKEY PLOT ] and [ MAP PLOT ] placeholders with iframes
-f// Replace [ SANKEY PLOT ] / [ MAP PLOT ] placeholders with responsive iframes
 function injectDocxEmbeds(root){
   if (!root) return;
-
-  // 1) Map logical keys -> page URLs (resolved against <base>)
-  const EMBEDS = {
-    'SANKEY':  new URL('plots/climate_finance_sankey.html', document.baseURI).href,
-    'MAP':     new URL('plots/climate_finance_map.html',    document.baseURI).href
+  var EMBEDS = {
+    "[ SANKEY PLOT]": "../climate_finance_sankey.html",
+    "[ SANKEY PLOT ]": "../climate_finance_sankey.html",
+    "[MAP PLOT]": "../climate_finance_map.html",
+    "[ MAP PLOT ]": "../climate_finance_map.html"
   };
-
-  // 2) Utility: strip Word cruft and normalize the text inside an element
-  const norm = (el) => (el.textContent || '')
-    .replace(/\u00A0/g, ' ')        // NBSP -> space
-    .replace(/\s+/g, ' ')           // collapse whitespace
-    .trim()
-    .toUpperCase();
-
-  // 3) Find likely placeholder nodes (P, DIV, LI are enough for Mammoth output)
-  const candidates = root.querySelectorAll('p, div, li');
-
-  candidates.forEach((el) => {
-    const text = norm(el);
-
-    // Accept several patterns, e.g. "[ SANKEY PLOT ]", "[Sankey]", "[ MAP ]"
-    let key = null;
-    if (/\[\s*SANKEY(?:\s+PLOT)?\s*\]/.test(text)) key = 'SANKEY';
-    else if (/\[\s*MAP(?:\s+PLOT)?\s*\]/.test(text)) key = 'MAP';
-
-    if (!key) return;
-
-    const src = EMBEDS[key];
-    if (!src) return;
-
-    // If you want true auto-height (plot posts its height via postMessage)
-    const iframe = document.createElement('iframe');
-    iframe.className = 'plot-embed';
-    iframe.title = key === 'SANKEY' ? 'Climate finance Sankey' : 'Climate finance map';
-    iframe.src = src;
-    iframe.loading = 'lazy';
-    iframe.setAttribute('scrolling', 'no');
-    iframe.style.width = '100%';
-    iframe.style.border = '0';
-
-    // Optional: if you prefer a fixed aspect ratio instead of auto-height,
-    // wrap with a 16:9 box. Comment this block out to stick with auto-height.
-    // const wrap = document.createElement('div');
-    // wrap.className = 'embed-16x9';
-    // wrap.appendChild(iframe);
-    // el.replaceWith(wrap);
-    // return;
-
-    el.replaceWith(iframe);
+  Array.from(root.querySelectorAll("p, div, li")).forEach(function(el){
+    var key = el.textContent.trim().toUpperCase();
+    if (EMBEDS[key]) {
+      var iframe = document.createElement("iframe");
+      iframe.className = "plot-embed";
+      iframe.title = key.includes("SANKEY") ? "Climate finance Sankey" : "Climate finance map";
+      iframe.src = EMBEDS[key];
+      iframe.style.width = "100%";   // full width of the article column
+      iframe.style.border = "0";
+      iframe.setAttribute("scrolling", "no");
+      // no fixed height; the child posts its height
+      el.replaceWith(iframe);
+    }
   });
 }
-
 
  // Auto-resize incoming plot iframes
 window.addEventListener("message", function (e) {
