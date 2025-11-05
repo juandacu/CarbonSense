@@ -1,5 +1,29 @@
 // Year
 document.querySelectorAll("[data-year]").forEach(el => el.textContent = new Date().getFullYear());
+// Robust JSON fetch with retries, base-aware URL resolution, and abort support
+async function fetchJSON(rel, { tries = 3, signal } = {}) {
+  const url = new URL(rel, document.baseURI).toString();
+  let lastErr;
+  for (let i = 0; i < tries; i++) {
+    try {
+      const res = await fetch(url, {
+        cache: 'no-store',
+        headers: { 'accept': 'application/json' },
+        signal
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+      return await res.json();
+    } catch (err) {
+      // If the page is unloading or the request was explicitly aborted, stop immediately
+      if (signal?.aborted) throw err;
+      lastErr = err;
+      // Backoff before retrying
+      await new Promise(r => setTimeout(r, 200 * (i + 1) * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
+
 
 // Header behavior: transparent over hero, solid when scrolled
 (function(){
@@ -37,29 +61,48 @@ document.querySelectorAll("[data-year]").forEach(el => el.textContent = new Date
   items.forEach(el => io.observe(el));
 })();
 
-// Load Articles
+// Load Articles (resilient)
 (async function(){
   const grid = document.getElementById("articles-grid");
   if (!grid) return;
+
+  const ac = new AbortController();
+  addEventListener('pagehide', () => ac.abort(), { once: true });
+
   try {
-    const res = await fetch("data/articles.json", { cache: "no-store" });
-    const items = await res.json();
+    const raw = await fetchJSON('data/articles.json', { tries: 3, signal: ac.signal });
+    const items = Array.isArray(raw) ? raw : (raw.articles || []);
+    if (!items.length) {
+      grid.innerHTML = `<div class="muted">No articles available.</div>`;
+      return;
+    }
     grid.innerHTML = items.map(renderCard).join("");
   } catch (e) {
     grid.innerHTML = `<div class="muted">Failed to load articles.</div>`;
+    console.error('Articles load error:', e);
   }
 })();
 
-// Load News
+
+// Load News (resilient)
 (async function(){
   const grid = document.getElementById("news-grid");
   if (!grid) return;
+
+  const ac = new AbortController();
+  addEventListener('pagehide', () => ac.abort(), { once: true });
+
   try {
-    const res = await fetch("data/news.json", { cache: "no-store" });
-    const items = await res.json();
+    const raw = await fetchJSON('data/news.json', { tries: 3, signal: ac.signal });
+    const items = Array.isArray(raw) ? raw : (raw.news || raw.items || []);
+    if (!items.length) {
+      grid.innerHTML = `<div class="muted">No news available.</div>`;
+      return;
+    }
     grid.innerHTML = items.map(renderCard).join("");
   } catch (e) {
     grid.innerHTML = `<div class="muted">Failed to load news.</div>`;
+    console.error('News load error:', e);
   }
 })();
 
