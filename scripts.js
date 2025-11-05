@@ -524,12 +524,48 @@ function fixDocxAnchors(root){
 })();
 
 // --- POPUP CAROUSEL (articles) — fade only the content grid, not the titlebar ---
+// --- RECENT ARTICLES pill: open/close + auto-open ---
 (function(){
-  const pop  = document.getElementById('hero-pop');
-  if (!pop) return;
+  const pop    = document.getElementById('hero-pop');
+  const toggle = document.getElementById('hp-toggle');
+  if (!pop || !toggle) return;
 
-  const card = document.getElementById('hero-pop-link');
-  const grid = pop.querySelector('.hero-pop__grid');
+  // Initial: show card, keep grid collapsed so the button is visible
+  pop.classList.add('hero-pop--show', 'is-collapsed');
+  toggle.setAttribute('aria-expanded','false');
+
+  let autoTimer = setTimeout(() => openPop(true), 3000);
+
+  function openPop(withAnim){
+    pop.classList.remove('is-collapsed');
+    if (withAnim){
+      pop.classList.add('opening');
+      setTimeout(() => pop.classList.remove('opening'), 500);
+    }
+    toggle.setAttribute('aria-expanded','true');
+  }
+  function closePop(){
+    pop.classList.add('is-collapsed');
+    toggle.setAttribute('aria-expanded','false');
+  }
+  function togglePop(e){
+    e.preventDefault();
+    e.stopPropagation();     // don't bubble into the link
+    if (pop.classList.contains('is-collapsed')) openPop(true); else closePop();
+    if (autoTimer){ clearTimeout(autoTimer); autoTimer = null; }
+  }
+
+  toggle.addEventListener('click', togglePop);
+  toggle.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') togglePop(e);
+  });
+})();
+
+// --- POPUP CAROUSEL (fade only the grid/link area) ---
+(function(){
+  const pop   = document.getElementById('hero-pop');
+  const link  = document.getElementById('hero-pop-link');      // the grid is now the <a>
+  if (!pop || !link) return;
 
   const el = {
     tag:    document.getElementById('hp-tag'),
@@ -543,7 +579,7 @@ function fixDocxAnchors(root){
   const sleep = ms => new Promise(r => setTimeout(r, ms));
 
   function write(a){
-    card.setAttribute('href', a.href || a.url || a.path || '#');
+    link.setAttribute('href', a.href || a.url || a.path || '#');
     el.tag.textContent    = (a.tags && a.tags[0]) || a.tag || 'Article';
     el.date.textContent   = a.date ? new Date(a.date).toLocaleDateString(undefined,{month:'short', day:'2-digit', year:'numeric'}) : '';
     el.author.textContent = (a.author && (a.author.name || a.author)) || '';
@@ -556,18 +592,16 @@ function fixDocxAnchors(root){
   }
 
   async function swapSmooth(a){
-    if (grid){ grid.classList.add('swap-out'); await sleep(180); }
+    link.classList.add('swap-out');     // fade only the grid area
+    await sleep(180);
     write(a);
-    if (grid){
-      // force reflow so transition applies
-      void grid.offsetWidth;
-      grid.classList.remove('swap-out');
-    }
+    void link.offsetWidth;              // reflow
+    link.classList.remove('swap-out');
   }
 
   function startRotation(list, everyMs = 7000){
     if (!list.length) return;
-    write(list[0]); // initial fill
+    write(list[0]);
     let i = 0;
     setInterval(() => {
       i = (i + 1) % list.length;
