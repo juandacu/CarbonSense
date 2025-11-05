@@ -486,67 +486,75 @@ function fixDocxAnchors(root){
 })();
 
 // --- Open/close behavior for the RECENT ARTICLES pill, with auto-open ---
+// --- Open/close behavior for the RECENT ARTICLES pill, with auto-open + animation ---
 (function(){
   const pop    = document.getElementById('hero-pop');
-  const toggle = document.getElementById('hp-toggle'); // the pill/button
+  const toggle = document.getElementById('hp-toggle');
   if (!pop || !toggle) return;
 
   let hasOpenedOnce = false;
   let autoTimer = null;
 
-  function openPop(){
+  function openPop(withAnim = true){
     pop.classList.add('hero-pop--show');
     pop.classList.remove('is-collapsed');
     toggle.setAttribute('aria-expanded', 'true');
     hasOpenedOnce = true;
+
+    if (withAnim){
+      pop.classList.add('opening');
+      // remove the helper class after animation
+      setTimeout(()=> pop.classList.remove('opening'), 480);
+    }
   }
+
   function closePop(){
     pop.classList.add('is-collapsed');
     toggle.setAttribute('aria-expanded', 'false');
   }
+
   function togglePop(e){
     if (e){ e.preventDefault(); e.stopPropagation(); }
-    // ensure pop container is visible, then toggle collapsed state
+    // ensure the card is visible first
     pop.classList.add('hero-pop--show');
-    const collapsed = pop.classList.toggle('is-collapsed');
-    toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    if (pop.classList.contains('is-collapsed')) openPop(true);
+    else closePop();
     hasOpenedOnce = true;
-    // once user interacted, cancel any pending auto-open
-    if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+    if (autoTimer){ clearTimeout(autoTimer); autoTimer = null; }
   }
 
-  // Click/keyboard on the pill
+  // Click and keyboard activate only the pill (never the article link)
   toggle.addEventListener('click', togglePop);
   toggle.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') togglePop(e);
   });
 
-  // Close if user clicks outside the card (optional; keep if you want)
+  // Prevent clicks on the pill from bubbling to the anchor card
+  toggle.addEventListener('mousedown', e => e.stopPropagation());
+
+  // Optional: close when clicking outside
   document.addEventListener('click', (e) => {
     if (!pop.contains(e.target) && !toggle.contains(e.target)) closePop();
   });
 
-  // Auto-open 3s after landing, unless the user interacts first
+  // Auto-open 3s after landing (skip if user interacts or prefers reduced motion)
   function scheduleAutoOpen(){
-    // respect reduced motion
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
     autoTimer = setTimeout(() => {
-      if (!hasOpenedOnce) openPop();
+      if (!hasOpenedOnce) openPop(true);
       autoTimer = null;
     }, 3000);
   }
-  // cancel auto-open on any interaction
-  ['scroll','keydown','pointerdown','touchstart','wheel'].forEach(ev =>
+
+  // Cancel auto-open on any user interaction
+  ['scroll','keydown','pointerdown','touchstart'].forEach(ev =>
     window.addEventListener(ev, () => {
       if (autoTimer){ clearTimeout(autoTimer); autoTimer = null; }
     }, { once:true, passive:true })
   );
 
-  // Start collapsed, then schedule auto-open
-  pop.classList.add('is-collapsed');
-  pop.classList.add('hero-pop--show');   // container present so animation can run
-  toggle.setAttribute('aria-expanded', 'false');
+  // Start collapsed, schedule auto-open
+  closePop();
   scheduleAutoOpen();
 })();
-

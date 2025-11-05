@@ -1149,3 +1149,22 @@ html, body { overflow-x: hidden; }
     clip-path: none !important;
   }
 }
+
+/* Ensure the card can animate height/scale cleanly */
+.hero-pop__card{ overflow:hidden; }
+
+/* Collapsed: hide meta + content, keep only the pill */
+.hero-pop.is-collapsed .hero-pop__meta-left,
+.hero-pop.is-collapsed .hero-pop__grid{ display:none; }
+.hero-pop.is-collapsed .hero-pop__card{ padding:8px 10px; }
+
+/* App-like open animation */
+@keyframes pop-open {
+  0%   { transform: scale(.92) translateY(-6px); opacity: 0; }
+  100% { transform: scale(1) translateY(0);      opacity: 1; }
+}
+.hero-pop.opening .hero-pop__card{
+  animation: pop-open .45s cubic-bezier(.2,.8,.2,1);
+}
+
+/* Higher-contrast tag already OK; keep your existing .hero-pop__label styles */
