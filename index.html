@@ -83,21 +83,18 @@
   </div>
 <!-- Article popups over the video -->
 <div class="hero-pop is-collapsed" id="hero-pop" aria-live="polite">
+  <button id="hp-toggle" class="hero-pop__label" type="button" aria-expanded="false">
+    RECENT ARTICLES
+  </button>
+
   <a class="hero-pop__card" id="hero-pop-link" href="#">
     <div class="hero-pop__titlebar">
       <div class="hero-pop__meta-left">
         <span class="tag" id="hp-tag"></span>
         <time id="hp-date"></time>
-        <span class="hero-pop__dot">•</span>
+        <span class="hero-pop__dot" aria-hidden="true">•</span>
         <span id="hp-author"></span>
       </div>
-
-      <!-- REAL TOGGLE BUTTON (outside navigation) -->
-      <span id="hp-toggle"
-            class="hero-pop__label"
-            role="button"
-            tabindex="0"
-            aria-expanded="false">RECENT ARTICLES</span>
     </div>
 
     <div class="hero-pop__grid" id="hp-grid">
@@ -109,6 +106,7 @@
     </div>
   </a>
 </div>
+
 
 
 

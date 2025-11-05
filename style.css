@@ -1167,4 +1167,21 @@ html, body { overflow-x: hidden; }
   animation: pop-open .45s cubic-bezier(.2,.8,.2,1);
 }
 
-/* Higher-contrast tag already OK; keep your existing .hero-pop__label styles */
+/* Pill is separate from the card; position it in the same corner */
+#hp-toggle.hero-pop__label{
+  position:absolute;
+  top:12px;
+  right:12px;
+  z-index:6;          /* above the card */
+  cursor:pointer;
+  user-select:none;
+}
+
+/* When expanded, keep showing the pill (acts as close) */
+.hero-pop.hero-pop--show:not(.is-collapsed) #hp-toggle[aria-expanded="true"]{
+  /* optional minor style tweak when open */
+  filter: brightness(1.05);
+}
+
+/* Collapsed state hides only the card, not the pill */
+.hero-pop.is-collapsed .hero-pop__card{ display:none; }
