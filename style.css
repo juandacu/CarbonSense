@@ -1137,10 +1137,6 @@ html, body { overflow-x: hidden; }
   transform: scale(1) translateY(0);
   clip-path: inset(0 0 0 0 round 16px);
 }
-
-/* collapsed state (button only) stays hidden */
-.hero-pop.is-collapsed .hero-pop__card{ display: none; }
-
 /* respect reduced motion */
 @media (prefers-reduced-motion: reduce){
   .hero-pop{
