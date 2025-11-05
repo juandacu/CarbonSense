@@ -485,28 +485,22 @@ function fixDocxAnchors(root){
     .catch(console.error);
 })();
 
-// --- open/close behavior for the "RECENT ARTICLES" pill ---
+// --- Open/close behavior for the RECENT ARTICLES pill ---
 (function(){
   const pop    = document.getElementById('hero-pop');
   const toggle = document.getElementById('hp-toggle');
   if (!pop || !toggle) return;
 
-  const open  = () => pop.classList.remove('is-collapsed');
-  const close = () => pop.classList.add('is-collapsed');
+  function togglePop(e){
+    e.preventDefault();
+    e.stopPropagation();              // don't bubble to the <a>
+    // ensure the card is visible, then toggle collapsed state
+    pop.classList.add('hero-pop--show');
+    pop.classList.toggle('is-collapsed');
+  }
 
-  // pill click toggles
-  toggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (pop.classList.contains('is-collapsed')) open(); else close();
-  });
-
-  // click outside closes
-  document.addEventListener('click', (e) => {
-    if (!pop.contains(e.target)) close();
-  });
-
-  // Esc closes
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') close();
+  toggle.addEventListener('click', togglePop);
+  toggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') togglePop(e);
   });
 })();

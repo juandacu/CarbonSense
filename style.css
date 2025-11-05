@@ -1067,10 +1067,8 @@ ul.bullets li{ margin:.4rem 0; }
   padding: 8px 10px;                 /* tighter when collapsed */
 }
 
-.hero-pop__label{
-  cursor: pointer;
-  user-select: none;
-}
+.hero-pop__label{ cursor:pointer; }
+
 
 /* optional: small hover feedback on the pill */
 .hero-pop__label:hover{
