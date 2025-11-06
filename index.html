@@ -77,20 +77,25 @@
         <video src="assets/parkinglot.mp4"
                 muted playsinline preload="metadata"></video>
       </div>
-  
-
+    </div>
+  </figure>
   </div>
-  
-</figure>
-
-
-  </div>
-
   <button class="scroll-cue" onclick="window.scrollTo({top: document.querySelector('.section').offsetTop - 24, behavior: 'smooth'})" aria-label="Scroll">
     ↓
   </button>
 </section>
 
+<section class="section home-articles" data-animate>
+  <div class="container">
+    <div class="home-articles-head">
+      <h2 class="section-title">Recent articles</h2>
+      <a href="articles.html" class="home-articles-link">View all</a>
+    </div>
+    <div class="home-articles-track" id="home-articles-track">
+      <!-- Filled by scripts.js -->
+    </div>
+  </div>
+</section>
 
   <!-- Intro / Cards -->
   <section class="section" data-animate>
@@ -103,10 +108,6 @@
         <a class="card hover" href="articles.html">
           <h3>Articles</h3>
           <p>Long-form pieces and explainers.</p>
-        </a>
-        <a class="card hover" href="news.html">
-          <h3>News</h3>
-          <p>Updates from the field.</p>
         </a>
       </div>
     </div>
