@@ -137,30 +137,6 @@ document.addEventListener("error", (e) => {
   }
 })();
 
-
-
-// Load News (resilient)
-(async function(){
-  const grid = document.getElementById("news-grid");
-  if (!grid) return;
-
-  const ac = new AbortController();
-  addEventListener('pagehide', () => ac.abort(), { once: true });
-
-  try {
-    const raw = await fetchJSON('data/news.json', { tries: 3, signal: ac.signal });
-    const items = Array.isArray(raw) ? raw : (raw.news || raw.items || []);
-    if (!items.length) {
-      grid.innerHTML = `<div class="muted">No news available.</div>`;
-      return;
-    }
-    grid.innerHTML = items.map(renderCard).join("");
-  } catch (e) {
-    grid.innerHTML = `<div class="muted">Failed to load news.</div>`;
-    console.error('News load error:', e);
-  }
-})();
-
 function renderCard(item){
   const date = item.date ? `<time class="muted" datetime="${item.date}">${new Date(item.date).toDateString()}</time>` : "";
   return `
