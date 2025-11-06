@@ -1317,3 +1317,97 @@ html, body { overflow-x: hidden; }
     height: 260px;
   }
 }
+/* One consistent layout grid */
+:root{
+  --container: 1100px;
+  --gutter: 24px;
+}
+
+/* All main content lines up on the same rails */
+.container{
+  max-width: var(--container);
+  padding-inline: var(--gutter);
+  margin-inline: auto;
+}
+
+/* Sections share a consistent vertical rhythm */
+.section{
+  padding:64px 0;
+}
+
+/* Hero: keep inside the same container */
+.hero-media-frame{
+  width: 100%;
+  max-width: 100%;
+  justify-self: stretch;
+}
+
+/* Stay in the loop cards */
+.connect-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;
+  margin-top:10px;
+}
+
+/* Reuse card look so everything feels part of one system */
+.social-card{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  padding:14px 16px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:#fff;
+  box-shadow:var(--shadow);
+  text-decoration:none;
+  color:var(--text);
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+}
+.social-card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-hover);
+  border-color:#d7ebe4;
+  background:#f8fbfa;
+}
+
+.social-label{
+  font-size:.72rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  opacity:.78;
+}
+.social-substack .social-label{ color:#f25c05; }
+.social-linkedin .social-label{ color:#0a66c2; }
+
+/* Quick links (About / Articles) row: 2 cards, aligned */
+.grid.cards-2{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;
+}
+
+/* Recent articles section already uses .container + .article-grid,
+   so it will line up automatically with the above. */
+
+/* Substack embed: align with the same rails as everything else */
+.substack-embed-wrap{
+  margin:0;              /* no weird offset */
+}
+
+.substack-embed-wrap iframe{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:220px;          /* adjust if needed */
+  border-radius:16px;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  background:#fff;
+}
+
+/* On small screens everything is naturally stacked and full-width */
+@media (max-width:640px){
+  .section{ padding:40px 0; }
+}
