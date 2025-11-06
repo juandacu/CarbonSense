@@ -742,3 +742,94 @@ function fixDocxAnchors(root){
       track.innerHTML = '<p class="muted">Failed to load recent articles.</p>';
     });
 })();
+/* === Connect section: Substack + LinkedIn === */
+
+.connect-header h2{
+  margin: 0 0 .35rem;
+  font-size: clamp(1.5rem, 2.1vw, 1.9rem);
+}
+
+.connect-header .lead{
+  margin: 0 0 .75rem;
+}
+
+/* two nice cards side by side / stacked */
+.connect-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.social-card{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: #fff;
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--text);
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    border-color .18s ease,
+    background .18s ease;
+}
+
+.social-card:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  border-color: #d7ebe4;
+  background: #f8fbfa;
+}
+
+.social-label{
+  font-size: .72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  opacity: .78;
+}
+
+/* small brand hints without screaming */
+.social-substack .social-label{ color: #f25c05; }
+.social-linkedin .social-label{ color: #0a66c2; }
+
+.social-card h3{
+  margin: 0;
+  font-size: 1rem;
+}
+
+.social-card p{
+  margin: 2px 0 0;
+  font-size: .9rem;
+  color: var(--muted);
+}
+
+/* Centered Substack iframe */
+.substack-embed-wrap{
+  margin-top: 4px;
+  display: flex;
+  justify-content: center;
+}
+
+.substack-embed-wrap iframe{
+  width: 100%;
+  max-width: 480px;
+  height: 240px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+
+/* mobile: full-width but still centered visually */
+@media (max-width: 640px){
+  .substack-embed-wrap iframe{
+    max-width: 100%;
+    height: 260px;
+  }
+}
