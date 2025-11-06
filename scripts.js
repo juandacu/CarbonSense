@@ -666,3 +666,79 @@ function fixDocxAnchors(root){
     });
   }
 })();
+
+// Home: Recent Articles carousel under hero
+(function homeRecentArticles(){
+  const track = document.getElementById('home-articles-track');
+  if (!track) return;
+
+  const url = 'data/articles.json?v=' + Date.now();
+
+  fetch(url, { cache: 'no-store' })
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(raw => {
+      const items = Array.isArray(raw) ? raw : (raw.articles || raw || []);
+      const articles = items
+        .filter(a => a && (a.title || a.name))
+        .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0))
+        .slice(0, 6);
+
+      if (!articles.length) {
+        track.innerHTML = '<p class="muted">No articles yet.</p>';
+        return;
+      }
+
+      track.innerHTML = articles.map(a => {
+        const href =
+          a.href || a.url || a.path || 'articles.html';
+        const thumb =
+          a.image || a.thumb || a.thumbnail || 'assets/placeholders/article.jpg';
+        const tag =
+          (a.tags && a.tags[0]) ? `<span class="tag">${escapeHtml(a.tags[0])}</span>` : '';
+        const date = a.date
+          ? `<time datetime="${a.date}">${new Date(a.date)
+              .toLocaleDateString(undefined, { month:'short', day:'numeric', year:'numeric' })}</time>`
+          : '';
+
+        return `
+          <article class="home-article">
+            <a class="home-article-link" href="${href}">
+              <img class="home-article-thumb" src="${thumb}" alt="">
+              <div class="home-article-body">
+                <div class="home-article-meta">
+                  ${tag}
+                  ${date}
+                </div>
+                <h3 class="home-article-title">${escapeHtml(a.title || 'Untitled')}</h3>
+                <p class="home-article-deck">
+                  ${escapeHtml(a.deck || a.excerpt || a.summary || '')}
+                </p>
+              </div>
+            </a>
+          </article>
+        `;
+      }).join('');
+
+      // optional: simple auto-scroll effect
+      const cards = Array.from(track.children);
+      if (cards.length <= 1) return;
+
+      let i = 0;
+      function scrollNext(){
+        i = (i + 1) % cards.length;
+        const card = cards[i];
+        track.scrollTo({
+          left: card.offsetLeft - track.offsetLeft,
+          behavior: 'smooth'
+        });
+      }
+      setInterval(scrollNext, 7000);
+    })
+    .catch(err => {
+      console.error('Home recent articles error:', err);
+      track.innerHTML = '<p class="muted">Failed to load recent articles.</p>';
+    });
+})();

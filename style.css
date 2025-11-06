@@ -1036,3 +1036,134 @@ ul.bullets li{ margin:.4rem 0; }
 
 /* Safety: no horizontal scrollbars on narrow screens */
 html, body { overflow-x: hidden; }
+
+/* === Home: Recent articles carousel === */
+
+.home-articles {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.home-articles-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.home-articles-head .section-title {
+  margin: 0;
+  font-size: clamp(1.35rem, 2vw, 1.7rem);
+}
+
+.home-articles-link {
+  font-size: .9rem;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.06);
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(0,0,0,.04);
+  white-space: nowrap;
+}
+
+.home-articles-link:hover {
+  box-shadow: 0 8px 22px rgba(0,0,0,.08);
+}
+
+/* Track behaves like a horizontal carousel */
+.home-articles-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 4px 2px 2px;
+  scroll-snap-type: x mandatory;
+}
+
+.home-articles-track::-webkit-scrollbar {
+  height: 4px;
+}
+.home-articles-track::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,.16);
+  border-radius: 999px;
+}
+
+/* Individual cards */
+.home-article {
+  flex: 0 0 min(320px, 82vw);
+  scroll-snap-align: start;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.home-article-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  height: 100%;
+}
+
+.home-article-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  background: #f3f6f5;
+}
+
+.home-article-body {
+  padding: 10px 11px 11px;
+}
+
+.home-article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  font-size: .78rem;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+
+.home-article-meta .tag {
+  padding: 2px 8px;
+  font-size: .72rem;
+  border-radius: 999px;
+  background: #e7faf3;
+  border: 1px solid #ccefe3;
+  color: #0e4639;
+}
+
+.home-article-title {
+  margin: 0 0 2px;
+  font-size: .98rem;
+  line-height: 1.3;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+}
+
+.home-article-deck {
+  margin: 0;
+  font-size: .8rem;
+  line-height: 1.35;
+  color: #4a5552;
+}
+
+/* Hover: lift */
+.home-article:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: #dfe7e4;
+}
+
+/* Desktop: cards a bit wider */
+@media (min-width: 880px) {
+  .home-article {
+    flex: 0 0 320px;
+  }
+}
