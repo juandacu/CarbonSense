@@ -1449,5 +1449,5 @@ html, body { overflow-x: hidden; }
 /* If a section comes right after another section,
    trim its top padding so you don't get double space */
 .section + .section {
-  padding-top: 24px;              /* or 0 if you want them tight */
+  padding-top: 12px;              /* or 0 if you want them tight */
 }
