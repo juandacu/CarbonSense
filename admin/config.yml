@@ -1,7 +1,9 @@
 backend:
   name: github
-  repo: juandacu/CarbonSense        # <-- your GitHub repo (owner/name)
-  branch: main                      # or whatever your default branch is
+  repo: juandacu/CarbonSense
+  branch: main
+  base_url: https://carbonsense-oauth.onrender.com
+  auth_endpoint: /auth
 
 media_folder: "assets/uploads"      # where images are stored in the repo
 public_folder: "/assets/uploads"    # how they are referenced on the site
