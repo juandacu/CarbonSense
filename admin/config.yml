@@ -3,9 +3,7 @@ backend:
   repo: juandacu/CarbonSense        # <-- your content repo
   branch: main
   base_url: https://carbonsense-oauth.onrender.com  # <-- your Render OAuth app URL
-  auth_endpoint: /oauth/authorize
-local_backend: false
-
+  auth_endpoint: /auth
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
