@@ -1,8 +1,8 @@
 backend:
   name: github
-  repo: juandacu/CarbonSense     # your site repo
+  repo: juandacu/CarbonSense        # <-- your content repo
   branch: main
-  base_url: https://carbonsense-oauth.onrender.com
+  base_url: https://carbonsense-oauth.onrender.com  # <-- your Render OAuth app URL
   auth_endpoint: /auth
 
 media_folder: "assets/uploads"
@@ -14,7 +14,7 @@ collections:
   - name: "articles"
     label: "Articles"
     label_singular: "Article"
-    folder: "content/articles"
+    folder: "articles"
     create: true
     slug: "{{slug}}"
     fields:
@@ -22,6 +22,15 @@ collections:
       - { label: "Publish Date", name: "date", widget: "datetime" }
       - { label: "Author", name: "author", widget: "string" }
       - { label: "Tags", name: "tags", widget: "list", required: false }
-      - { label: "Deck (short summary)", name: "deck", widget: "text", required: false }
       - { label: "Thumbnail", name: "image", widget: "image", required: false }
+      - { label: "Deck / Summary", name: "deck", widget: "text", required: false }
       - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - name: "about"
+        label: "About Page"
+        file: "about.html"
+        fields:
+          - { label: "Body", name: "body", widget: "markdown" }
