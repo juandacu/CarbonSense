@@ -1,37 +1,27 @@
 backend:
   name: github
-  repo: juandacu/CarbonSense
+  repo: juandacu/CarbonSense     # your site repo
   branch: main
   base_url: https://carbonsense-oauth.onrender.com
   auth_endpoint: /auth
 
-media_folder: "assets/uploads"      # where images are stored in the repo
-public_folder: "/assets/uploads"    # how they are referenced on the site
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
 
-publish_mode: editorial_workflow    # optional: use PR-style workflow
+site_url: "https://www.carbonsense.net"
 
 collections:
   - name: "articles"
     label: "Articles"
     label_singular: "Article"
-    format: "json"
-    editor:
-      preview: false
-    file: "data/articles.json"
+    folder: "content/articles"
+    create: true
+    slug: "{{slug}}"
     fields:
-      - label: "Articles"
-        name: "articles"
-        widget: "list"
-        summary: "{{fields.title}} — {{fields.author}}"
-        fields:
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "Deck (short summary)", name: "deck", widget: "text", required: false }
-          - label: "Date"
-            name: "date"
-            widget: "datetime"
-            format: "YYYY-MM-DD"
-            time_format: false
-          - { label: "Author", name: "author", widget: "string" }
-          - { label: "Tag", name: "tag", widget: "string", required: false }
-          - { label: "Article URL", name: "href", widget: "string", hint: "e.g. articles/slug.html" }
-          - { label: "Thumbnail", name: "image", widget: "image", required: false }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Author", name: "author", widget: "string" }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Deck (short summary)", name: "deck", widget: "text", required: false }
+      - { label: "Thumbnail", name: "image", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
