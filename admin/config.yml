@@ -1,22 +1,37 @@
 backend:
   name: github
-  repo: juandacu/CarbonSense
+  repo: juandacu/CarbonSense        # <-- your content repo
   branch: main
-  base_url: https://carbonsense-oauth.onrender.com
-  auth_endpoint: auth
+  base_url: https://carbonsense-oauth.onrender.com  # <-- your Render OAuth app URL
+  auth_endpoint: /auth
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
+site_url: https://www.carbonsense.net
+display_url: https://www.carbonsense.net
+
 collections:
   - name: "articles"
     label: "Articles"
-    folder: "data/articles"
+    label_singular: "Article"
+    folder: "articles"
     create: true
     slug: "{{slug}}"
     fields:
-      - { name: "title", label: "Title" }
-      - { name: "date", label: "Date", widget: "datetime" }
-      - { name: "tags", label: "Tags", widget: "list", required: false }
-      - { name: "thumbnail", label: "Thumbnail", widget: "image", required: false }
-      - { name: "body", label: "Body", widget: "markdown" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Author", name: "author", widget: "string" }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Thumbnail", name: "image", widget: "image", required: false }
+      - { label: "Deck / Summary", name: "deck", widget: "text", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - name: "about"
+        label: "About Page"
+        file: "about.html"
+        fields:
+          - { label: "Body", name: "body", widget: "markdown" }
