@@ -1,32 +1,35 @@
 backend:
   name: github
-  repo: juandacu/CarbonSense       # <-- your repo
-  branch: main                    # or 'master' if that's your default
+  repo: juandacu/CarbonSense        # <-- your GitHub repo (owner/name)
+  branch: main                      # or whatever your default branch is
 
-media_folder: "assets/uploads"    # where uploaded images go in the repo
-public_folder: "/assets/uploads"  # how the site sees them
+media_folder: "assets/uploads"      # where images are stored in the repo
+public_folder: "/assets/uploads"    # how they are referenced on the site
 
-publish_mode: editorial_workflow  # optional: PRs instead of direct commits
+publish_mode: editorial_workflow    # optional: use PR-style workflow
 
 collections:
   - name: "articles"
     label: "Articles"
     label_singular: "Article"
-    description: "Homepage + Articles listing cards"
     format: "json"
-    extension: "json"
-    # Single JSON file with an array of objects
+    editor:
+      preview: false
     file: "data/articles.json"
     fields:
       - label: "Articles"
         name: "articles"
         widget: "list"
+        summary: "{{fields.title}} — {{fields.author}}"
         fields:
           - { label: "Title", name: "title", widget: "string" }
           - { label: "Deck (short summary)", name: "deck", widget: "text", required: false }
-          - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-          - { label: "Author name", name: "authorName", widget: "string" }
+          - label: "Date"
+            name: "date"
+            widget: "datetime"
+            format: "YYYY-MM-DD"
+            time_format: false
+          - { label: "Author", name: "author", widget: "string" }
           - { label: "Tag", name: "tag", widget: "string", required: false }
-          - { label: "Article URL", name: "href", widget: "string", hint: "e.g. articles/xxx.html" }
-          - { label: "Thumbnail", name: "image", widget: "image", allow_multiple: false }
-
+          - { label: "Article URL", name: "href", widget: "string", hint: "e.g. articles/slug.html" }
+          - { label: "Thumbnail", name: "image", widget: "image", required: false }
