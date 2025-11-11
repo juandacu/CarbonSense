@@ -1,0 +1,32 @@
+backend:
+  name: github
+  repo: juandacu/CarbonSense       # <-- your repo
+  branch: main                    # or 'master' if that's your default
+
+media_folder: "assets/uploads"    # where uploaded images go in the repo
+public_folder: "/assets/uploads"  # how the site sees them
+
+publish_mode: editorial_workflow  # optional: PRs instead of direct commits
+
+collections:
+  - name: "articles"
+    label: "Articles"
+    label_singular: "Article"
+    description: "Homepage + Articles listing cards"
+    format: "json"
+    extension: "json"
+    # Single JSON file with an array of objects
+    file: "data/articles.json"
+    fields:
+      - label: "Articles"
+        name: "articles"
+        widget: "list"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Deck (short summary)", name: "deck", widget: "text", required: false }
+          - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+          - { label: "Author name", name: "authorName", widget: "string" }
+          - { label: "Tag", name: "tag", widget: "string", required: false }
+          - { label: "Article URL", name: "href", widget: "string", hint: "e.g. articles/xxx.html" }
+          - { label: "Thumbnail", name: "image", widget: "image", allow_multiple: false }
+
