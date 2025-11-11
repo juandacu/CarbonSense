@@ -8,7 +8,8 @@ backend:
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
-site_url: "https://www.carbonsense.net"
+site_url: https://www.carbonsense.net
+display_url: https://www.carbonsense.net
 
 collections:
   - name: "articles"
