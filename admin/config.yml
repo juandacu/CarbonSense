@@ -1,9 +1,9 @@
 backend:
   name: github
-  repo: juandacu/CarbonSense          # your main content repo
+  repo: juandacu/CarbonSense
   branch: main
   base_url: https://carbonsense-oauth.onrender.com
-  auth_endpoint: /auth
+  auth_endpoint: auth
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
@@ -15,8 +15,8 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Publish Date", name: "date", widget: "datetime" }
-      - { label: "Excerpt", name: "excerpt", widget: "text" }
-      - { label: "Thumbnail", name: "image", widget: "image" }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - { name: "title", label: "Title" }
+      - { name: "date", label: "Date", widget: "datetime" }
+      - { name: "tags", label: "Tags", widget: "list", required: false }
+      - { name: "thumbnail", label: "Thumbnail", widget: "image", required: false }
+      - { name: "body", label: "Body", widget: "markdown" }
