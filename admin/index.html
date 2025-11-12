@@ -4,8 +4,26 @@
     <meta charset="utf-8" />
     <title>Carbon Sense — Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      // Normalize `#/access_token=...` -> `#access_token=...` so Decap parses it.
+      (function () {
+        var h = window.location.hash || "";
+        if (h.startsWith("#/access_token=")) {
+          history.replaceState(null, "", "#" + h.slice(2)); // drop the "/"
+        }
+        // Also support the query form (?access_token=...) just in case
+        var q = new URLSearchParams(window.location.search);
+        if (q.has("access_token")) {
+          var frag = "#access_token=" + encodeURIComponent(q.get("access_token"));
+          if (q.has("token_type")) frag += "&token_type=" + encodeURIComponent(q.get("token_type"));
+          if (q.has("provider"))   frag += "&provider="   + encodeURIComponent(q.get("provider"));
+          history.replaceState(null, "", frag);
+        }
+      })();
+    </script>
   </head>
   <body>
-    <script src="https://unpkg.com/decap-cms@^3.4.0/dist/decap-cms.js"></script>
+    <!-- Load Decap after we normalize the URL -->
+    <script src="https://unpkg.com/decap-cms@3.9.0/dist/decap-cms.js"></script>
   </body>
 </html>
