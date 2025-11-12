@@ -4,6 +4,7 @@ backend:
   branch: main
   base_url: https://carbonsense-oauth.onrender.com  # <-- your Render OAuth app URL
   auth_endpoint: /auth
+  site_domain: www.carbonsense.net
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
