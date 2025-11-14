@@ -15,17 +15,17 @@
       }
     },
     {
-      "title": "Designing projects with co-benefits",
-      "deck": "Stacking climate, biodiversity, and livelihoods.",
-      "date": "2025-10-05",
+      "title": "What is an IAM and Why do They Matter?",
+      "deck": "A model with a big job.",
+      "date": "2025-11-14",
       "readTime": 7,
-      "href": "articles.html",
+      "href": "assets/articles/what-is-an-iam-and-why-do-they-matter.html",
       "image": "assets/article_imgs/cobenefits.jpg",
-      "tags": ["Project design"],
+      "tags": ["Macroeconomics, modelling"],
       "author": {
-        "name": "Andrew Wells",
-        "avatar": "assets/authors/andrew-w-removebg-preview.png",
-        "url": "authors/andrew-wells.html"
+        "name": "Charles Nicholson",
+        "avatar": "assets/authors/charles-n.jpeg",
+        "url": "authors/charles-nicholson.html"
       }
     },
     {
