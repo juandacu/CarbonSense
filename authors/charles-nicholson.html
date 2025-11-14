@@ -4,14 +4,10 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Charles Nicholson — Carbon-Sense</title>
-<!DOCTYPE html>
-  <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Juan Acuña — Carbon-Sense</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css"/>
-  </head>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css"/>
+</head>
 <body>
   <header class="site-header solid" data-header>
     <div class="container header-inner">
@@ -51,15 +47,85 @@
       </div>
 
       <h2 class="section-title">Articles</h2>
-      <div id="author-articles"><p class="muted">Coming soon.</p></div>
+      <div id="author-articles">
+        <p class="muted">
+          <a href="../articles.html">View all Carbon-Sense articles</a>
+        </p>
+      </div>
     </div>
   </section>
 
   <footer class="site-footer">
-    <div class="container foot-bottom"><small> <span data-year></span> Carbon Sense</small></div>
+    <div class="container foot-bottom">
+      <small><span data-year></span> Carbon Sense</small>
+    </div>
   </footer>
 
   <script src="../scripts.js"></script>
+  <script>
+    (function(){
+      const grid  = document.getElementById("author-articles");
+      if (!grid) return;
+    
+      const AUTHOR = "Charles Nicholson";
+      const norm = s => (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu,"");
+    
+      // prefix relative assets correctly when this page lives in /authors/
+      function asset(p){
+        if (!p) return "";
+        if (/^https?:\/\//i.test(p)) return p;
+        const needsUp = location.pathname.includes("/authors/");
+        return (needsUp ? "../" : "") + p.replace(/^\/+/,"");
+      }
+    
+      const url = "../data/articles.json?v=" + Date.now();
+    
+      fetch(url, { cache: "no-store" })
+        .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+        .then(payload => {
+          const list = Array.isArray(payload) ? payload : (payload.articles || []);
+          const mine = list.filter(a => norm(a.author?.name || a.author || "") === norm(AUTHOR));
+          grid.classList.add("article-grid");  // enable compact grid styling
+          grid.innerHTML = mine.length
+            ? mine.map(renderAuthorCard).join("")
+            : '<p class="muted">No articles by this author yet. <a href="../articles.html">Browse all articles</a>.</p>';
+        })
+        .catch(() => {
+          grid.innerHTML = '<p class="muted">Failed to load articles. <a href="../articles.html">Browse all articles</a>.</p>';
+        });
+    
+      function renderAuthorCard(a){
+        const thumb = asset(a.image || "../assets/mangrove.jpg");
+        const date  = a.date ? new Date(a.date).toDateString() : "";
+        const tag   = a.tags?.[0] ? `<span class="tag">${a.tags[0]}</span>` : "";
+        const read  = a.readTime ? `${a.readTime} min` : "";
+        const href  = a.href || a.url || "#";
+
+        // fix relative link when inside /authors/
+        const link = location.pathname.includes("/authors/") && href && !/^https?:\/\//.test(href)
+          ? "../" + href.replace(/^\/+/,"")
+          : href;
+
+        return `
+          <article class="article-card">
+            <img class="article-thumb" src="${thumb}" alt="">
+            <div class="article-body">
+              <h3>${a.title || "Untitled"}</h3>
+              <p class="article-deck">${a.deck || a.excerpt || ""}</p>
+            </div>
+            <div class="article-meta only-right">
+              <div class="meta-right">
+                ${tag}
+                ${read ? `<span>${read}</span><span aria-hidden="true">•</span>` : ""}
+                ${date ? `<time datetime="${a.date}">${date}</time>` : ""}
+              </div>
+            </div>
+            <a class="cover" href="${link}">Read</a>
+          </article>`;
+      }
+    })();
+  </script>
 </body>
 </html>
+
 
