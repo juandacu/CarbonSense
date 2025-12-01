@@ -25,6 +25,16 @@
 <meta name="twitter:description" content="Community-led conservation and climate action." />
 <meta name="twitter:image" content="https://carbonsense.net/assets/og/og-home.png" />
 
+<style>
+  .social-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .social-title svg {
+    flex-shrink: 0;
+  }
+</style>
 </head>
 <body>
   <!-- Header -->
@@ -36,7 +46,7 @@
       <nav class="nav" data-nav>
         <a href="about.html">About</a>
         <a href="articles.html">Articles</a>
-        <a href="coffee.html">Buy Us A Coffee</a>
+        <a href="coffee.html">Buy me a Coffee</a>
         <a href="contact.html" class="btn btn-outline pill">Contact Us</a>
       </nav>
       <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" data-menu-btn>
@@ -56,7 +66,7 @@
 
       <!-- CTAs -->
       <div class="hero-ctas">
-        <a href="coffee.html" class="btn btn-outline pill">Buy Us A Coffee</a>
+        <a href="coffee.html" class="btn btn-outline pill">Get involved</a>
         <a href="contact.html" class="btn btn-outline pill">Contact us</a>
       </div>
 
@@ -109,14 +119,24 @@
     <div class="connect-grid">
       <a class="social-card social-substack" href="https://carbonsense.substack.com/" target="_blank" rel="noopener">
         <div class="social-label">Newsletter</div>
-        <h3>Read Carbon Sense on Substack</h3>
-        <!-- Removed descriptive text -->
+        <h3 class="social-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M4 4h16v3H4zm0 5h16v3H4zm0 5h10v3H4z"></path>
+          </svg>
+          <span>Read Carbon Sense on Substack</span>
+        </h3>
+        <!-- No descriptive paragraph -->
       </a>
 
       <a class="social-card social-linkedin" href="https://www.linkedin.com/company/carbonsense1/" target="_blank" rel="noopener">
         <div class="social-label">LinkedIn</div>
-        <h3>Follow us on LinkedIn</h3>
-        <!-- Removed descriptive text -->
+        <h3 class="social-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M4.98 3.5C4.98 4.604 4.1 5.5 3 5.5 1.9 5.5 1 4.604 1 3.5 1 2.395 1.9 1.5 3 1.5c1.1 0 1.98.895 1.98 2zm.02 4.5H1v14h4V8zm7.982 0h-3.982v14h4v-7.5c0-3.788 5-4.101 5 0V22h4V13.5c0-7.545-8-7.266-9-3.556V8z"></path>
+          </svg>
+          <span>Follow us on LinkedIn</span>
+        </h3>
+        <!-- No descriptive paragraph -->
       </a>
     </div>
   </div>
@@ -165,7 +185,7 @@
         <ul class="foot-links">
           <li><a href="about.html">About</a></li>
           <li><a href="articles.html">Articles</a></li>
-          <li><a href="coffee.html">Buy Us A Coffee</a></li>
+          <li><a href="coffee.html">Buy me a Coffee</a></li>
         </ul>
       </div>
       <div>
@@ -181,7 +201,6 @@
   <script src="scripts.js"></script>
 </body>
 </html>
-
 
 
 
