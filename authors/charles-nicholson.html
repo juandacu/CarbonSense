@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Charles Nicholson — Carbon-Sense</title>
+  <title>Charles Nicholson — Carbon Sense</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css"/>
@@ -11,8 +11,8 @@
 <body>
   <header class="site-header solid" data-header>
     <div class="container header-inner">
-      <a class="logo" href="../index.html" aria-label="Carbon-Sense">
-        <img src="../assets/logo.png" alt="Carbon-Sense">
+      <a class="logo" href="../index.html" aria-label="Carbon Sense">
+        <img src="../assets/logo.png" alt="Carbon Sense">
       </a>  
       <nav class="nav" data-nav>
         <a href="../index.html">Home</a>
@@ -39,17 +39,15 @@
       <div class="bio-card">
         <img src="../assets/authors/charles-n.jpeg" alt="Charles Nicholson" class="bio-avatar" onerror="this.style.display='none'">
         <div class="prose">
-          <p>Charles Nicholson is an economist specialising in the intersection between competition and climate economics. After nearly a decade advising on competition and regulatory issues, he turned his focus to the economics of decarbonisation — motivated by the belief that effective climate policy requires the same analytical rigour as competition policy.</p>
-          <p>He holds an MSc in the Economics of Energy, Climate Change and Sustainability from the Barcelona School of Economics and an MSc in Economics from University College London. His research explores how electricity markets and investment incentives interact with climate objectives, including modelling endogenous investment in renewables and storage, and the welfare impacts of cross-country electricity interconnectors.</p>
-          <p>Before shifting to climate economics, Charles worked for a leading competition economics consultancy with a focus on empirical methods in merger and abuse-of-dominance cases. This background informs his approach to climate policy: markets can be powerful tools for decarbonisation — if they are competitive, well designed, and well governed.</p>
-          <p>At <italic>Carbon Sense</italic> Charles writes about the analytical foundations of climate policy: how models, incentives, and institutions shape the transition to net zero. He is particularly interested in how quantitative tools — from integrated assessment models to electricity market simulations — can inform smarter, fairer, and faster climate action.</p>
+          <div id="bio-status" class="muted" style="margin-bottom:12px">Loading bio…</div>
+          <article id="bio-root" class="prose docx"></article>
         </div>
       </div>
 
       <h2 class="section-title">Articles</h2>
       <div id="author-articles">
         <p class="muted">
-          <a href="../articles.html">View all Carbon-Sense articles</a>
+          <a href="../articles.html">View all Carbon Sense articles</a>
         </p>
       </div>
     </div>
@@ -61,7 +59,12 @@
     </div>
   </footer>
 
+  <script src="../vendor/mammoth.browser.min.js"></script>
   <script src="../scripts.js"></script>
+  <script>
+    renderDocx("#bio-root", "charles-nicholson-bio-docx", "#bio-status")
+      .catch(console.error);
+  </script>
   <script>
     (function(){
       const grid  = document.getElementById("author-articles");
