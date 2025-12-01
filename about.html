@@ -7,12 +7,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <base href="/" />
+
   <style>
     .cs {
       font-style: italic;
     }
+    /* Added spacing between bullet points */
+    .about-prose ul li {
+      margin-bottom: 0.75rem;
+    }
   </style>
 </head>
+
 <body>
   <!-- Header -->
   <header class="site-header solid" data-header>
@@ -74,7 +80,7 @@
     </div>
   </section>
 
-  <!-- Simple team strip (kept minimal) -->
+  <!-- Simple team strip -->
   <section class="section tight-bottom" data-animate id="team">
     <div class="container">
       <h2 class="section-title">Who we are</h2>
@@ -110,7 +116,7 @@
   <!-- Footer -->
   <footer class="site-footer">
     <div class="container foot-bottom">
-      <small> <span data-year></span> Carbon Sense</small>
+      <small><span data-year></span> Carbon Sense</small>
     </div>
   </footer>
 
