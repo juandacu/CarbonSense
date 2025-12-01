@@ -1549,3 +1549,114 @@ html, body { overflow-x: hidden; }
 .coffee-page .site-footer {
   margin-top: 0;
 }
+/* Contact page: dark gradient hero, no gap before footer */
+.contact-page {
+  background: #050706;
+}
+
+/* Dark panel similar to hero/footer */
+.contact-hero {
+  padding: 80px 0 96px;
+  margin-bottom: 0;
+  min-height: calc(100vh - 180px); /* header + footer rough height */
+  background:
+    radial-gradient(80% 130% at 0% 0%, rgba(22, 104, 78, 0.6), transparent 60%),
+    linear-gradient(180deg, #111c18 0%, #060908 100%);
+  color: #f5fdf9;
+}
+
+.contact-hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: flex-start;
+}
+
+@media (max-width: 800px) {
+  .contact-hero {
+    padding: 64px 0 80px;
+    min-height: auto;
+  }
+
+  .contact-hero-inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Text styling on dark background */
+.contact-copy h1 {
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+
+.contact-copy .lead {
+  max-width: 34rem;
+  color: #d9ebe5;
+}
+
+.contact-meta {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.95rem;
+  color: #c0d5cf;
+}
+
+.contact-meta li + li {
+  margin-top: 6px;
+}
+
+.contact-hero a {
+  color: #f7fffa;
+  text-decoration: underline;
+}
+
+/* Keep the form as a bright card on the dark panel */
+.contact-form {
+  max-width: 460px;
+  margin: 0 0 0 auto;
+}
+
+.contact-form .field + .field {
+  margin-top: 14px;
+}
+
+.contact-form .btn {
+  margin-top: 16px;
+}
+
+/* Remove extra top margin on footer for this page */
+.contact-page .site-footer {
+  margin-top: 0;
+}
+
+/* Contact page: keep header white, even over dark background */
+.contact-page .site-header {
+  background: #ffffff;
+  backdrop-filter: none;
+  box-shadow: 0 1px 0 rgba(0,0,0,.08);
+}
+
+.contact-page .site-header.solid,
+.contact-page .site-header.transparent {
+  background: #ffffff;
+}
+
+/* Contact form: clearer labels and placeholders */
+.contact-form label {
+  color: #1c2421;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.contact-form input,
+.contact-form textarea {
+  color: #1c2421;
+}
+
+/* Placeholder text contrast */
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #9aa4a0;
+  opacity: 1; /* Firefox */
+}
