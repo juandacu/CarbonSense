@@ -1538,3 +1538,14 @@ html, body { overflow-x: hidden; }
   width: auto;
   display: block;
 }
+
+/* Buy Us A Coffee page tweaks */
+.coffee-page .hero-video {
+  /* Make hero almost fill the viewport so the footer comes right after it */
+  min-height: calc(100vh - 180px); /* adjust 180px if header/footer sizes change */
+}
+
+/* Remove extra white gap above the footer on this page */
+.coffee-page .site-footer {
+  margin-top: 0;
+}

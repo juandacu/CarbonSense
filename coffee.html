@@ -9,7 +9,7 @@
   <base href="/">
 
 </head>
-<body>
+<body class="coffee-page">
   <header class="site-header transparent" data-header>
     <div class="container header-inner">
       <a class="logo" href="index.html" aria-label="Carbon-Sense">
@@ -28,39 +28,37 @@
     </div>
   </header>
 
-<!-- Hero with background video -->
-<section class="page-hero hero-video" data-animate>
-  <!-- full-bleed video background -->
-  <div class="hero-bg">
-    <video
-      class="hero-video-el"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="metadata"
-      <source src="assets/buymeacoffee.mp4"  type="video/mp4" />
-      <!-- If neither source plays, the poster still shows -->
-    </video>
-    <div class="overlay"></div>
-  </div>
+ <!-- Hero with background video -->
+  <section class="page-hero hero-video" data-animate>
+    <div class="hero-bg">
+      <video
+        class="hero-video-el"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata">
+        <source src="assets/buymeacoffee.mp4" type="video/mp4" />
+      </video>
+      <div class="overlay"></div>
+    </div>
 
-  <!-- foreground copy -->
-  <div class="container hero-content">
-    <h1>Support the work</h1>
-    <p class="lead">If you’d like, you can buy us a coffee to support our work.</p>
-    <p>
-      <a class="btn btn-outline pill" href="#" aria-disabled="true">Set your link later</a>
-    </p>
-    <p class="muted small">Video: your credit here</p>
-  </div>
-</section>
-
+    <div class="container hero-content">
+      <h1>Support the work</h1>
+      <p class="lead">If you’d lsadasdike, you can buy us a coffee to support our work.</p>
+      <p>
+        <a class="btn btn-outline pill" href="#" aria-disabled="true">Set your link later</a>
+      </p>
+      <p class="muted small">Video: your credit here</p>
+    </div>
+  </section>
 
   <footer class="site-footer site-footer-dark">
-    <div class="container foot-bottom"><small> <span data-year></span> Carbon Sense</small></div>
+    <div class="container foot-bottom">
+      <small><span data-year></span> Carbon Sense</small>
+    </div>
   </footer>
-
+</body>
   <script src="scripts.js"></script>
 </body>
 </html>
