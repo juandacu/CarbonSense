@@ -1451,3 +1451,90 @@ html, body { overflow-x: hidden; }
 .section + .section {
   padding-top: 12px;              /* or 0 if you want them tight */
 }
+
+.site-footer-dark {
+  position: relative;
+  margin-top: 80px;
+  padding-top: 40px;
+  color: #e7f1ed;
+  background:
+    radial-gradient(65% 80% at 0% 0%, rgba(19, 84, 66, 0.45), transparent 60%),
+    linear-gradient(180deg, #0f1715 0%, #050706 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* subtle glowing line at the top */
+.site-footer-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  opacity: 0.7;
+}
+
+.site-footer-dark .footer-inner {
+  padding: 32px 0 20px;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 2fr 1fr 1fr;
+}
+
+@media (max-width: 720px) {
+  .site-footer-dark .footer-inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* typography + links */
+.site-footer-dark .foot-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #f3fbf7;
+}
+
+.site-footer-dark .muted {
+  color: #b7ccc6;
+}
+
+.site-footer-dark a {
+  color: #e7f1ed;
+  text-decoration: none;
+}
+
+.site-footer-dark a:hover {
+  text-decoration: underline;
+}
+
+.site-footer-dark .foot-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-footer-dark .foot-links li {
+  margin: 6px 0;
+}
+
+/* bottom strip */
+.site-footer-dark .foot-bottom {
+  padding: 14px 0 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #9db4ac;
+  font-size: 0.9rem;
+}
+
+/* footer logo sizing */
+.site-footer-dark .logo-foot img {
+  height: 26px;
+  width: auto;
+  display: block;
+}
