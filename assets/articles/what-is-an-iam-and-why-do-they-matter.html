@@ -39,7 +39,6 @@
 
       <div class="article-meta" data-animate>
         <span class="meta-item">
-          <!-- authors folder is sibling of this page's folder -->
           <img class="meta-avatar" src="../authors/charles-n.jpeg" alt="" onerror="this.style.display='none'">
           <span class="meta-label">By</span>
           <a class="meta-value" href="../../authors/charles-nicholson.html">Charles Nicholson</a>
@@ -67,13 +66,12 @@
   </footer>
 
   <!-- scripts are two levels up -->
-  <!-- scripts at bottom -->
   <script src="../../vendor/mammoth.browser.min.js"></script>
   <script src="../../scripts.js"></script>
   <script>
     renderDocx(
       "#docx-root",
-      "../What%20Is%20An%20Integrated%20Assessment%20Model%20And%20Why%20Do%20They%20Matter%3F.docx",
+      "../What Is An Integrated Assessment Model And Why Do They Matter.docx",
       "#docx-status"
     )
     .then(() => requestAnimationFrame(() =>
