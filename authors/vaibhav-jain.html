@@ -3,20 +3,15 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Vaibhav Jain — Carbon-Sense</title>
-<!DOCTYPE html>
-  <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Vaibhav Jain — Carbon-Sense</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css"/>
-  </head>
+  <title>Vaibhav Jain — Carbon Sense</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css"/>
+</head>
 <body>
   <header class="site-header solid" data-header>
     <div class="container header-inner">
-      <a class="logo" href="../index.html" aria-label="Carbon-Sense">
-        <img src="../assets/logo.png" alt="Carbon-Sense">
+      <a class="logo" href="../index.html" aria-label="Carbon Sense">
+        <img src="../assets/logo.png" alt="Carbon Sense">
       </a>  
       <nav class="nav" data-nav>
         <a href="../index.html">Home</a>
@@ -34,7 +29,7 @@
   <section class="page-hero hero-compact" data-animate>
     <div class="container">
       <h1>Vaibhav Jain</h1>
-      <p class="lead">TBDy.</p>
+      <p class="lead">Climate economics, sustainable finance, and ag-tech.</p>
     </div>
   </section>
 
@@ -43,7 +38,8 @@
       <div class="bio-card">
         <img src="../assets/authors/vaibhav-j-removebg-preview.png" alt="Vaibhav Jain" class="bio-avatar" onerror="this.style.display='none'">
         <div class="prose">
-          <p> TBD </p>
+          <div id="bio-status" class="muted" style="margin-bottom:12px">Loading bio…</div>
+          <article id="bio-root" class="prose docx"></article>
         </div>
       </div>
 
@@ -53,10 +49,16 @@
   </section>
 
   <footer class="site-footer">
-    <div class="container foot-bottom"><small> <span data-year></span> Carbon Sense</small></div>
+    <div class="container foot-bottom">
+      <small><span data-year></span> Carbon Sense</small>
+    </div>
   </footer>
 
+  <script src="../vendor/mammoth.browser.min.js"></script>
   <script src="../scripts.js"></script>
+  <script>
+    renderDocx("#bio-root", "vaibhav-jain-bio.docx", "#bio-status")
+      .catch(console.error);
+  </script>
 </body>
 </html>
-
