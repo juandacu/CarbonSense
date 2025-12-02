@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="contact-page">
   <header class="site-header solid" data-header>
     <div class="container header-inner">
       <a class="logo" href="index.html" aria-label="Carbon-Sense">
@@ -26,16 +26,22 @@
     </div>
   </header>
 
-  <section class="page-hero" data-animate>
-    <div class="container">
-      <h1>Contact</h1>
-      <p class="lead">Send a message. Submission is currently simulated in the browser.</p>
-    </div>
-  </section>
-
-  <section class="section" data-animate>
-    <div class="container">
-      <form id="contact-form" class="form-card">
+  <section class="page-hero contact-hero" data-animate>
+    <div class="container contact-hero-inner">
+      <div class="contact-copy">
+        <h1>Contact</h1>
+        <p class="lead">
+          Send a message about the project, an article, or a new idea.
+          Submission is currently simulated in the browser.
+        </p>
+        <ul class="contact-meta">
+          <li><strong>Best for:</strong> comments, corrections, and collaboration ideas.</li>
+          <li><strong>Response time:</strong> usually a few days.</li>
+          <li><strong>Email:</strong> <a href="mailto:info@carbonsense.net">info@carbonsense.net</a></li>
+        </ul>
+      </div>
+  
+      <form id="contact-form" class="form-card contact-form">
         <div class="field">
           <label for="name">Name</label>
           <input id="name" name="name" type="text" required />
@@ -53,8 +59,10 @@
       </form>
     </div>
   </section>
+  
 
-  <footer class="site-footer">
+
+  <footer class="site-footer site-footer-dark">
     <div class="container foot-bottom"><small> <span data-year></span> Carbon Sense</small></div>
   </footer>
   <script src="scripts.js"></script>
