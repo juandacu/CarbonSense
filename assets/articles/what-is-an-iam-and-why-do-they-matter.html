@@ -45,14 +45,13 @@
           <a class="meta-value" href="../../authors/charles-nicholson.html">Charles Nicholson</a>
         </span>
         <span class="meta-sep">•</span>
-        <time class="meta-item" datetime="2025-11-14">Nov 14, 2025</time>
+        <time class="meta-item" datetime="2025-12-02">Dec 2, 2025</time>
         <span class="meta-sep">•</span>
         <span class="meta-item" id="reading-time">—</span>
       </div>
 
-      <p class="lead">Brief explanation here.</p>
-      <!-- DOCX is one level up from this page -->
-      <p class="muted"><a href="../1. What is an Integrated Assessment Model and Why do They Matter_ [WIP].docx">Download the .docx</a></p>
+      <p class="lead">The Social Cost of Carbon, Carbon Budgets, and the Role of IAMs</p>
+      <!-- removed Download the .docx link -->
     </div>
   </section>
 
@@ -68,16 +67,20 @@
   </footer>
 
   <!-- scripts are two levels up -->
-<!-- scripts at bottom -->
-<script src="../../vendor/mammoth.browser.min.js"></script>
-<script src="../../scripts.js"></script>
-<script>
-  renderDocx("#docx-root", "../1. What is an Integrated Assessment Model and Why do They Matter_ [WIP].docx", "#docx-status")
+  <!-- scripts at bottom -->
+  <script src="../../vendor/mammoth.browser.min.js"></script>
+  <script src="../../scripts.js"></script>
+  <script>
+    renderDocx(
+      "#docx-root",
+      "../What Is An Integrated Assessment Model And Why Do They Matter?.docx",
+      "#docx-status"
+    )
     .then(() => requestAnimationFrame(() =>
       setReadingTime("#docx-root", "#reading-time")
     ))
     .catch(console.error);
-</script>
+  </script>
 
 </body>
 </html>
