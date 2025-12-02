@@ -3,7 +3,7 @@
     {
       "title": "Counting Megawatts, Missing People",
       "deck": "The social gap in climate finance and why just transition funding matters.",
-      "date": "2025-10-21",
+      "date": "2025-12-02",
       "readTime": 7,
       "href": "assets/articles/counting-megawatts-missing-people.html",
       "image": "assets/article_imgs/just_transition.jpg",
@@ -17,7 +17,7 @@
     {
       "title": "What is an IAM and Why do They Matter?",
       "deck": "A model with a big job.",
-      "date": "2025-11-14",
+      "date": "2025-12-02",
       "readTime": 7,
       "href": "assets/articles/what-is-an-iam-and-why-do-they-matter.html",
       "image": "assets/article_imgs/cobenefits.jpg",
@@ -29,18 +29,19 @@
       }
     },
     {
-      "title": "Financing small but catalytic work",
-      "deck": "Micro-grants and local stewardship.",
-      "date": "2025-10-12",
-      "readTime": 5,
-      "href": "articles.html",
-      "image": "assets/article_imgs/microgrants.jpg",
-      "tags": ["Finance"],
+      "title": "Carbon Crediting and the Voluntary Carbon Market",
+      "deck": "Why it exists and why it matters in a world where most emissions still fall outside regulation.",
+      "date": "2025-12-02",
+      "readTime": 10,
+      "href": "assets/articles/carbon-crediting-and-the-voluntary-carbon-market.html",
+      "image": "assets/article_imgs/voluntary_carbon_market.jpg",
+      "tags": ["Voluntary Carbon Market", "Carbon Pricing"],
       "author": {
-        "name": "Charles Nicholson",
-        "avatar": "assets/authors/charles-n.jpeg",
-        "url": "authors/charles-nicholson.html"
+        "name": "Andrew Wells",
+        "avatar": "assets/authors/andrew-w.png",
+        "url": "authors/andrew-wells.html"
       }
     }
   ]
 }
+
