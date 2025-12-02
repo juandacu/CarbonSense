@@ -34,7 +34,7 @@
       "date": "2025-12-02",
       "readTime": 10,
       "href": "assets/articles/carbon-crediting-and-the-voluntary-carbon-market.html",
-      "image": "assets/article_imgs/voluntary_carbon_market.jpg",
+      "image": "assets/article_imgs/carbon-emissions.jpg",
       "tags": ["Voluntary Carbon Market"],
       "author": {
         "name": "Andrew Wells",
@@ -48,7 +48,7 @@
       "date": "2025-12-02",
       "readTime": 12,
       "href": "assets/articles/carbon-taxes-a-libertarians-first-love.html",
-      "image": "assets/article_imgs/carbon_tax_libertarian.jpg",
+      "image": "assets/article_imgs/carbon-tax.jpg",
       "tags": ["Carbon Taxes"],
       "author": {
         "name": "Vaibhav Jain",
@@ -62,7 +62,7 @@
       "date": "2025-12-02",
       "readTime": 9,
       "href": "assets/articles/escaping-dirty-growth.html",
-      "image": "assets/article_imgs/escaping_dirty_growth.jpg",
+      "image": "assets/article_imgs/dirty-growth.jpg",
       "tags": ["Innovation"],
       "author": {
         "name": "Lucien Vargas",
