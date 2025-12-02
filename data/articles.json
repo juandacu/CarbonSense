@@ -1,8 +1,9 @@
 {
+ {
   "articles": [
     {
       "title": "Counting Megawatts, Missing People",
-      "deck": "The social gap in climate finance",
+      "deck": "The social gap in climate finance and why just transition funding matters.",
       "date": "2025-12-02",
       "readTime": 7,
       "href": "assets/articles/counting-megawatts-missing-people.html",
@@ -16,7 +17,7 @@
     },
     {
       "title": "What is an IAM and Why do They Matter?",
-      "deck": "A model with a big job",
+      "deck": "A model with a big job.",
       "date": "2025-12-02",
       "readTime": 7,
       "href": "assets/articles/what-is-an-iam-and-why-do-they-matter.html",
@@ -30,7 +31,7 @@
     },
     {
       "title": "Carbon Crediting and the Voluntary Carbon Market",
-      "deck": "Why it exists and why it matters",
+      "deck": "Why it exists and why it matters in a world where most emissions still fall outside regulation.",
       "date": "2025-12-02",
       "readTime": 10,
       "href": "assets/articles/carbon-crediting-and-the-voluntary-carbon-market.html",
@@ -41,7 +42,22 @@
         "avatar": "assets/authors/andrew-w.png",
         "url": "authors/andrew-wells.html"
       }
+    },
+    {
+      "title": "Carbon Taxes, A Libertarian's First Love",
+      "deck": "Why even a committed libertarian can fall in love with a Pigouvian carbon tax.",
+      "date": "2025-12-02",
+      "readTime": 12,
+      "href": "assets/articles/carbon-taxes-a-libertarians-first-love.html",
+      "image": "assets/article_imgs/carbon_tax_libertarian.jpg",
+      "tags": ["Carbon Tax", "Climate Policy", "Political Economy"],
+      "author": {
+        "name": "Vaibhav Jain",
+        "avatar": "assets/authors/vaibhav-j-removebg-preview.png",
+        "url": "authors/vaibhav-jain.html"
+      }
     }
   ]
 }
+
 
