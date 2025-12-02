@@ -7,7 +7,7 @@
       "readTime": 7,
       "href": "assets/articles/counting-megawatts-missing-people.html",
       "image": "assets/article_imgs/just_transition.jpg",
-      "tags": ["Just transition", "Finance Gap"],
+      "tags": ["Just transition"],
       "author": {
         "name": "Juan Acuña-Román",
         "avatar": "assets/authors/juan-daniel-removebg-preview.png",
@@ -21,7 +21,7 @@
       "readTime": 7,
       "href": "assets/articles/what-is-an-iam-and-why-do-they-matter.html",
       "image": "assets/article_imgs/cobenefits.jpg",
-      "tags": ["Macroeconomics, modelling"],
+      "tags": ["Macroeconomic modelling"],
       "author": {
         "name": "Charles Nicholson",
         "avatar": "assets/authors/charles-n.jpeg",
@@ -30,12 +30,12 @@
     },
     {
       "title": "Carbon Crediting and the Voluntary Carbon Market",
-      "deck": "Why it exists and why it matters in a world where most emissions still fall outside regulation.",
+      "deck": "Why it exists and why it matters",
       "date": "2025-12-02",
       "readTime": 10,
       "href": "assets/articles/carbon-crediting-and-the-voluntary-carbon-market.html",
       "image": "assets/article_imgs/voluntary_carbon_market.jpg",
-      "tags": ["Voluntary Carbon Market", "Carbon Pricing"],
+      "tags": ["Voluntary Carbon Market"],
       "author": {
         "name": "Andrew Wells",
         "avatar": "assets/authors/andrew-w.png",
@@ -44,12 +44,12 @@
     },
     {
       "title": "Carbon Taxes, A Libertarian's First Love",
-      "deck": "Why even a committed libertarian can fall in love with a Pigouvian carbon tax.",
+      "deck": "Pigouvian carbon taxes",
       "date": "2025-12-02",
       "readTime": 12,
       "href": "assets/articles/carbon-taxes-a-libertarians-first-love.html",
       "image": "assets/article_imgs/carbon_tax_libertarian.jpg",
-      "tags": ["Carbon Tax", "Climate Policy", "Political Economy"],
+      "tags": ["Carbon Taxes"],
       "author": {
         "name": "Vaibhav Jain",
         "avatar": "assets/authors/vaibhav-j-removebg-preview.png",
@@ -58,12 +58,12 @@
     },
     {
       "title": "Escaping Dirty Growth",
-      "deck": "How smart innovation policy can shift us from dirty growth to clean progress.",
+      "deck": "From dirty growth to clean progress",
       "date": "2025-12-02",
       "readTime": 9,
       "href": "assets/articles/escaping-dirty-growth.html",
       "image": "assets/article_imgs/escaping_dirty_growth.jpg",
-      "tags": ["Innovation", "Clean Growth"],
+      "tags": ["Innovation"],
       "author": {
         "name": "Lucien Vargas",
         "avatar": "assets/authors/lucien-v-removebg-preview.png",
