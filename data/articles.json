@@ -2,7 +2,7 @@
   "articles": [
     {
       "title": "Counting Megawatts, Missing People",
-      "deck": "The social gap in climate finance and why just transition funding matters.",
+      "deck": "The social gap in climate finance",
       "date": "2025-12-02",
       "readTime": 7,
       "href": "assets/articles/counting-megawatts-missing-people.html",
@@ -16,7 +16,7 @@
     },
     {
       "title": "What is an IAM and Why do They Matter?",
-      "deck": "A model with a big job.",
+      "deck": "A model with a big job",
       "date": "2025-12-02",
       "readTime": 7,
       "href": "assets/articles/what-is-an-iam-and-why-do-they-matter.html",
@@ -30,7 +30,7 @@
     },
     {
       "title": "Carbon Crediting and the Voluntary Carbon Market",
-      "deck": "Why it exists and why it matters in a world where most emissions still fall outside regulation.",
+      "deck": "Why it exists and why it matters",
       "date": "2025-12-02",
       "readTime": 10,
       "href": "assets/articles/carbon-crediting-and-the-voluntary-carbon-market.html",
