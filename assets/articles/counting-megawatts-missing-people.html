@@ -45,14 +45,14 @@
           <a class="meta-value" href="../../authors/Juan-Acuna.html">Juan Daniel Acuña-Román</a>
         </span>
         <span class="meta-sep">•</span>
-        <time class="meta-item" datetime="2025-10-21">Oct 21, 2025</time>
+        <time class="meta-item" datetime="2025-12-02">Dec 2, 2025</time>
         <span class="meta-sep">•</span>
         <span class="meta-item" id="reading-time">—</span>
       </div>
 
       <p class="lead">Brief explanation here.</p>
       <!-- DOCX is one level up from this page -->
-      <p class="muted"><a href="../Counting_Megawatts_Missing_People.docx">Download the .docx</a></p>
+      <p class="muted"><a href="../Counting%20Megawatts,%20Missing%20People.docx">Download the .docx</a></p>
     </div>
   </section>
 
@@ -68,16 +68,17 @@
   </footer>
 
   <!-- scripts are two levels up -->
-<!-- scripts at bottom -->
-<script src="../../vendor/mammoth.browser.min.js"></script>
-<script src="../../scripts.js"></script>
-<script>
-  renderDocx("#docx-root", "../Counting_Megawatts_Missing_People.docx", "#docx-status")
-    .then(() => requestAnimationFrame(() =>
-      setReadingTime("#docx-root", "#reading-time")
-    ))
-    .catch(console.error);
-</script>
+  <!-- scripts at bottom -->
+  <script src="../../vendor/mammoth.browser.min.js"></script>
+  <script src="../../scripts.js"></script>
+  <script>
+    renderDocx("#docx-root", "../Counting%20Megawatts,%20Missing%20People.docx", "#docx-status")
+      .then(() => requestAnimationFrame(() =>
+        setReadingTime("#docx-root", "#reading-time")
+      ))
+      .catch(console.error);
+  </script>
 
 </body>
 </html>
+
