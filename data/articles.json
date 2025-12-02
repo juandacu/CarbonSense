@@ -55,6 +55,21 @@
         "avatar": "assets/authors/vaibhav-j-removebg-preview.png",
         "url": "authors/vaibhav-jain.html"
       }
+    },
+    {
+      "title": "Escaping Dirty Growth",
+      "deck": "How smart innovation policy can shift us from dirty growth to clean progress.",
+      "date": "2025-12-02",
+      "readTime": 9,
+      "href": "assets/articles/escaping-dirty-growth.html",
+      "image": "assets/article_imgs/escaping_dirty_growth.jpg",
+      "tags": ["Innovation", "Clean Growth"],
+      "author": {
+        "name": "Lucien Vargas",
+        "avatar": "assets/authors/lucien-v-removebg-preview.png",
+        "url": "authors/lucien-vargas.html"
+      }
     }
   ]
 }
+
