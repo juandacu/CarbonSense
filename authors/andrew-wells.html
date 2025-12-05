@@ -41,7 +41,7 @@
   <section class="section" data-animate>
     <div class="container">
       <div class="bio-card">
-        <img src="../assets/authors/andrew-wells-bse-photo.png" alt="Andrew Wells" class="bio-avatar" onerror="this.style.display='none'">
+        <img src="../assets/authors/andrew-wells-bse-photo-nb.png" alt="Andrew Wells" class="bio-avatar" onerror="this.style.display='none'">
         <div class="prose">
           <div id="bio-status" class="muted" style="margin-bottom:12px">Loading bio…</div>
           <article id="bio-root" class="prose docx"></article>
@@ -63,6 +63,78 @@
     renderDocx("#bio-root", "andrew-wells-bio.docx", "#bio-status")
       .catch(console.error);
   </script>
+  <section class="section" data-animate>
+    <div class="container">
+      <h2>Articles by Juan Daniel Acuña-Román</h2>
+      <div id="author-articles" class="grid cards-3"></div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container foot-bottom"><small> <span data-year></span> Carbon Sense</small></div>
+  </footer>
+
+  <script>
+    (function(){
+      const grid  = document.getElementById("author-articles");
+      if (!grid) return;
+    
+      const AUTHOR = "Andrew Wells";
+      const norm = s => (s||"").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu,"");
+    
+      // prefix relative assets correctly when this page lives in /authors/
+      function asset(p){
+        if (!p) return "";
+        if (/^https?:\/\//i.test(p)) return p;
+        const needsUp = location.pathname.includes("/authors/");
+        return (needsUp ? "../" : "") + p.replace(/^\/+/,"");
+      }
+    
+      const url = "../data/articles.json?v=" + Date.now();
+    
+      fetch(url, { cache: "no-store" })
+        .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+        .then(payload => {
+          const list = Array.isArray(payload) ? payload : (payload.articles || []);
+          const mine = list.filter(a => norm(a.author?.name || a.author || "") === norm(AUTHOR));
+          grid.classList.add("article-grid");  // enable compact grid styling
+          grid.innerHTML = mine.length ? mine.map(renderAuthorCard).join("") : '<div class="muted">No articles yet.</div>';
+        })
+        .catch(() => { grid.innerHTML = '<div class="muted">Failed to load articles.</div>'; });
+    
+      function renderAuthorCard(a){
+        const thumb = asset(a.image || "../assets/mangrove.jpg");
+        const date  = a.date ? new Date(a.date).toDateString() : "";
+        const tag   = a.tags?.[0] ? `<span class="tag">${a.tags[0]}</span>` : "";
+        const read  = a.readTime ? `${a.readTime} min` : "";
+        const href  = a.href || a.url || "#";
+
+        // fix relative link when inside /authors/
+        const link = location.pathname.includes("/authors/") && href && !/^https?:\/\//.test(href)
+          ? "../" + href.replace(/^\/+/,"")
+          : href;
+
+        return `
+          <article class="article-card">
+            <img class="article-thumb" src="${thumb}" alt="">
+            <div class="article-body">
+              <h3>${a.title || "Untitled"}</h3>
+              <p class="article-deck">${a.deck || a.excerpt || ""}</p>
+            </div>
+            <div class="article-meta only-right">
+              <div class="meta-right">
+                ${tag}
+                ${read ? `<span>${read}</span><span aria-hidden="true">•</span>` : ""}
+                ${date ? `<time datetime="${a.date}">${date}</time>` : ""}
+              </div>
+            </div>
+            <a class="cover" href="${link}">Read</a>
+          </article>`;
+        }
+
+    })();
+  </script>
+
 </body>
 </html>
 
