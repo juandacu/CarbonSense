@@ -1960,3 +1960,13 @@ html, body { overflow-x: hidden; }
     align-items: flex-start;
   }
 }
+/* GoFundMe widget inside support card */
+.support-card--gofundme .gfm-embed {
+  margin-top: 8px;
+}
+
+/* Make the embedded iframe adapt to the card width */
+.support-card--gofundme iframe {
+  width: 100% !important;
+  max-width: 100%;
+}
