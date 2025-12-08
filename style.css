@@ -1885,3 +1885,77 @@ html, body { overflow-x: hidden; }
     height: 520px;
   }
 }
+.article-share {
+  margin: 20px 0 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.article-share-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.article-share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.share-btn {
+  font-size: 0.85rem;
+  padding: 4px 10px;
+}
+
+/* Light brand hints, still in your outline style */
+.share-btn--linkedin {
+  border-color: #0a66c2;
+}
+.share-btn--linkedin:hover {
+  background: #0a66c2;
+  color: #fff;
+}
+
+.share-btn--x {
+  border-color: #111;
+}
+.share-btn--x:hover {
+  background: #111;
+  color: #fff;
+}
+
+.share-btn--whatsapp {
+  border-color: #25d366;
+}
+.share-btn--whatsapp:hover {
+  background: #25d366;
+  color: #0d2518;
+}
+
+.share-btn--substack {
+  border-color: #ff6719;
+}
+.share-btn--substack:hover {
+  background: #ff6719;
+  color: #fff;
+}
+
+.article-share-status {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* Mobile: stack label above buttons */
+@media (max-width: 640px) {
+  .article-share {
+    align-items: flex-start;
+  }
+}

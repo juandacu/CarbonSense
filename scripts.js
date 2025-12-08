@@ -742,3 +742,76 @@ function fixDocxAnchors(root){
       track.innerHTML = '<p class="muted">Failed to load recent articles.</p>';
     });
 })();
+document.addEventListener("DOMContentLoaded", function () {
+  const shareButtons = document.querySelector("[data-share-buttons]");
+  if (!shareButtons) return;
+
+  const titleEl = document.querySelector("[data-article-title]");
+  const rawTitle = titleEl ? titleEl.textContent.trim() : document.title;
+  const pageUrl = window.location.href;
+  const encodedUrl = encodeURIComponent(pageUrl);
+  const encodedTitle = encodeURIComponent(rawTitle + " – via Carbon Sense");
+  const statusEl = document.querySelector("[data-share-status]");
+
+  function setStatus(msg) {
+    if (!statusEl) return;
+    statusEl.textContent = msg;
+    if (!msg) return;
+    window.setTimeout(() => {
+      if (statusEl.textContent === msg) statusEl.textContent = "";
+    }, 3000);
+  }
+
+  shareButtons.addEventListener("click", function (event) {
+    const btn = event.target.closest("[data-network]");
+    if (!btn) return;
+    event.preventDefault();
+
+    const network = btn.dataset.network;
+    let shareUrl = null;
+
+    switch (network) {
+      case "linkedin":
+        // LinkedIn only supports URL param
+        shareUrl =
+          "https://www.linkedin.com/sharing/share-offsite/?url=" + encodedUrl;
+        window.open(shareUrl, "_blank", "noopener");
+        break;
+
+      case "x":
+        // X/Twitter share
+        shareUrl =
+          "https://x.com/intent/post?text=" +
+          encodedTitle +
+          "&url=" +
+          encodedUrl;
+        window.open(shareUrl, "_blank", "noopener");
+        break;
+
+      case "whatsapp":
+        // WhatsApp share
+        shareUrl =
+          "https://api.whatsapp.com/send?text=" +
+          encodeURIComponent(rawTitle + " – " + pageUrl);
+        window.open(shareUrl, "_blank", "noopener");
+        break;
+
+      case "substack":
+        // Best you can do: copy link so it can be pasted into a Substack post
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(pageUrl)
+            .then(() =>
+              setStatus("Link copied. Paste it into your Substack post.")
+            )
+            .catch(() => setStatus("Could not copy link."));
+        } else {
+          setStatus("Copy the link from your browser address bar.");
+        }
+        break;
+
+      default:
+        break;
+    }
+  });
+});
