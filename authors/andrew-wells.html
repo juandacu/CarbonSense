@@ -41,20 +41,37 @@
   <section class="section" data-animate>
     <div class="container">
       <div class="bio-card">
-        <img src="../assets/authors/andrew-wells-bse-photo-nb.png" alt="Andrew Wells" class="bio-avatar" onerror="this.style.display='none'">
-        <div class="prose">
+        <div class="bio-side">
+          <img src="../assets/authors/andrew-wells-bse-photo-nb.png"
+               alt="Portrait of Andrew Wells"
+               class="bio-avatar"
+               onerror="this.style.display='none'">
+      
+          <a href="https://www.linkedin.com/in/andrew-wells-48409b139/"
+             class="btn btn-outline pill btn-linkedin-profile"
+             target="_blank" rel="noopener">
+            LinkedIn
+          </a>
+        </div>
+              <div class="prose">
           <div id="bio-status" class="muted" style="margin-bottom:12px">Loading bio…</div>
           <article id="bio-root" class="prose docx"></article>
         </div>
       </div>
 
-      <h2 class="section-title">Articles</h2>
-      <div id="author-articles"><p class="muted">Coming soon.</p></div>
+    <h2 class="section-title">Articles</h2>
+    <div id="author-articles">
+      <p class="muted">
+        <a href="../articles.html">View all Carbon Sense articles</a>
+      </p>
     </div>
-  </section>
+  </div>
+</section>
 
   <footer class="site-footer">
-    <div class="container foot-bottom"><small> <span data-year></span> Carbon Sense</small></div>
+    <div class="container foot-bottom">
+      <small><span data-year></span> Carbon Sense</small>
+    </div>
   </footer>
 
   <script src="../vendor/mammoth.browser.min.js"></script>
