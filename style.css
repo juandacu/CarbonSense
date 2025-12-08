@@ -1891,10 +1891,11 @@ html, body { overflow-x: hidden; }
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; /* all content aligned left */
   gap: 12px;
   flex-wrap: wrap;
 }
+
 
 .article-share-label {
   font-size: 0.85rem;
