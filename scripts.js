@@ -774,7 +774,7 @@ document.addEventListener("DOMContentLoaded", function () {
       case "linkedin":
         // LinkedIn only supports URL param
         shareUrl =
-          "https://www.linkedin.com/sharing/share-offsite/?url=" + encodedUrl;
+          "https://www.linkedin.com/shareArticle?mini=true&url=" + encodedUrl;
         window.open(shareUrl, "_blank", "noopener");
         break;
 
