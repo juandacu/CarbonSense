@@ -1974,3 +1974,32 @@ html, body { overflow-x: hidden; }
   width: 100% !important;
   max-width: 100%;
 }
+/* Support page: make cards full-width on small screens */
+@media (max-width: 900px) {
+  .support-layout {
+    grid-template-columns: 1fr;      /* copy + cards stacked */
+  }
+
+  .support-actions {
+    display: flex;                   /* override grid */
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .support-card {
+    width: 100%;
+  }
+}
+/* Mobile: show reviews stacked, no horizontal scroll */
+@media (max-width: 700px) {
+  .support-reviews-scroller {
+    overflow-x: visible;      /* stop side scroll */
+    flex-wrap: wrap;          /* allow wrapping */
+    gap: 12px;
+  }
+
+  .support-review {
+    flex: 1 1 100%;           /* each card full width */
+    max-width: 100%;
+  }
+}
