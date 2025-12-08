@@ -1561,10 +1561,6 @@ html, body { overflow-x: hidden; }
 }
 
 /* Buy Us A Coffee page tweaks */
-.coffee-page .hero-video {
-  /* Make hero almost fill the viewport so the footer comes right after it */
-  min-height: calc(100vh - 180px); /* adjust 180px if header/footer sizes change */
-}
 
 /* Remove extra white gap above the footer on this page */
 .coffee-page .site-footer {
@@ -1680,4 +1676,212 @@ html, body { overflow-x: hidden; }
 .contact-form textarea::placeholder {
   color: #9aa4a0;
   opacity: 1; /* Firefox */
+}
+/* Support page layout */
+.support-section {
+  background:
+    radial-gradient(60% 80% at 0% 0%, rgba(27,127,107,.08), transparent 60%),
+    #f7faf9;
+  padding: 48px 0 56px;
+  border-top: 1px solid var(--border);
+}
+
+.support-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+  gap: 32px;
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+  .support-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Left copy column */
+.support-copy h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.support-copy .lead {
+  margin-bottom: 14px;
+}
+
+.support-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+.support-list li + li {
+  margin-top: 4px;
+}
+
+/* Right cards grid */
+.support-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.support-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+}
+
+.support-card h3 {
+  margin: 0 0 6px;
+  font-size: 1.05rem;
+}
+.support-card p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* Substack embed card */
+.support-card--substack .substack-embed {
+  margin-top: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: #fff;
+}
+.support-card--substack iframe {
+  display: block;
+  width: 100%;
+  height: 260px;
+  border: 0;
+}
+
+/* Brand-ish buttons, still in site style */
+.btn-linkedin {
+  border-color: #0a66c2;
+  color: #0a66c2;
+}
+.btn-linkedin:hover {
+  background: #0a66c2;
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+
+.btn-coffee {
+  border-color: #e0a300;
+  color: #a07400;
+}
+.btn-coffee:hover {
+  background: #ffe9a6;
+  box-shadow: var(--shadow);
+}
+
+/* Support page: footer spacing */
+.coffee-page .site-footer {
+  margin-top: 0;
+}
+/* Support page: make coffee hero shorter */
+.coffee-page .hero-video {
+  /* was: min-height: calc(100vh - 180px); */
+  min-height: 52vh;          /* around half the viewport */
+}
+
+/* Also tighten the vertical padding on the text block */
+.coffee-page .hero-video .hero-content {
+  padding-top: 64px;
+  padding-bottom: 72px;
+}
+/* Reviews widget in support section */
+
+.support-reviews {
+  margin: 18px 0 8px;
+  padding: 14px 16px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(110% 140% at 0% 0%, rgba(27,127,107,0.10), transparent 60%),
+    #ffffff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+}
+
+.support-reviews-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+/* Horizontal scroller of small review cards */
+.support-reviews-scroller {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar decoration where possible, but keep scrollability */
+.support-reviews-scroller::-webkit-scrollbar {
+  height: 6px;
+}
+.support-reviews-scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+.support-reviews-scroller::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 999px;
+}
+
+.support-review {
+  flex: 0 0 230px;
+  max-width: 260px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #f9fbfa;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.support-review blockquote {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #1f2724;
+}
+
+.support-review figcaption {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* Mobile: make each card a bit wider for easier reading */
+@media (max-width: 640px) {
+  .support-review {
+    flex-basis: 80%;
+  }
+}
+/* Embedded Google Form for reviews */
+.support-card--review .review-embed {
+  margin-top: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+.support-card--review .review-form {
+  display: block;
+  width: 100%;
+  height: 420px;   /* adjust if your form is taller */
+  border: 0;
+}
+
+/* Mobile: give the form more height */
+@media (max-width: 640px) {
+  .support-card--review .review-form {
+    height: 520px;
+  }
 }
