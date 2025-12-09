@@ -11,39 +11,50 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <!-- Social preview -->
-<meta property="og:title" content="Carbon Sense — Home" />
-<meta property="og:description" content="Plain language, open methods, and visuals without the fog." />
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content="Carbon Sense" />
-<meta property="og:url" content="https://carbonsense.net/" />
-<meta property="og:image" content="https://carbonsense.net/assets/og/og-home.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
+  <meta property="og:title" content="Carbon Sense — Home" />
+  <meta property="og:description" content="Plain language, open methods, and visuals without the fog." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Carbon Sense" />
+  <meta property="og:url" content="https://carbonsense.net/" />
+  <meta property="og:image" content="https://carbonsense.net/assets/og/og-home.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
-<!-- Twitter (WhatsApp ignores, but good to have) -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Carbon Sense — Home" />
-<meta name="twitter:description" content="Community-led conservation and climate action." />
-<meta name="twitter:image" content="https://carbonsense.net/assets/og/og-home.png" />
-<meta
-name="description"
-content="Carbon Sense makes sense of climate economics: accessible, evidence-based writing on climate and energy policy, just transition, and climate finance."
->
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/logo.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/assets/logo.png">
-<link rel="apple-touch-icon" href="/assets/logo.png">
+  <!-- Twitter (WhatsApp ignores, but good to have) -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Carbon Sense — Home" />
+  <meta name="twitter:description" content="Community-led conservation and climate action." />
+  <meta name="twitter:image" content="https://carbonsense.net/assets/og/og-home.png" />
+  <meta
+    name="description"
+    content="Carbon Sense makes sense of climate economics: accessible, evidence-based writing on climate and energy policy, just transition, and climate finance."
+  >
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/logo.png">
+  <link rel="apple-touch-icon" href="/assets/logo.png">
 
-<style>
-  .social-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .social-title svg {
-    flex-shrink: 0;
-  }
-</style>
-<script type="application/ld+json">
+  <style>
+    .social-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .social-title svg {
+      flex-shrink: 0;
+    }
+
+    /* Hero title & subtitle tweaks */
+    .hero-title {
+      font-size: clamp(2.2rem, 3vw, 2.8rem);
+      line-height: 1.1;
+    }
+
+    .hero-sub {
+      max-width: 100%; /* allow subtitle to use full width of the text column */
+    }
+  </style>
+
+  <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -57,7 +68,6 @@ content="Carbon Sense makes sense of climate economics: accessible, evidence-bas
     ]
   }
   </script>
-  
 </head>
 <body>
   <!-- Header -->
@@ -78,171 +88,168 @@ content="Carbon Sense makes sense of climate economics: accessible, evidence-bas
     </div>
   </header>
 
-<!-- Hero -->
-<section class="page-hero hero-media" data-animate>
-  <div class="hero-bg"></div>
+  <!-- Hero -->
+  <section class="page-hero hero-media" data-animate>
+    <div class="hero-bg"></div>
 
-  <div class="container hero-inner">
-    <div class="hero-copy">
-      <h1 class="hero-title">Climate economics will define the next decades</h1>
-      <p class="hero-sub">For curious thinkers who want to cut through the noise, we deliver clear insights and analysis to understand where climate economics and policy are taking us - and why it matters</p>
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <h1 class="hero-title">Climate economics will define the next decades</h1>
+        <p class="hero-sub">
+          For curious thinkers who want to cut through the noise, we deliver clear insights and analysis to understand
+          where climate economics and policy are taking us - and why it matters
+        </p>
 
-      <!-- CTAs -->
-      <div class="hero-ctas">
-        <a href="coffee.html" class="btn btn-outline pill">Support Us</a>
-        <a href="contact.html" class="btn btn-outline pill">Contact Us</a>
+        <!-- CTAs -->
+        <div class="hero-ctas">
+          <a href="coffee.html" class="btn btn-outline pill">Support Us</a>
+          <a href="contact.html" class="btn btn-outline pill">Contact Us</a>
+        </div>
       </div>
 
+      <!-- right media: auto-rotating carousel -->
+      <figure class="hero-media-frame">
+        <div class="hero-carousel">
+          <div class="slide" data-caption="Credits: Kelly" data-duration="5000">
+            <video src="assets/mangrove.mp4" muted playsinline preload="metadata"></video>
+          </div>
+
+          <div class="slide" data-caption="Credits: Chris The Island" data-duration="5000">
+            <video src="assets/parkinglot.mp4" muted playsinline preload="metadata"></video>
+          </div>
+
+          <div class="slide" data-caption="Credits: Chris The Island" data-duration="5000">
+            <video src="assets/burningareas.mp4" muted playsinline preload="metadata"></video>
+          </div>
+
+          <div class="slide" data-caption="Credits: Chris The Island" data-duration="5000">
+            <video src="assets/thrash.mp4" muted playsinline preload="metadata"></video>
+          </div>
+        </div>
+      </figure>
     </div>
 
- <!-- right media: auto-rotating carousel -->
- <figure class="hero-media-frame">
-  <div class="hero-carousel">
+    <button
+      class="scroll-cue"
+      onclick="window.scrollTo({top: document.querySelector('.section').offsetTop - 24, behavior: 'smooth'})"
+      aria-label="Scroll">
+      ↓
+    </button>
+  </section>
 
-      <!-- Video slide (duration can be inferred or set via data-duration) -->
-      <div class="slide" data-caption="Credits: Kelly" data-duration="5000">
-        <video src="assets/mangrove.mp4"
-                muted playsinline preload="metadata"></video>
+  <section class="section home-articles" data-animate>
+    <div class="container">
+      <div class="home-articles-head">
+        <h2 class="section-title">Recent articles</h2>
+        <a href="articles.html" class="home-articles-link">All Articles</a>
+      </div>
+      <div class="home-articles-track" id="home-articles-track">
+        <!-- Filled by scripts.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Stay in the loop -->
+  <section class="section" id="connect" data-animate>
+    <div class="container">
+      <div class="connect-header">
+        <h2>Stay in the loop</h2>
+        <p class="lead">Deep dives on Substack, quick updates on LinkedIn</p>
       </div>
 
-      <!-- Video slide (duration can be inferred or set via data-duration) -->
-      <div class="slide" data-caption="Credits: Chris The Island" data-duration="5000">
-        <video src="assets/parkinglot.mp4"
-                muted playsinline preload="metadata"></video>
+      <div class="connect-grid">
+        <a class="social-card social-substack" href="https://carbonsense.substack.com/" target="_blank" rel="noopener">
+          <div class="social-label">Newsletter</div>
+          <h3 class="social-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M4 4h16v3H4zm0 5h16v3H4zm0 5h10v3H4z"></path>
+            </svg>
+            <span>Read Carbon Sense on Substack</span>
+          </h3>
+        </a>
+
+        <a class="social-card social-linkedin" href="https://www.linkedin.com/company/carbonsense1/" target="_blank" rel="noopener">
+          <div class="social-label">LinkedIn</div>
+          <h3 class="social-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M4.98 3.5C4.98 4.604 4.1 5.5 3 5.5 1.9 5.5 1 4.604 1 3.5 1 2.395 1.9 1.5 3 1.5c1.1 0 1.98.895 1.98 2zm.02 4.5H1v14h4V8zm7.982 0h-3.982v14h4v-7.5c0-3.788 5-4.101 5 0V22h4V13.5c0-7.545-8-7.266-9-3.556V8z"></path>
+            </svg>
+            <span>Follow us on LinkedIn</span>
+          </h3>
+        </a>
       </div>
-
-      <div class="slide" data-caption="Credits: Chris The Island" data-duration="5000">
-        <video src="assets/burningareas.mp4"
-                muted playsinline preload="metadata"></video>
-      </div>
-      <div class="slide" data-caption="Credits: Chris The Island" data-duration="5000">
-        <video src="assets/thrash.mp4"
-                muted playsinline preload="metadata"></video>
-      </div>
     </div>
-  </figure>
-  </div>
-  <button class="scroll-cue" onclick="window.scrollTo({top: document.querySelector('.section').offsetTop - 24, behavior: 'smooth'})" aria-label="Scroll">
-    ↓
-  </button>
-</section>
-
-<section class="section home-articles" data-animate>
-  <div class="container">
-    <div class="home-articles-head">
-      <h2 class="section-title">Recent articles</h2>
-      <a href="articles.html" class="home-articles-link">All Articles</a>
-    </div>
-    <div class="home-articles-track" id="home-articles-track">
-      <!-- Filled by scripts.js -->
-    </div>
-  </div>
-</section>
-
-<!-- Stay in the loop -->
-<section class="section" id="connect" data-animate>
-  <div class="container">
-
-    <div class="connect-header">
-      <h2>Stay in the loop</h2>
-      <p class="lead">Deep dives on Substack, quick updates on LinkedIn</p>
-    </div>
-
-    <div class="connect-grid">
-      <a class="social-card social-substack" href="https://carbonsense.substack.com/" target="_blank" rel="noopener">
-        <div class="social-label">Newsletter</div>
-        <h3 class="social-title">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M4 4h16v3H4zm0 5h16v3H4zm0 5h10v3H4z"></path>
-          </svg>
-          <span>Read Carbon Sense on Substack</span>
-        </h3>
-      </a>
-
-      <a class="social-card social-linkedin" href="https://www.linkedin.com/company/carbonsense1/" target="_blank" rel="noopener">
-        <div class="social-label">LinkedIn</div>
-        <h3 class="social-title">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M4.98 3.5C4.98 4.604 4.1 5.5 3 5.5 1.9 5.5 1 4.604 1 3.5 1 2.395 1.9 1.5 3 1.5c1.1 0 1.98.895 1.98 2zm.02 4.5H1v14h4V8zm7.982 0h-3.982v14h4v-7.5c0-3.788 5-4.101 5 0V22h4V13.5c0-7.545-8-7.266-9-3.556V8z"></path>
-          </svg>
-          <span>Follow us on LinkedIn</span>
-        </h3>
-      </a>
-    </div>
-  </div>
-</section>
+  </section>
 
   <!-- Intro / Cards -->
-<section class="section" data-animate>
-  <div class="container">
-    <div class="grid cards-3">
-      <a class="card hover" href="about.html">
-        <h3>About</h3>
-        <p>Who we are and what we do</p>
-      </a>
-      <a class="card hover" href="articles.html">
-        <h3>Articles</h3>
-        <p>Long-form pieces and explainers</p>
-      </a>
+  <section class="section" data-animate>
+    <div class="container">
+      <div class="grid cards-3">
+        <a class="card hover" href="about.html">
+          <h3>About</h3>
+          <p>Who we are and what we do</p>
+        </a>
+        <a class="card hover" href="articles.html">
+          <h3>Articles</h3>
+          <p>Long-form pieces and explainers</p>
+        </a>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Substack embed -->
-<section class="section" id="newsletter" data-animate>
-  <div class="container">
-    <h2 class="section-title">Subscribe to our Newsletter</h2>
-    <div class="substack-embed-wrap">
-      <iframe
-        src="https://carbonsense.substack.com/embed"
-        frameborder="0"
-        scrolling="no"
-        title="Subscribe to Carbon Sense on Substack">
-      </iframe>
+  <!-- Substack embed -->
+  <section class="section" id="newsletter" data-animate>
+    <div class="container">
+      <h2 class="section-title">Subscribe to our Newsletter</h2>
+      <div class="substack-embed-wrap">
+        <iframe
+          src="https://carbonsense.substack.com/embed"
+          frameborder="0"
+          scrolling="no"
+          title="Subscribe to Carbon Sense on Substack">
+        </iframe>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Footer -->
-<footer class="site-footer site-footer-dark">
-  <div class="container footer-inner">
-    <div>
-      <a class="logo logo-foot" href="index.html" aria-label="Carbon Sense">
-        <img src="assets/logo.png" alt="Carbon Sense">
-      </a>
-      <p class="muted">
-        Clear insights and analysis to understand where climate economics and policy are taking us
-      </p>
+  <!-- Footer -->
+  <footer class="site-footer site-footer-dark">
+    <div class="container footer-inner">
+      <div>
+        <a class="logo logo-foot" href="index.html" aria-label="Carbon Sense">
+          <img src="assets/logo.png" alt="Carbon Sense">
+        </a>
+        <p class="muted">
+          Clear insights and analysis to understand where climate economics and policy are taking us
+        </p>
+      </div>
+
+      <div>
+        <div class="foot-title">Explore</div>
+        <ul class="foot-links">
+          <li><a href="about.html">About</a></li>
+          <li><a href="articles.html">All Articles</a></li>
+          <li><a href="coffee.html">Support Us</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="foot-title">Contact</div>
+        <p class="muted">
+          <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
+        </p>
+      </div>
     </div>
 
-    <div>
-      <div class="foot-title">Explore</div>
-      <ul class="foot-links">
-        <li><a href="about.html">About</a></li>
-        <li><a href="articles.html">All Articles</a></li>
-        <li><a href="coffee.html">Support Us</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-      </ul>
+    <div class="container foot-bottom">
+      <small><span data-year></span> Carbon Sense</small>
     </div>
-
-    <div>
-      <div class="foot-title">Contact</div>
-      <p class="muted">
-        <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
-      </p>
-    </div>
-  </div>
-
-  <div class="container foot-bottom">
-    <small><span data-year></span> Carbon Sense</small>
-  </div>
-</footer>
-  
+  </footer>
 
   <script src="scripts.js"></script>
 </body>
 </html>
-
 
 
 
