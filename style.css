@@ -768,6 +768,48 @@ ul.bullets li{ margin:.4rem 0; }
   transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
 }
 .article-card:hover{ transform: translateY(-2px); box-shadow: 0 18px 38px rgba(0,0,0,.12); border-color:#dfe7e4; }
+/* Locked / coming-soon articles */
+.article-card.is-locked,
+.home-article.is-locked {
+  position: relative;
+}
+
+.article-card.is-locked img,
+.article-card.is-locked .article-body,
+.article-card.is-locked .article-meta,
+.home-article.is-locked .home-article-thumb,
+.home-article.is-locked .home-article-body {
+  filter: grayscale(1) blur(1.5px);
+  opacity: 0.5;
+}
+
+/* Don’t lift locked cards on hover */
+.article-card.is-locked:hover {
+  transform: none;
+  box-shadow: var(--shadow);
+}
+
+/* Disable click on locked cards */
+.article-card.is-locked > a.cover,
+.home-article.is-locked .home-article-link {
+  pointer-events: none;
+}
+
+/* Shared overlay text */
+.article-lock-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #fff;
+  background: rgba(0,0,0,0.55);
+  pointer-events: none;
+}
 
 /* Thumbnail */
 .article-thumb{

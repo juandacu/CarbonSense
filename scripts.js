@@ -27,21 +27,79 @@ async function fetchJSON(rel, { tries = 3, signal } = {}) {
 // Resolve any relative path against the current <base>
 function absUrl(rel){ return new URL(rel, document.baseURI).toString(); }
 
+// -------- Article release helpers (live vs coming soon) --------
+function articleGoLiveDate(a){
+  if (!a) return null;
+  const raw = a.goLive || a.go_live || a.publishAt || a.publish_at || a.date;
+  if (!raw) return null;
+  const d = new Date(raw);
+  return isNaN(d) ? null : d;
+}
+
+function isArticleLive(a){
+  const d = articleGoLiveDate(a);
+  if (!d) return true; // if no date, treat as live
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  d.setHours(0,0,0,0);
+  return d <= today;
+}
+
+function comingSoonText(a){
+  const d = articleGoLiveDate(a);
+  if (!d) return "Coming soon";
+  return "Coming soon (" + d.toLocaleDateString(undefined, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  }) + ")";
+}
+
+
 // Normalize an article record from JSON
 function normalizeArticle(a){
-  const href = a.href || a.url || a.path || (a.slug ? `articles/${a.slug}.html` : "");
-  const image = a.image || a.thumb || a.thumbnail || "";
+  if (!a) return {
+    title: "Untitled",
+    deck: "",
+    author: "Carbon Sense",
+    tag: "",
+    dateISO: "",
+    dateTxt: "",
+    href: "",
+    image: absUrl("assets/placeholders/article.jpg"),
+    live: true,
+    comingSoon: ""
+  };
+
+  const title  = a.title || "Untitled";
+  const deck   = a.deck  || a.excerpt || "";
+  const author = (a.author && (a.author.name || a.author.full || a.author)) || a.author || "Carbon Sense";
+  const tag    = (a.tags && a.tags[0]) || a.tag || "";
+
+  const href   = a.href || a.url || a.path || "";
+  const image  = a.image || (a.hero && a.hero.image) || "";
+
+  const dLive  = articleGoLiveDate(a);
+  const live   = isArticleLive(a);
+
+  const dateISO = dLive ? dLive.toISOString().slice(0,10) : "";
+  const dateTxt = dLive ? dLive.toLocaleDateString(undefined, { day:"2-digit", month:"short", year:"numeric" }) : "";
+
   return {
-    title: a.title || "Untitled",
-    deck:  a.deck || a.excerpt || a.summary || "",
-    dateISO: a.date || "",
-    dateTxt: a.date ? new Date(a.date).toDateString() : "",
-    tag: (a.tags && a.tags[0]) || "",
-    author: (a.author && (a.author.name || a.author)) || "Carbon-Sense",
-    href: href ? absUrl(href) : "",                          // empty string means “no link”
-    image: image ? absUrl(image) : absUrl("assets/placeholders/article.jpg")
+    title,
+    deck,
+    author,
+    tag,
+    dateISO,
+    dateTxt,
+    // only keep real link if live
+    href: live && href ? absUrl(href) : "",
+    image: image ? absUrl(image) : absUrl("assets/placeholders/article.jpg"),
+    live,
+    comingSoon: live ? "" : comingSoonText(a)
   };
 }
+
 
 // tiny image retry (handles occasional aborts on GitHub Pages)
 function imgWithRetry(src, tries=2){
@@ -110,9 +168,16 @@ document.addEventListener("error", (e) => {
     const list = (Array.isArray(raw) ? raw : raw.articles || []).map(normalizeArticle);
 
     grid.innerHTML = list.map(a => {
-      const maybeLinkStart = a.href ? `<a class="cover" href="${a.href}" aria-label="Read ${escapeHtml(a.title)}"></a>` : "";
+      const locked  = !a.live;
+      const overlay = locked
+        ? `<div class="article-lock-overlay">${escapeHtml(a.comingSoon || "Coming soon")}</div>`
+        : "";
+      const maybeLinkStart = a.href
+        ? `<a class="cover" href="${a.href}" aria-label="Read ${escapeHtml(a.title)}"></a>`
+        : "";
+    
       return `
-        <article class="article-card">
+        <article class="article-card${locked ? " is-locked" : ""}">
           ${imgWithRetry(a.image)}
           <div class="article-body">
             <h3>${escapeHtml(a.title)}</h3>
@@ -128,8 +193,10 @@ document.addEventListener("error", (e) => {
             </div>
           </div>
           ${maybeLinkStart}
+          ${overlay}
         </article>`;
     }).join("");
+    
 
   } catch (e) {
     console.error("Articles load error:", e);
@@ -403,7 +470,11 @@ window.addEventListener("message", function (e) {
       const date = new Date(a.date).toDateString();
       const tag = (a.tags && a.tags[0]) ? `<span class="tag">${a.tags[0]}</span>` : '';
       const read = a.readTime ? `${a.readTime} min` : '';
-
+      const items = (Array.isArray(data) ? data : data.articles || [])
+      .filter(a => a && (a.title || a.name))
+      .filter(isArticleLive)   // <- add this
+      .sort((a,b) => new Date(b.date || 0) - new Date(a.date || 0));
+    
       return `
         <article class="article-card">
           <img class="article-thumb" src="${thumb}" alt="">
@@ -692,35 +763,31 @@ function fixDocxAnchors(root){
       }
 
       track.innerHTML = articles.map(a => {
-        const href =
-          a.href || a.url || a.path || 'articles.html';
-        const thumb =
-          a.image || a.thumb || a.thumbnail || 'assets/placeholders/article.jpg';
-        const tag =
-          (a.tags && a.tags[0]) ? `<span class="tag">${escapeHtml(a.tags[0])}</span>` : '';
-        const date = a.date
-          ? `<time datetime="${a.date}">${new Date(a.date)
-              .toLocaleDateString(undefined, { month:'short', day:'numeric', year:'numeric' })}</time>`
-          : '';
-
+        const live   = isArticleLive(a);
+        const href   = live ? (a.href || a.url || a.path || "articles.html") : "#";
+        const thumb  = a.image || a.hero?.image || "assets/placeholders/article.jpg";
+        const tag    = (a.tags && a.tags[0]) || a.tag || "";
+        const date   = a.date
+          ? new Date(a.date).toLocaleDateString(undefined, { day:"2-digit", month:"short", year:"numeric" })
+          : "";
+        const coming = comingSoonText(a);
+      
         return `
-          <article class="home-article">
-            <a class="home-article-link" href="${href}">
+          <article class="home-article${live ? "" : " is-locked"}">
+            <a class="home-article-link" href="${href}" ${live ? "" : 'aria-disabled="true" tabindex="-1"'}>
               <img class="home-article-thumb" src="${thumb}" alt="">
               <div class="home-article-body">
                 <div class="home-article-meta">
-                  ${tag}
-                  ${date}
+                  ${tag ? `<span class="tag">${escapeHtml(tag)}</span>` : ""}
+                  ${date ? `<span class="muted small">${escapeHtml(date)}</span>` : ""}
                 </div>
-                <h3 class="home-article-title">${escapeHtml(a.title || 'Untitled')}</h3>
-                <p class="home-article-deck">
-                  ${escapeHtml(a.deck || a.excerpt || a.summary || '')}
-                </p>
+                <h3 class="home-article-title">${escapeHtml(a.title || "Untitled")}</h3>
+                <p class="home-article-deck">${escapeHtml(a.deck || a.excerpt || "")}</p>
               </div>
             </a>
-          </article>
-        `;
-      }).join('');
+            ${live ? "" : `<div class="article-lock-overlay">${escapeHtml(coming)}</div>`}
+          </article>`;
+      }).join("");
 
       // optional: simple auto-scroll effect
       const cards = Array.from(track.children);
