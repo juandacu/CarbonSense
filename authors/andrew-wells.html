@@ -4,20 +4,20 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Andrew Wells — Carbon Sense</title>
-<!DOCTYPE html>
-  <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Andrew Wells — Carbon Sense</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css"/>
-  </head>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/logo.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/logo.png">
+  <link rel="apple-touch-icon" href="../assets/logo.png">
+</head>
+
 <body>
+  <!-- Header -->
   <header class="site-header solid" data-header>
     <div class="container header-inner">
       <a class="logo" href="../index.html" aria-label="Carbon Sense">
         <img src="../assets/logo.png" alt="Carbon Sense">
-      </a>  
+      </a>
       <nav class="nav" data-nav>
         <a href="../index.html">Home</a>
         <a href="../about.html">About</a>
@@ -31,133 +31,137 @@
     </div>
   </header>
 
+  <!-- Hero -->
   <section class="page-hero hero-compact" data-animate>
     <div class="container">
       <h1>Andrew Wells</h1>
-      <p class="lead">Electricity markets, investment, and climate policy.</p>
+      <p class="lead">Electricity markets, investment, and climate policy</p>
     </div>
   </section>
 
+  <!-- Bio + Articles -->
   <section class="section" data-animate>
     <div class="container">
       <div class="bio-card">
         <div class="bio-side">
-          <img src="../assets/authors/andrew-wells-bse-photo-nb.png"
-               alt="Portrait of Andrew Wells"
-               class="bio-avatar"
-               onerror="this.style.display='none'">
-      
-          <a href="https://www.linkedin.com/in/andrew-wells-48409b139/"
-             class="btn btn-outline pill btn-linkedin-profile"
-             target="_blank" rel="noopener">
+          <img
+            src="../assets/authors/andrew-wells-bse-photo-nb.png"
+            alt="Portrait of Andrew Wells"
+            class="bio-avatar"
+            onerror="this.style.display='none'">
+
+          <a
+            href="https://www.linkedin.com/in/andrew-wells-48409b139/"
+            class="btn btn-outline pill btn-linkedin-profile"
+            target="_blank" rel="noopener">
             LinkedIn
           </a>
         </div>
-              <div class="prose">
-          <div id="bio-status" class="muted" style="margin-bottom:12px">Loading bio…</div>
+
+        <div class="prose">
+          <div id="bio-status" class="muted" style="margin-bottom: 12px;">Loading bio…</div>
           <article id="bio-root" class="prose docx"></article>
         </div>
       </div>
 
-    <h2 class="section-title">Articles</h2>
-    <div id="author-articles">
-      <p class="muted">
-        <a href="../articles.html">View all Carbon Sense articles</a>
-      </p>
+      <h2 class="section-title">Articles</h2>
+      <div id="author-articles">
+        <p class="muted">
+          <a href="../articles.html">View all Carbon Sense articles</a>
+        </p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Footer -->
-<footer class="site-footer site-footer-dark">
-  <div class="container footer-inner">
-    <div>
-      <a class="logo logo-foot" href="index.html" aria-label="Carbon Sense">
-        <img src="assets/logo.png" alt="Carbon Sense">
-      </a>
-      <p class="muted">
-        Making sense of climate economics: accessible, evidence-based writing on climate and energy policy
-      </p>
+  <!-- Standard Footer -->
+  <footer class="site-footer site-footer-dark">
+    <div class="container footer-inner">
+      <div>
+        <a class="logo logo-foot" href="../index.html" aria-label="Carbon Sense">
+          <img src="../assets/logo.png" alt="Carbon Sense">
+        </a>
+        <p class="muted">
+          Making sense of climate economics: accessible, evidence-based writing on climate and energy policy
+        </p>
+      </div>
+
+      <div>
+        <div class="foot-title">Explore</div>
+        <ul class="foot-links">
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../articles.html">All Articles</a></li>
+          <li><a href="../coffee.html">Support Us</a></li>
+          <li><a href="../privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="foot-title">Contact</div>
+        <p class="muted">
+          <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
+        </p>
+      </div>
     </div>
 
-    <div>
-      <div class="foot-title">Explore</div>
-      <ul class="foot-links">
-        <li><a href="about.html">About</a></li>
-        <li><a href="articles.html">All Articles</a></li>
-        <li><a href="coffee.html">Support Us</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-      </ul>
+    <div class="container foot-bottom">
+      <small><span data-year></span> Carbon Sense</small>
     </div>
+  </footer>
 
-    <div>
-      <div class="foot-title">Contact</div>
-      <p class="muted">
-        <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
-      </p>
-    </div>
-  </div>
-
-  <div class="container foot-bottom">
-    <small><span data-year></span> Carbon Sense</small>
-  </div>
-</footer>
-
+  <!-- Scripts -->
   <script src="../vendor/mammoth.browser.min.js"></script>
   <script src="../scripts.js"></script>
   <script>
     renderDocx("#bio-root", "andrew-wells-bio.docx", "#bio-status")
       .catch(console.error);
   </script>
-  <section class="section" data-animate>
-    <div class="container">
-      <h2>Articles by Juan Daniel Acuña-Román</h2>
-      <div id="author-articles" class="grid cards-3"></div>
-    </div>
-  </section>
-
-  <footer class="site-footer">
-    <div class="container foot-bottom"><small> <span data-year></span> Carbon Sense</small></div>
-  </footer>
 
   <script>
-    (function(){
-      const grid  = document.getElementById("author-articles");
+    (function () {
+      const grid = document.getElementById("author-articles");
       if (!grid) return;
-    
+
       const AUTHOR = "Andrew Wells";
-      const norm = s => (s||"").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu,"");
-    
-      // prefix relative assets correctly when this page lives in /authors/
-      function asset(p){
+      const norm = s => (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+
+      // Prefix relative assets correctly when this page lives in /authors/
+      function asset(p) {
         if (!p) return "";
         if (/^https?:\/\//i.test(p)) return p;
         const needsUp = location.pathname.includes("/authors/");
-        return (needsUp ? "../" : "") + p.replace(/^\/+/,"");
+        return (needsUp ? "../" : "") + p.replace(/^\/+/, "");
       }
-    
+
       const url = "../data/articles.json?v=" + Date.now();
-    
+
       fetch(url, { cache: "no-store" })
-        .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+        .then(r => {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.json();
+        })
         .then(payload => {
           const list = Array.isArray(payload) ? payload : (payload.articles || []);
           const mine = list.filter(a => norm(a.author?.name || a.author || "") === norm(AUTHOR));
-          grid.classList.add("article-grid");  // enable compact grid styling
-          grid.innerHTML = mine.length ? mine.map(renderAuthorCard).join("") : '<div class="muted">No articles yet.</div>';
+
+          grid.classList.add("article-grid");
+          grid.innerHTML = mine.length
+            ? mine.map(renderAuthorCard).join("")
+            : '<div class="muted">No articles yet.</div>';
         })
-        .catch(() => { grid.innerHTML = '<div class="muted">Failed to load articles.</div>'; });
-    
-      function renderAuthorCard(a){
+        .catch(() => {
+          grid.innerHTML = '<div class="muted">Failed to load articles.</div>';
+        });
+
+      function renderAuthorCard(a) {
         const thumb = asset(a.image || "../assets/mangrove.jpg");
         const date  = a.date ? new Date(a.date).toDateString() : "";
         const tag   = a.tags?.[0] ? `<span class="tag">${a.tags[0]}</span>` : "";
         const read  = a.readTime ? `${a.readTime} min` : "";
         const href  = a.href || a.url || "#";
 
-        // fix relative link when inside /authors/
+        // Fix relative link when inside /authors/
         const link = location.pathname.includes("/authors/") && href && !/^https?:\/\//.test(href)
-          ? "../" + href.replace(/^\/+/,"")
+          ? "../" + href.replace(/^\/+/, "")
           : href;
 
         return `
@@ -176,12 +180,11 @@
             </div>
             <a class="cover" href="${link}">Read</a>
           </article>`;
-        }
-
+      }
     })();
   </script>
-
 </body>
 </html>
+
 
 
