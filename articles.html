@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Carbon Sense — All Articles</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 
@@ -13,12 +14,13 @@
 </head>
 
 <body>
+
   <!-- Header -->
   <header class="site-header solid" data-header>
     <div class="container header-inner">
-      <a class="logo" href="index.html" aria-label="Carbon-Sense">
-        <img src="assets/logo.png" alt="Carbon-Sense">
-      </a>  
+      <a class="logo" href="index.html" aria-label="Carbon Sense">
+        <img src="assets/logo.png" alt="Carbon Sense">
+      </a>
       <nav class="nav" data-nav>
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
@@ -32,7 +34,7 @@
     </div>
   </header>
 
-  <!-- Hero / intro -->
+  <!-- Hero -->
   <section class="articles-hero">
     <div class="container">
       <h1>Articles</h1>
@@ -40,7 +42,7 @@
     </div>
   </section>
 
-  <!-- Cards grid -->
+  <!-- All Articles Grid -->
   <section class="section" id="articles" data-animate>
     <div class="container">
       <div id="articles-grid" class="article-grid"></div>
@@ -82,10 +84,53 @@
     </div>
   </footer>
 
+  <!-- Script -->
   <script src="scripts.js"></script>
+
+  <!-- Override grid render to enforce Coming Soon behaviour -->
+  <script>
+    (async function () {
+      const grid = document.getElementById("articles-grid");
+      if (!grid) return;
+
+      try {
+        const raw = await fetch("data/articles.json", { cache: "no-store" }).then(r => r.json());
+        const articles = (Array.isArray(raw) ? raw : raw.articles || []).map(normalizeArticle);
+
+        grid.innerHTML = articles.map(a => {
+          const locked = !a.live;
+
+          return `
+            <article class="article-card ${locked ? "is-locked" : ""}">
+              <img class="article-thumb" src="${a.image}" alt="">
+
+              <div class="article-body">
+                <h3>${a.title}</h3>
+                <p class="article-deck">${a.deck || ""}</p>
+              </div>
+
+              <div class="article-meta">
+                <div class="meta-left">
+                  <span class="byline">${a.author}</span>
+                </div>
+                <div class="meta-right">
+                  ${a.tag ? `<span class="tag">${a.tag}</span>` : ""}
+                  ${a.dateISO ? `<time datetime="${a.dateISO}">${a.dateTxt}</time>` : ""}
+                </div>
+              </div>
+
+              ${a.live && a.href ? `<a class="cover" href="${a.href}" aria-label="Read article"></a>` : ""}
+              ${locked ? `<div class="article-lock-overlay">${a.comingSoon}</div>` : ""}
+            </article>
+          `;
+        }).join("");
+
+      } catch (err) {
+        console.error(err);
+        grid.innerHTML = `<div class="muted">Failed to load articles.</div>`;
+      }
+    })();
+  </script>
+
 </body>
 </html>
-
-
-
-

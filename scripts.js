@@ -206,6 +206,9 @@ document.addEventListener("error", (e) => {
 
 function renderCard(item){
   const date = item.date ? `<time class="muted" datetime="${item.date}">${new Date(item.date).toDateString()}</time>` : "";
+  const link = a.live ? a.href : "";
+  const overlay = a.live ? "" : `<div class="article-lock-overlay">${a.comingSoon}</div>`;
+
   return `
     <a class="card hover" href="${item.url || '#'}" ${item.url ? '' : 'aria-disabled="true"'} >
       <h3>${escapeHtml(item.title || "Untitled")}</h3>
