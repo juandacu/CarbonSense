@@ -752,10 +752,24 @@ function fixDocxAnchors(root){
     })
     .then(raw => {
       const items = Array.isArray(raw) ? raw : (raw.articles || raw || []);
-      const articles = items
-        .filter(a => a && (a.title || a.name))
-        .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0))
-        .slice(0, 6);
+
+      // Normalize all articles (this includes live status + comingSoon)
+      const normalized = items.map(normalizeArticle);
+
+      // ------------------------------
+      // NEW SORTING LOGIC:
+      // 1. Live articles first (live = true)
+      // 2. Within each group, newest first
+      // ------------------------------
+      normalized.sort((a, b) => {
+        // Live articles come before locked ones
+        if (a.live !== b.live) return a.live ? -1 : 1;
+        // Inside each group: newest → oldest
+        return new Date(b.dateISO || 0) - new Date(a.dateISO || 0);
+      });
+
+      // Show first 6 (including locked, but with the sorted order)
+      const articles = normalized.slice(0, 6);
 
       if (!articles.length) {
         track.innerHTML = '<p class="muted">No articles yet.</p>';
@@ -763,33 +777,28 @@ function fixDocxAnchors(root){
       }
 
       track.innerHTML = articles.map(a => {
-        const live   = isArticleLive(a);
-        const href   = live ? (a.href || a.url || a.path || "articles.html") : "#";
-        const thumb  = a.image || a.hero?.image || "assets/placeholders/article.jpg";
-        const tag    = (a.tags && a.tags[0]) || a.tag || "";
-        const date   = a.date
-          ? new Date(a.date).toLocaleDateString(undefined, { day:"2-digit", month:"short", year:"numeric" })
-          : "";
-        const coming = comingSoonText(a);
-      
+        const locked = !a.live;
         return `
-          <article class="home-article${live ? "" : " is-locked"}">
-            <a class="home-article-link" href="${href}" ${live ? "" : 'aria-disabled="true" tabindex="-1"'}>
-              <img class="home-article-thumb" src="${thumb}" alt="">
+          <article class="home-article${locked ? ' is-locked' : ''}">
+            <a class="home-article-link"
+               href="${locked ? '#' : a.href}"
+               ${locked ? 'aria-disabled="true" tabindex="-1"' : ''}>
+              <img class="home-article-thumb" src="${a.image}" alt="">
               <div class="home-article-body">
                 <div class="home-article-meta">
-                  ${tag ? `<span class="tag">${escapeHtml(tag)}</span>` : ""}
-                  ${date ? `<span class="muted small">${escapeHtml(date)}</span>` : ""}
+                  ${a.tag ? `<span class="tag">${escapeHtml(a.tag)}</span>` : ""}
+                  ${a.dateTxt ? `<span class="muted small">${escapeHtml(a.dateTxt)}</span>` : ""}
                 </div>
-                <h3 class="home-article-title">${escapeHtml(a.title || "Untitled")}</h3>
-                <p class="home-article-deck">${escapeHtml(a.deck || a.excerpt || "")}</p>
+                <h3 class="home-article-title">${escapeHtml(a.title)}</h3>
+                <p class="home-article-deck">${escapeHtml(a.deck)}</p>
               </div>
             </a>
-            ${live ? "" : `<div class="article-lock-overlay">${escapeHtml(coming)}</div>`}
-          </article>`;
+            ${locked ? `<div class="article-lock-overlay">${escapeHtml(a.comingSoon)}</div>` : ""}
+          </article>
+        `;
       }).join("");
 
-      // optional: simple auto-scroll effect
+      // Optional auto-scroll  
       const cards = Array.from(track.children);
       if (cards.length <= 1) return;
 
@@ -809,6 +818,7 @@ function fixDocxAnchors(root){
       track.innerHTML = '<p class="muted">Failed to load recent articles.</p>';
     });
 })();
+
 document.addEventListener("DOMContentLoaded", function () {
   const shareButtons = document.querySelector("[data-share-buttons]");
   if (!shareButtons) return;
