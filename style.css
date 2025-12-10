@@ -775,12 +775,13 @@ ul.bullets li{ margin:.4rem 0; }
 }
 
 .article-card.is-locked img,
+.article-card.is-locked .article-thumb,
 .article-card.is-locked .article-body,
 .article-card.is-locked .article-meta,
 .home-article.is-locked .home-article-thumb,
 .home-article.is-locked .home-article-body {
-  filter: grayscale(1) blur(1.5px);
-  opacity: 0.5;
+  filter: grayscale(1) blur(3.5px);
+  opacity: 0.2;
 }
 
 /* Don’t lift locked cards on hover */
