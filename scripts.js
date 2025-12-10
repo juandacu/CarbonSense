@@ -451,62 +451,7 @@ window.addEventListener("message", function (e) {
     activate(idx);
   });
 })();
-// ARTICLES: load JSON -> cards
-(async function loadArticles(){
-  const grid = document.getElementById('articles-grid');
-  if (!grid) return;
 
-  try {
-    const url = './data/articles.json?v=' + Date.now();
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-    const data = await res.json();
-    
-
-    const html = data.articles.map(a => {
-      const thumb = a.image || 'assets/placeholders/article.jpg';
-      const authorImg = (a.author && a.author.avatar) || 'assets/placeholders/author.png';
-      const authorName = (a.author && a.author.name) || 'Carbon-Sense';
-      const date = new Date(a.date).toDateString();
-      const tag = (a.tags && a.tags[0]) ? `<span class="tag">${a.tags[0]}</span>` : '';
-      const read = a.readTime ? `${a.readTime} min` : '';
-      const items = (Array.isArray(data) ? data : data.articles || [])
-      .filter(a => a && (a.title || a.name))
-      .filter(isArticleLive)   // <- add this
-      .sort((a,b) => new Date(b.date || 0) - new Date(a.date || 0));
-    
-      return `
-        <article class="article-card">
-          <img class="article-thumb" src="${thumb}" alt="">
-          <div class="article-body">
-            <h3>${a.title}</h3>
-            <p class="article-deck">${a.deck || ''}</p>
-          </div>
-          <div class="article-meta">
-            <div class="meta-left">
-              <img src="${authorImg}" alt="">
-              <span class="byline">${authorName}</span>
-            </div>
-            <div class="meta-right">
-              ${tag}
-              <span>${read}</span>
-              <span aria-hidden="true">•</span>
-              <time datetime="${a.date}">${date}</time>
-            </div>
-          </div>
-          <a class="cover" href="${a.href || '#'}">Read</a>
-        </article>`;
-    }).join('');
-
-    grid.innerHTML = html;
-  } catch (e) {
-    const msg = e && e.message ? e.message : String(e);
-    grid.innerHTML = `<p class="muted">Couldn’t load articles. ${msg}</p>`;
-    console.error('Articles load error:', e);
-  }
-  
-  
-})();
 
 // Keep DOCX footnote links on the same page
 // Keep DOCX footnotes local even with <base href=…>
