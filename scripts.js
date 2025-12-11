@@ -252,17 +252,15 @@ function renderDocx(targetSelector, docxUrl, statusSelector){
   // RETURN the chain
   return fetch(docxUrl, { cache: "no-store" })
     .then(r => { if (!r.ok) throw new Error("HTTP " + r.status + " " + docxUrl); return r.arrayBuffer(); })
-    .then(buf => {
-      // Map the Word style "Red emphasis" to a span with class="red-emphasis"
-      const styleMap =
-        "r[style-name='Red emphasis'] => span.red-emphasis\n" +
-        "p[style-name='Red emphasis'] => p.red-emphasis";
-
-      return window.mammoth.convertToHtml(
-        { arrayBuffer: buf },
-        { styleMap }
-      );
-    })
+    .then(buf => window.mammoth.convertToHtml(
+      { arrayBuffer: buf },
+      {
+        styleMap: [
+          // Map Word paragraph style "Red emphasis" -> <p class="red-emphasis">…</p>
+          "p[style-name='Red emphasis'] => p.red-emphasis:fresh"
+        ]
+      }
+    ))
     .then(result => {
       target.innerHTML = result.value;
       injectDocxEmbeds(target);
@@ -275,6 +273,7 @@ function renderDocx(targetSelector, docxUrl, statusSelector){
       throw err;
     });
 }
+
 
 function setReadingTime(rootSelector, outSelector){
   var root = document.querySelector(rootSelector);
