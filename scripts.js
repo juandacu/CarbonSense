@@ -252,7 +252,14 @@ function renderDocx(targetSelector, docxUrl, statusSelector){
   // RETURN the chain
   return fetch(docxUrl, { cache: "no-store" })
     .then(r => { if (!r.ok) throw new Error("HTTP " + r.status + " " + docxUrl); return r.arrayBuffer(); })
-    .then(buf => window.mammoth.convertToHtml({ arrayBuffer: buf }))
+    .then(buf => window.mammoth.convertToHtml(
+      { arrayBuffer: buf },
+      {
+        styleMap: [
+          "r[style-name='Red emphasis'] => span.red-emphasis"
+        ]
+      }
+    ))
     .then(result => {
       target.innerHTML = result.value;
       injectDocxEmbeds(target);
@@ -623,7 +630,7 @@ function fixDocxAnchors(root){
     }, everyMs);
   }
 
-  fetch('data/articles.json?v=' + Date.now(), { cache: 'no-store' })
+  fetch('data/articles.json?v=' + Date.now())
     .then(r => r.json())
     .then(raw => Array.isArray(raw) ? raw : (raw.articles || []))
     .then(items => items
@@ -837,3 +844,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+

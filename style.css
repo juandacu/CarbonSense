@@ -2067,3 +2067,7 @@ html, body { overflow-x: hidden; }
   color: #fff;
   box-shadow: var(--shadow);
 }
+
+.prose.docx .red-emphasis {
+  color: #b00020; /* or any red you like */
+}
