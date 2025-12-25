@@ -138,8 +138,8 @@
   .foot-bottom{display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-top:1px solid var(--border)}
   
   /* Scroll reveal */
-  [data-animate]{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease}
-  [data-animate].in{opacity:1; transform:none}
+  [data-animate]{opacity: 0; transition: opacity .6s ease;}
+  [data-animate].in{opacity:1;}
 
   /* Better article typography (no text edits) */
 .prose.docx {
@@ -2068,6 +2068,261 @@ html, body { overflow-x: hidden; }
   box-shadow: var(--shadow);
 }
 
+
+/* Inline emphasis */
+.prose.docx em,
+.prose.docx i {
+  font-style: italic;
+  color: #2c413a;
+}
+
+.prose.docx strong,
+.prose.docx b {
+  font-weight: 600;
+  color: #152521;
+}
+
+/* Subtitle paragraphs from Word's "Subtitle" style */
+.prose.docx p.subtitle {
+  font-size: 1.12rem;
+  font-weight: 500;
+  color: var(--muted);
+  margin: 0 0 1.6rem;
+}
+
+/* Headings: add subtle divider for H2 */
+.prose.docx h2 {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.3rem;
+}
+
+/* Nicer pull-quotes */
+.prose.docx blockquote {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 0.9rem 1.4rem 0.9rem 1.4rem;
+  border-left: 4px solid #c8e0d7;
+  border-radius: 0 14px 14px 0;
+  background: #f5fbf9;
+  color: #31443e;
+  font-style: italic;
+}
+
+.prose.docx blockquote::before {
+  content: "“";
+  position: absolute;
+  left: 10px;
+  top: -10px;
+  font-size: 3.2rem;
+  line-height: 1;
+  color: rgba(0,0,0,0.06);
+}
+
+/* Horizontal rules inside DOCX articles */
+.prose.docx hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
 .prose.docx .red-emphasis {
   color: #b00020; /* or any red you like */
+}
+
+/* ==== Article color system (Carbon Sense palette) ==== */
+
+:root {
+  --article-heading: #10241d;        /* deep green, like hero text */
+  --article-body:   #1b2622;         /* dark charcoal-green */
+  --article-muted:  #6d7a75;         /* soft grey-green */
+  --article-accent: #1b7f6b;         /* site accent green */
+  --article-quote-bg:     #f4fbf8;   /* very light green wash */
+  --article-quote-border: #c0e4d6;   /* quote left bar */
+}
+
+/* Base text in DOCX articles */
+.prose.docx p,
+.prose.docx li {
+  color: var(--article-body);
+}
+
+/* Headings */
+.prose.docx h1,
+.prose.docx h2,
+.prose.docx h3,
+.prose.docx h4 {
+  color: var(--article-heading);
+}
+
+.prose.docx h2 {
+  border-bottom: 1px solid var(--article-quote-border);
+  padding-bottom: 0.35rem;
+}
+
+/* Subtitle paragraphs (Word "Subtitle" style) */
+.prose.docx p.subtitle {
+  font-size: 1.12rem;
+  font-weight: 500;
+  color: var(--article-muted);
+  margin: 0 0 1.6rem;
+}
+
+/* Emphasis */
+.prose.docx em,
+.prose.docx i {
+  font-style: italic;
+  color: var(--article-accent);
+}
+
+.prose.docx strong,
+.prose.docx b {
+  font-weight: 600;
+  color: var(--article-heading);
+}
+
+/* Links inside articles */
+.prose.docx a {
+  color: var(--article-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Pull-quotes (Word "Quote" / "Intense Quote") */
+.prose.docx blockquote {
+  position: relative;
+  margin: 1.6rem 0;
+  padding: 1rem 1.4rem 1rem 1.4rem;
+  border-left: 4px solid var(--article-quote-border);
+  border-radius: 0 16px 16px 0;
+  background: var(--article-quote-bg);
+  color: var(--article-body);
+  font-style: italic;
+}
+
+.prose.docx blockquote::before {
+  content: "“";
+  position: absolute;
+  left: 10px;
+  top: -12px;
+  font-size: 3.2rem;
+  line-height: 1;
+  color: rgba(0,0,0,0.06);
+}
+
+/* Horizontal rules */
+.prose.docx hr {
+  border: 0;
+  border-top: 1px solid var(--article-quote-border);
+  margin: 2rem 0;
+}
+/* Restore original colours for emphasised text coming from DOCX
+   (e.g. keep the poem in red instead of forcing site-green) */
+   .prose.docx em,
+   .prose.docx i {
+     color: inherit !important;
+   }
+
+   /* Article headings: no underline/HR-style rule */
+.prose.docx h1,
+.prose.docx h2,
+.prose.docx h3,
+.prose.docx h4 {
+  border-bottom: none;
+  box-shadow: none;
+  padding-bottom: 0;
+  margin-bottom: 0.85rem; /* keep a bit of breathing room under titles */
+}
+/* === Article layout with sticky TOC === */
+
+/* Give article sections a bit more width on article pages */
+.article-page .article-section > .container{
+  max-width: 1100px;
+}
+
+/* Two-column layout: slim TOC + main article */
+.article-layout{
+  display: grid;
+  grid-template-columns: minmax(210px, 240px) minmax(0, 1fr);
+  column-gap: 26px;
+  align-items: flex-start;
+}
+
+.article-main{
+  min-width: 0;
+}
+
+/* TOC card styling + sticky behavior */
+.article-toc{
+  position: -webkit-sticky;
+  position: sticky;
+  top: calc(var(--header-h) + 18px);
+  align-self: flex-start;
+
+  padding: 14px 16px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(130% 160% at 0% 0%, rgba(27,127,107,0.12), transparent 60%),
+    #ffffff;
+  box-shadow: var(--shadow);
+
+  font-size: 0.88rem;
+  color: var(--muted);
+
+  max-height: calc(100vh - var(--header-h) - 32px);
+  overflow: auto;
+}
+
+/* TOC title */
+.article-toc .toc-title{
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #556a64;
+}
+
+/* TOC list */
+.article-toc .toc-list{
+  list-style: none;
+  margin: 0;
+  padding: 4px 0 0;
+}
+
+.article-toc .toc-list li{
+  margin: 2px 0;
+}
+
+.article-toc .toc-list a{
+  display: block;
+  padding: 4px 0 4px 10px;
+  border-left: 2px solid transparent;
+  border-radius: 0 8px 8px 0;
+  color: #4b5552;
+  text-decoration: none;
+}
+
+.article-toc .toc-list a:hover{
+  color: var(--accent);
+  background: rgba(27,127,107,0.05);
+  border-left-color: var(--accent-border);
+}
+
+/* Mobile: TOC above article, not sticky */
+@media (max-width: 900px){
+  .article-page .article-section > .container{
+    max-width: var(--container);
+  }
+
+  .article-layout{
+    display: block;
+  }
+
+  .article-toc{
+    position: static;
+    max-height: none;
+    margin-bottom: 18px;
+    border-radius: 14px;
+  }
 }

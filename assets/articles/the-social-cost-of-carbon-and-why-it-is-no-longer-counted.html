@@ -13,7 +13,7 @@
     .prose.docx [id], .prose.docx [name] { scroll-margin-top: 84px; }
   </style>
 </head>
-<body>
+<body class="article-page">
   <header class="site-header solid" data-header>
     <div class="container header-inner">
       <a class="logo" href="../../index.html" aria-label="Carbon-Sense">
@@ -50,38 +50,38 @@
       </div>
 
       <p class="lead">Treating it as zero cannot make it so</p>
-      <!-- removed Download the .docx link -->
 
       <div class="article-share">
         <span class="article-share-label">Share</span>
-      
         <div class="article-share-buttons" data-share-buttons>
-          <a href="#" class="btn btn-outline pill share-btn share-btn--linkedin"
-             data-network="linkedin">
+          <a href="#" class="btn btn-outline pill share-btn share-btn--linkedin" data-network="linkedin">
             LinkedIn
           </a>
-      
-          <a href="#" class="btn btn-outline pill share-btn share-btn--x"
-             data-network="x">
+          <a href="#" class="btn btn-outline pill share-btn share-btn--x" data-network="x">
             X - formerly Twitter
           </a>
-      
-          <a href="#" class="btn btn-outline pill share-btn share-btn--whatsapp"
-             data-network="whatsapp">
+          <a href="#" class="btn btn-outline pill share-btn share-btn--whatsapp" data-network="whatsapp">
             WhatsApp
           </a>
         </div>
-      
         <span class="article-share-status" data-share-status aria-live="polite"></span>
       </div>
-
     </div>
   </section>
 
-  <section class="section" data-animate>
+  <!-- Article layout with sticky TOC -->
+  <section class="section article-section" data-animate>
     <div class="container">
-      <div id="docx-status" class="muted" style="margin-bottom:12px">Loading document…</div>
-      <article id="docx-root" class="prose docx"></article>
+      <div class="article-layout">
+        <!-- Left sidebar TOC -->
+        <aside class="article-toc" id="article-toc" aria-label="On this page"></aside>
+
+        <!-- Main content -->
+        <div class="article-main">
+          <div id="docx-status" class="muted" style="margin-bottom:12px">Loading document…</div>
+          <article id="docx-root" class="prose docx"></article>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -99,40 +99,40 @@
     </div>
   </section>
 
-<!-- Footer -->
-<footer class="site-footer site-footer-dark">
-  <div class="container footer-inner">
-    <div>
-      <a class="logo logo-foot" href="index.html" aria-label="Carbon Sense">
-        <img src="assets/logo.png" alt="Carbon Sense">
-      </a>
-      <p class="muted">
-        Clear insights and analysis to understand where climate economics and policy are taking us
-      </p>
+  <!-- Footer -->
+  <footer class="site-footer site-footer-dark">
+    <div class="container footer-inner">
+      <div>
+        <a class="logo logo-foot" href="index.html" aria-label="Carbon Sense">
+          <img src="../logo.png" alt="Carbon Sense">
+        </a>
+        <p class="muted">
+          Clear insights and analysis to understand where climate economics and policy are taking us
+        </p>
+      </div>
+
+      <div>
+        <div class="foot-title">Explore</div>
+        <ul class="foot-links">
+          <li><a href="about.html">About</a></li>
+          <li><a href="articles.html">All Articles</a></li>
+          <li><a href="coffee.html">Support Us</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="foot-title">Contact</div>
+        <p class="muted">
+          <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
+        </p>
+      </div>
     </div>
 
-    <div>
-      <div class="foot-title">Explore</div>
-      <ul class="foot-links">
-        <li><a href="about.html">About</a></li>
-        <li><a href="articles.html">All Articles</a></li>
-        <li><a href="coffee.html">Support Us</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-      </ul>
+    <div class="container foot-bottom">
+      <small><span data-year></span> Carbon Sense</small>
     </div>
-
-    <div>
-      <div class="foot-title">Contact</div>
-      <p class="muted">
-        <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
-      </p>
-    </div>
-  </div>
-
-  <div class="container foot-bottom">
-    <small><span data-year></span> Carbon Sense</small>
-  </div>
-</footer>
+  </footer>
 
   <!-- scripts are two levels up -->
   <script src="../../vendor/mammoth.browser.min.js"></script>
@@ -143,12 +143,11 @@
       "../The Social Cost of Carbon, and Why it is No Longer Counted.docx",
       "#docx-status"
     )
-    .then(() => requestAnimationFrame(() =>
-      setReadingTime("#docx-root", "#reading-time")
-    ))
+    .then(() => requestAnimationFrame(() => {
+      setReadingTime("#docx-root", "#reading-time");
+      buildDocxToc("#docx-root", "#article-toc");
+    }))
     .catch(console.error);
   </script>
-
 </body>
 </html>
-

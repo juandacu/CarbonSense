@@ -242,36 +242,117 @@ function escapeHtml(s){
 })();
 
 // Render a DOCX inline (no content changes)
+// Render a DOCX inline (no content changes)
 function renderDocx(targetSelector, docxUrl, statusSelector){
   const target = document.querySelector(targetSelector);
   const status = statusSelector ? document.querySelector(statusSelector) : null;
-  if (!target || !window.mammoth) return Promise.reject(new Error("renderDocx: missing target or mammoth"));
+  if (!target || !window.mammoth) {
+    return Promise.reject(new Error("renderDocx: missing target or mammoth"));
+  }
 
   status && (status.textContent = "Loading document…");
 
-  // RETURN the chain
   return fetch(docxUrl, { cache: "no-store" })
-    .then(r => { if (!r.ok) throw new Error("HTTP " + r.status + " " + docxUrl); return r.arrayBuffer(); })
+    .then(r => {
+      if (!r.ok) throw new Error("HTTP " + r.status + " " + docxUrl);
+      return r.arrayBuffer();
+    })
     .then(buf => window.mammoth.convertToHtml(
       { arrayBuffer: buf },
       {
         styleMap: [
-          // Map Word paragraph style "Red emphasis" -> <p class="red-emphasis">…</p>
-          "p[style-name='Red emphasis'] => p.red-emphasis:fresh"
+          // Existing
+          "p[style-name='Red emphasis'] => p.red-emphasis:fresh",
+
+          // Quotes (EN + ES)
+          "p[style-name='Quote'] => blockquote:fresh",
+          "p[style-name='Intense Quote'] => blockquote:fresh",
+          "p[style-name='Cita'] => blockquote:fresh",
+          "p[style-name='Cita intensa'] => blockquote:fresh",
+
+          // Subtitle (EN + ES)
+          "p[style-name='Subtitle'] => p.subtitle:fresh",
+          "p[style-name='Subtítulo'] => p.subtitle:fresh"
         ]
       }
     ))
     .then(result => {
       target.innerHTML = result.value;
       injectDocxEmbeds(target);
+      fixDocxAnchors && fixDocxAnchors(target);
       status && (status.textContent = "");
-      return target; // resolve after content is in the DOM
+      return target;
     })
     .catch(err => {
       status && (status.textContent = "Could not display the document.");
       console.error("DOCX render error:", err);
       throw err;
     });
+}
+
+/**
+ * Build a sticky "On this page" table of contents from headings inside
+ * the rendered Mammoth article.
+ */
+function buildDocxToc(rootSelector, tocSelector) {
+  const root = document.querySelector(rootSelector);
+  const toc  = document.querySelector(tocSelector);
+  if (!root || !toc) return;
+
+  // Pick which headings you want in the TOC
+  const headings = root.querySelectorAll("h1, h2, h3");
+  if (!headings.length) {
+    toc.style.display = "none";
+    return;
+  }
+
+  let counter = 0;
+  const items = [];
+
+  headings.forEach(h => {
+    const level = Number(h.tagName[1]); // 1, 2, 3
+    const text  = (h.textContent || "").trim();
+    if (!text) return;
+
+    // Ensure each heading has an id
+    let id = h.id;
+    if (!id) {
+      id = "sec-" + (++counter);
+      h.id = id;
+    }
+
+    items.push({ id, level, text });
+  });
+
+  if (!items.length) {
+    toc.style.display = "none";
+    return;
+  }
+
+  // Build DOM
+  toc.innerHTML = "";
+
+  const title = document.createElement("div");
+  title.className = "toc-title";
+  title.textContent = "On this page";
+  toc.appendChild(title);
+
+  const list = document.createElement("ul");
+  list.className = "toc-list";
+
+  items.forEach(item => {
+    const li = document.createElement("li");
+    li.className = "toc-item toc-l" + item.level;
+
+    const a = document.createElement("a");
+    a.href = "#" + item.id;
+    a.textContent = item.text;
+
+    li.appendChild(a);
+    list.appendChild(li);
+  });
+
+  toc.appendChild(list);
 }
 
 
