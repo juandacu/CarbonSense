@@ -2309,20 +2309,28 @@ html, body { overflow-x: hidden; }
   border-left-color: var(--accent-border);
 }
 
-/* Mobile: TOC above article, not sticky */
-@media (max-width: 900px){
-  .article-page .article-section > .container{
-    max-width: var(--container);
+/* Mobile: TOC above article, not sticky
+   IMPORTANT: Keep TOC sticky until the layout truly needs to stack */
+   @media (max-width: 760px){
+    .article-page .article-section > .container{
+      max-width: var(--container);
+    }
+  
+    .article-layout{
+      display: block;
+    }
+  
+    .article-toc{
+      position: static;
+      top: auto;
+      max-height: none;
+      margin-bottom: 18px;
+      border-radius: 14px;
+    }
   }
-
-  .article-layout{
-    display: block;
+  /* Sticky TOC fix: allow sticky to escape clipping ancestors */
+  .article-page .article-section,
+  .article-page .article-section > .container,
+  .article-page .article-layout{
+    overflow: visible !important;
   }
-
-  .article-toc{
-    position: static;
-    max-height: none;
-    margin-bottom: 18px;
-    border-radius: 14px;
-  }
-}

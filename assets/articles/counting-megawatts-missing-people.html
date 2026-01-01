@@ -1,25 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Counting Megawatts, Missing People</title>
-  <meta name="description" content="Inline view of the original .docx (rendered client-side, unedited)." />
+
+  <meta name="description" content="The Social Gap in Climate Finance" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+
   <!-- root stylesheet is two levels up -->
   <link rel="stylesheet" href="../../style.css" />
+
   <style>
     /* ensure anchored headings/notes aren't hidden under the fixed header */
     .prose.docx [id], .prose.docx [name] { scroll-margin-top: 84px; }
+
+    /* Keep plots inside the article column on THIS page only
+       (your global CSS has "break out of column" rules for embeds) */
+    body.counting-article .article-main iframe.plot-embed{
+      display: block !important;
+      width: 100% !important;
+      max-width: 100% !important;
+
+      margin: 18px 0 !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+
+      transform: none !important;
+      position: relative !important;
+      left: auto !important;
+      right: auto !important;
+
+      border: 0 !important;
+      z-index: 1 !important;
+    }
+
+    /* Safety: if TOC is hidden/empty for any reason, collapse grid so text doesn't get stuck in the left column */
+    body.counting-article .article-layout.toc-hidden{
+      grid-template-columns: 1fr !important;
+    }
+    body.counting-article .article-layout.toc-hidden .article-toc{
+      display: none !important;
+    }
   </style>
 </head>
-<body>
+
+<body class="article-page counting-article">
   <header class="site-header solid" data-header>
     <div class="container header-inner">
       <a class="logo" href="../../index.html" aria-label="Carbon-Sense">
-        <!-- logo lives at assets/logo.png (one level up from this page) -->
         <img src="../logo.png" alt="Carbon-Sense">
       </a>
+
       <nav class="nav" data-nav>
         <a href="../../index.html">Home</a>
         <a href="../../about.html">About</a>
@@ -27,6 +59,7 @@
         <a href="../../coffee.html">Buy Us A Coffee</a>
         <a href="../../contact.html" class="btn btn-outline pill">Contact Us</a>
       </nav>
+
       <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" data-menu-btn>
         <span></span><span></span><span></span>
       </button>
@@ -39,7 +72,6 @@
 
       <div class="article-meta" data-animate>
         <span class="meta-item">
-          <!-- authors folder is sibling of this page's folder -->
           <img class="meta-avatar" src="../authors/juan-daniel-removebg-preview.png" alt="" onerror="this.style.display='none'">
           <span class="meta-label">By</span>
           <a class="meta-value" href="../../authors/Juan-Acuna.html">Juan Daniel Acuña-Román</a>
@@ -51,40 +83,43 @@
       </div>
 
       <p class="lead">The Social Gap in Climate Finance</p>
-      <!-- removed Download the .docx link -->
+
       <div class="article-share">
         <span class="article-share-label">Share</span>
-      
+
         <div class="article-share-buttons" data-share-buttons>
-          <a href="#" class="btn btn-outline pill share-btn share-btn--linkedin"
-             data-network="linkedin">
+          <a href="#" class="btn btn-outline pill share-btn share-btn--linkedin" data-network="linkedin">
             LinkedIn
           </a>
-      
-          <a href="#" class="btn btn-outline pill share-btn share-btn--x"
-             data-network="x">
+          <a href="#" class="btn btn-outline pill share-btn share-btn--x" data-network="x">
             X - formerly Twitter
           </a>
-      
-          <a href="#" class="btn btn-outline pill share-btn share-btn--whatsapp"
-             data-network="whatsapp">
+          <a href="#" class="btn btn-outline pill share-btn share-btn--whatsapp" data-network="whatsapp">
             WhatsApp
           </a>
         </div>
-      
+
         <span class="article-share-status" data-share-status aria-live="polite"></span>
       </div>
-
-    </div>
     </div>
   </section>
 
-  <section class="section" data-animate>
+  <!-- This is the same structure/classes as the Libertarian article -->
+  <section class="section article-section">
     <div class="container">
-      <div id="docx-status" class="muted" style="margin-bottom:12px">Loading document…</div>
-      <article id="docx-root" class="prose docx"></article>
+      <div class="article-layout" id="article-layout">
+        <aside class="article-toc" id="article-toc" aria-label="On this page"></aside>
+
+        <div class="article-main">
+          <div id="docx-status" class="muted" style="margin-bottom:12px">
+            Loading document…
+          </div>
+          <article id="docx-root" class="prose docx"></article>
+        </div>
+      </div>
     </div>
   </section>
+
   <section class="section" id="newsletter" data-animate>
     <div class="container">
       <h2 class="section-title">Subscribe to our Newsletter</h2>
@@ -99,54 +134,56 @@
     </div>
   </section>
 
-<!-- Footer -->
-<footer class="site-footer site-footer-dark">
-  <div class="container footer-inner">
-    <div>
-      <a class="logo logo-foot" href="index.html" aria-label="Carbon Sense">
-        <img src="../logo.png" alt="Carbon Sense">
-      </a>
-      <p class="muted">
-        Making sense of climate economics: accessible, evidence-based writing on climate and energy policy
-      </p>
+  <footer class="site-footer site-footer-dark">
+    <div class="container footer-inner">
+      <div>
+        <a class="logo logo-foot" href="../../index.html" aria-label="Carbon Sense">
+          <img src="../logo.png" alt="Carbon Sense">
+        </a>
+        <p class="muted">
+          Making sense of climate economics: accessible, evidence-based writing on climate and energy policy
+        </p>
+      </div>
+
+      <div>
+        <div class="foot-title">Explore</div>
+        <ul class="foot-links">
+          <li><a href="../../about.html">About</a></li>
+          <li><a href="../../articles.html">All Articles</a></li>
+          <li><a href="../../coffee.html">Support Us</a></li>
+          <li><a href="../../privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="foot-title">Contact</div>
+        <p class="muted">
+          <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
+        </p>
+      </div>
     </div>
 
-    <div>
-      <div class="foot-title">Explore</div>
-      <ul class="foot-links">
-        <li><a href="about.html">About</a></li>
-        <li><a href="articles.html">All Articles</a></li>
-        <li><a href="coffee.html">Support Us</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-      </ul>
+    <div class="container foot-bottom">
+      <small><span data-year></span> Carbon Sense</small>
     </div>
+  </footer>
 
-    <div>
-      <div class="foot-title">Contact</div>
-      <p class="muted">
-        <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
-      </p>
-    </div>
-  </div>
-
-  <div class="container foot-bottom">
-    <small><span data-year></span> Carbon Sense</small>
-  </div>
-</footer>
-
-  <!-- scripts are two levels up -->
-  <!-- scripts at bottom -->
   <script src="../../vendor/mammoth.browser.min.js"></script>
   <script src="../../scripts.js"></script>
   <script>
     renderDocx("#docx-root", "../Counting%20Megawatts,%20Missing%20People.docx", "#docx-status")
-      .then(() => requestAnimationFrame(() =>
-        setReadingTime("#docx-root", "#reading-time")
-      ))
+      .then(() => requestAnimationFrame(() => {
+        setReadingTime("#docx-root", "#reading-time");
+        buildDocxToc("#docx-root", "#article-toc");
+
+        // If TOC gets hidden/empty, avoid the narrow-left-column layout
+        const toc = document.getElementById("article-toc");
+        const layout = document.getElementById("article-layout");
+        const tocHidden = !toc || getComputedStyle(toc).display === "none";
+        const tocEmpty = !toc || toc.children.length === 0;
+        if (layout && (tocHidden || tocEmpty)) layout.classList.add("toc-hidden");
+      }))
       .catch(console.error);
   </script>
-
 </body>
 </html>
-
-
