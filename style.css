@@ -2319,18 +2319,30 @@ html, body { overflow-x: hidden; }
     .article-layout{
       display: block;
     }
-  
-    .article-toc{
-      position: static;
-      top: auto;
-      max-height: none;
-      margin-bottom: 18px;
-      border-radius: 14px;
-    }
   }
-  /* Sticky TOC fix: allow sticky to escape clipping ancestors */
-  .article-page .article-section,
-  .article-page .article-section > .container,
-  .article-page .article-layout{
-    overflow: visible !important;
-  }
+/* === TOC sticky hardening (add at END of style.css) === */
+/* Sticky breaks if any ancestor clips overflow. Force visibility for the TOC chain. */
+.article-page .article-section,
+.article-page .article-section > .container,
+.article-page .article-layout{
+  overflow: visible !important;
+}
+
+/* Some browsers are picky about sticky items inside grids unless explicitly top-aligned */
+.article-page .article-toc{
+  align-self: start;
+}
+
+/* JS fallback class (only used if sticky still doesn't engage) */
+.article-page .article-toc.toc-fixed{
+  position: fixed !important;
+  top: calc(var(--header-h) + 18px) !important;
+  z-index: 50;
+}
+/* === FIX: prevent article collapse when TOC becomes .toc-fixed === */
+/* Force explicit grid placement so .article-main never falls into the TOC column */
+.article-layout > .article-toc { grid-column: 1; }
+.article-layout > .article-main { grid-column: 2; }
+
+/* When JS fallback switches TOC to fixed, keep main content in column 2 */
+.article-layout > .article-toc.toc-fixed { grid-column: 1; }

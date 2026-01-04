@@ -926,5 +926,86 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+// === TOC sticky fallback (desktop-only; never run in stacked layout) ===
+(function tocStickyFallback(){
+  const toc = document.getElementById("article-toc");
+  const layout = document.querySelector(".article-layout");
+  if (!toc || !layout) return;
+
+  const mq = window.matchMedia("(max-width: 900px)");
+
+  let anchorTop = null;
+  let anchorLeft = null;
+  let anchorWidth = null;
+
+  function isDesktopGrid(){
+    if (mq.matches) return false;
+    return getComputedStyle(layout).display === "grid";
+  }
+
+  function resetFixed(){
+    toc.classList.remove("toc-fixed");
+    toc.style.left = "";
+    toc.style.width = "";
+  }
+
+  function captureAnchor(){
+    // Measure TOC in normal flow (not fixed)
+    resetFixed();
+    const r = toc.getBoundingClientRect();
+    anchorTop = r.top + window.scrollY;
+    anchorLeft = r.left;
+    anchorWidth = r.width;
+  }
+
+  function onScroll(){
+    // Never apply fixed fallback unless we are in the 2-col grid
+    if (!isDesktopGrid()){
+      resetFixed();
+      return;
+    }
+
+    if (anchorTop == null) captureAnchor();
+
+    const headerH =
+      parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 72;
+    const stickTop = headerH + 18;
+
+    const shouldFix = window.scrollY + stickTop >= anchorTop;
+
+    if (shouldFix){
+      toc.classList.add("toc-fixed");
+      toc.style.left = anchorLeft + "px";
+      toc.style.width = anchorWidth + "px";
+    } else {
+      resetFixed();
+    }
+  }
+
+  function onResize(){
+    anchorTop = null;
+    anchorLeft = null;
+    anchorWidth = null;
+    onScroll();
+  }
+
+  // Re-measure after late layout shifts (DOCX render, plot iframe resizing)
+  window.addEventListener("load", () => {
+    captureAnchor();
+    onScroll();
+    setTimeout(() => { captureAnchor(); onScroll(); }, 250);
+    setTimeout(() => { captureAnchor(); onScroll(); }, 900);
+  });
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onResize);
+  if (mq.addEventListener) mq.addEventListener("change", onResize);
+  else mq.addListener(onResize);
+  
+  // Initial
+  captureAnchor();
+  onScroll();
+})();
+
 
 
