@@ -2368,7 +2368,7 @@ html, body { overflow-x: hidden; }
 .article-layout > .article-main { grid-column: 2; }
 
 /* Fallback states driven by JS */
-.article-layout{ position: relative; } /* needed for toc-bottom absolute positioning */
+.article-layout{ position: absolute; } /* needed for toc-bottom absolute positioning */
 
 .article-toc.toc-fixed{
   position: fixed !important;
@@ -2384,8 +2384,75 @@ html, body { overflow-x: hidden; }
   left: 0 !important;
   z-index: 2;
 }
+/* === TOC: CSS-only sticky (no JS fixed/absolute) === */
 
-/* In toc-bottom state, don't keep fixed sizing/left from JS */
-.article-toc.toc-bottom{
-  width: auto !important;
+/* Sticky dies if any ancestor clips overflow. Force visibility for the article chain. */
+.article-page .article-section,
+.article-page .article-section > .container,
+.article-page .article-layout{
+  overflow: visible !important;
+}
+
+/* Ensure the grid columns are stable */
+.article-page .article-layout{
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); /* adjust TOC width here */
+  column-gap: 26px; /* adjust spacing here */
+  align-items: start;
+}
+
+.article-page .article-toc{
+  position: -webkit-sticky;
+  position: sticky;
+  top: calc(var(--header-h) + 18px);
+  align-self: start;
+
+  max-height: calc(100vh - var(--header-h) - 32px);
+  overflow: auto;
+  z-index: 5;
+}
+
+/* Keep embeds from covering the TOC column */
+.article-page .article-main iframe.plot-embed{
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  transform: none !important;
+  position: relative !important;
+}
+
+/* Only stack on real mobile */
+@media (max-width: 760px){
+  .article-page .article-layout{
+    display: block;
+  }
+  .article-page .article-toc{
+    position: static;
+    max-height: none;
+    overflow: visible;
+    margin-bottom: 18px;
+  }
+}
+/* Remove gap between article and newsletter */
+.article-page .article-section{
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.article-page #newsletter{
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* If your generic .section adds vertical spacing, override the two adjacent sections only */
+.article-page .article-section.section{
+  padding-bottom: 0 !important;
+}
+.article-page #newsletter.section{
+  padding-top: 0 !important;
+}
+/* Kill any bottom margin from the rendered DOCX content */
+.article-page #docx-root > :last-child{
+  margin-bottom: 0 !important;
 }

@@ -984,13 +984,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const maxFixedScrollY = sectionBottom - tocH - stickTop;
 
-    if (window.scrollY >= maxFixedScrollY){
-      toc.classList.remove("toc-fixed");
-      toc.classList.add("toc-bottom");
-      toc.style.left = "";
-      toc.style.width = "";
-      return;
-    }
+if (window.scrollY >= maxFixedScrollY){
+  toc.classList.remove("toc-fixed");
+  toc.classList.add("toc-bottom");
+
+  // keep identical width when parked at the bottom
+  toc.style.left = "0px";
+  toc.style.width = anchorWidth + "px";
+  return;
+}
+
 
     toc.classList.remove("toc-bottom");
     toc.classList.add("toc-fixed");
