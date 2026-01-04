@@ -2346,3 +2346,46 @@ html, body { overflow-x: hidden; }
 
 /* When JS fallback switches TOC to fixed, keep main content in column 2 */
 .article-layout > .article-toc.toc-fixed { grid-column: 1; }
+
+/* Allow absolute anchoring when fallback clamps to article bottom */
+.article-page .article-layout{
+  position: relative;
+}
+
+/* absolute clamp state applied by JS */
+.article-page .article-toc.toc-bottom{
+  position: absolute !important;
+  top: auto !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: auto !important;
+}
+
+/* === TOC: prevent collapse + clamp support === */
+
+/* Ensure the grid items always stay in their columns */
+.article-layout > .article-toc { grid-column: 1; }
+.article-layout > .article-main { grid-column: 2; }
+
+/* Fallback states driven by JS */
+.article-layout{ position: relative; } /* needed for toc-bottom absolute positioning */
+
+.article-toc.toc-fixed{
+  position: fixed !important;
+  top: calc(var(--header-h) + 18px) !important;
+  z-index: 50;
+}
+
+/* When we hit end of article, park TOC at bottom of article-layout */
+.article-toc.toc-bottom{
+  position: absolute !important;
+  top: auto !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  z-index: 2;
+}
+
+/* In toc-bottom state, don't keep fixed sizing/left from JS */
+.article-toc.toc-bottom{
+  width: auto !important;
+}

@@ -926,11 +926,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-// === TOC sticky fallback (desktop-only; never run in stacked layout) ===
-(function tocStickyFallback(){
+// === TOC sticky fallback with bottom clamp ===
+(function tocStickyFallbackClamped(){
   const toc = document.getElementById("article-toc");
   const layout = document.querySelector(".article-layout");
-  if (!toc || !layout) return;
+  const articleSection = document.querySelector(".article-section");
+  if (!toc || !layout || !articleSection) return;
 
   const mq = window.matchMedia("(max-width: 900px)");
 
@@ -943,15 +944,14 @@ document.addEventListener("DOMContentLoaded", function () {
     return getComputedStyle(layout).display === "grid";
   }
 
-  function resetFixed(){
-    toc.classList.remove("toc-fixed");
+  function clearState(){
+    toc.classList.remove("toc-fixed", "toc-bottom");
     toc.style.left = "";
     toc.style.width = "";
   }
 
-  function captureAnchor(){
-    // Measure TOC in normal flow (not fixed)
-    resetFixed();
+  function measureAnchor(){
+    clearState(); // ensure we measure in normal flow
     const r = toc.getBoundingClientRect();
     anchorTop = r.top + window.scrollY;
     anchorLeft = r.left;
@@ -959,27 +959,43 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function onScroll(){
-    // Never apply fixed fallback unless we are in the 2-col grid
     if (!isDesktopGrid()){
-      resetFixed();
+      clearState();
       return;
     }
 
-    if (anchorTop == null) captureAnchor();
+    if (anchorTop == null) measureAnchor();
 
     const headerH =
       parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 72;
     const stickTop = headerH + 18;
 
-    const shouldFix = window.scrollY + stickTop >= anchorTop;
+    // Bounds of the ARTICLE SECTION only (so we don't overlap newsletter/footer)
+    const sectionTop = articleSection.getBoundingClientRect().top + window.scrollY;
+    const sectionBottom = sectionTop + articleSection.offsetHeight;
 
-    if (shouldFix){
-      toc.classList.add("toc-fixed");
-      toc.style.left = anchorLeft + "px";
-      toc.style.width = anchorWidth + "px";
-    } else {
-      resetFixed();
+    const tocH = toc.getBoundingClientRect().height || 0;
+
+    const shouldStick = window.scrollY + stickTop >= anchorTop;
+    if (!shouldStick){
+      clearState();
+      return;
     }
+
+    const maxFixedScrollY = sectionBottom - tocH - stickTop;
+
+    if (window.scrollY >= maxFixedScrollY){
+      toc.classList.remove("toc-fixed");
+      toc.classList.add("toc-bottom");
+      toc.style.left = "";
+      toc.style.width = "";
+      return;
+    }
+
+    toc.classList.remove("toc-bottom");
+    toc.classList.add("toc-fixed");
+    toc.style.left = anchorLeft + "px";
+    toc.style.width = anchorWidth + "px";
   }
 
   function onResize(){
@@ -989,23 +1005,18 @@ document.addEventListener("DOMContentLoaded", function () {
     onScroll();
   }
 
-  // Re-measure after late layout shifts (DOCX render, plot iframe resizing)
   window.addEventListener("load", () => {
-    captureAnchor();
+    measureAnchor();
     onScroll();
-    setTimeout(() => { captureAnchor(); onScroll(); }, 250);
-    setTimeout(() => { captureAnchor(); onScroll(); }, 900);
+    setTimeout(() => { measureAnchor(); onScroll(); }, 250);
+    setTimeout(() => { measureAnchor(); onScroll(); }, 900);
   });
 
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onResize);
   if (mq.addEventListener) mq.addEventListener("change", onResize);
   else mq.addListener(onResize);
-  
-  // Initial
-  captureAnchor();
+
+  measureAnchor();
   onScroll();
 })();
-
-
-
