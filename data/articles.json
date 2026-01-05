@@ -31,25 +31,10 @@
       }
     },
     {
-      "title": "Carbon Crediting and the Voluntary Carbon Market",
-      "deck": "Why it exists and why it matters",
-      "date": "2026-01-06",
-      "goLive": "2026-01-06",
-      "readTime": 10,
-      "href": "assets/articles/carbon-crediting-and-the-voluntary-carbon-market.html",
-      "image": "assets/article_imgs/carbon-emissions.jpg",
-      "tags": ["Voluntary Carbon Market"],
-      "author": {
-        "name": "Andrew Wells",
-        "avatar": "assets/authors/andrew-wells-bse-photo-nb.png",
-        "url": "authors/andrew-wells.html"
-      }
-    },
-    {
       "title": "Counting Megawatts, Missing People",
       "deck": "The social gap in climate finance and why just transition funding matters",
-      "date": "2026-01-13",
-      "goLive": "2026-01-13",
+      "date": "2026-01-06",
+      "goLive": "2026-01-06",
       "readTime": 7,
       "href": "assets/articles/counting-megawatts-missing-people.html",
       "image": "assets/article_imgs/just_transition.jpg",
@@ -60,6 +45,22 @@
         "url": "authors/Juan-Acuna.html"
       }
     },
+    {
+      "title": "Carbon Crediting and the Voluntary Carbon Market",
+      "deck": "Why it exists and why it matters",
+      "date": "2026-01-13",
+      "goLive": "2026-01-13",
+      "readTime": 10,
+      "href": "assets/articles/carbon-crediting-and-the-voluntary-carbon-market.html",
+      "image": "assets/article_imgs/carbon-emissions.jpg",
+      "tags": ["Voluntary Carbon Market"],
+      "author": {
+        "name": "Andrew Wells",
+        "avatar": "assets/authors/andrew-wells-bse-photo-nb.png",
+        "url": "authors/andrew-wells.html"
+      }
+    },
+
     {
       "title": "Escaping Dirty Growth",
       "deck": "To clean progress",
