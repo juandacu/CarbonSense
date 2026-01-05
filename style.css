@@ -2456,3 +2456,17 @@ html, body { overflow-x: hidden; }
 .article-page #docx-root > :last-child{
   margin-bottom: 0 !important;
 }
+
+/* Justify article text */
+.article-page .prose.docx{
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+/* Prevent overflow from URLs / long tokens */
+.article-page .prose.docx p,
+.article-page .prose.docx li{
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
