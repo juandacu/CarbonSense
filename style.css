@@ -2358,7 +2358,7 @@ html, body { overflow-x: hidden; }
   top: auto !important;
   bottom: 0 !important;
   left: 0 !important;
-  width: auto !important;
+  width: 300px !important;
 }
 
 /* === TOC: prevent collapse + clamp support === */
@@ -2396,8 +2396,8 @@ html, body { overflow-x: hidden; }
 /* Ensure the grid columns are stable */
 .article-page .article-layout{
   display: grid;
-  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); /* adjust TOC width here */
-  column-gap: 26px; /* adjust spacing here */
+  grid-template-columns: minmax(240px, 300px); /* adjust TOC width here */
+  column-gap: 15px; /* adjust spacing here */
   align-items: start;
 }
 
