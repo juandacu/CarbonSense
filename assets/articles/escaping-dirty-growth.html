@@ -5,27 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Escaping Dirty Growth</title>
   <meta name="description" content="The importance of innovation" />
-  
-    <!-- Favicons -->
+
+  <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo3.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/assets/logo3.png">
   <link rel="apple-touch-icon" href="/assets/logo3.png">
-  
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-  <!-- root stylesheet is two levels up -->
   <link rel="stylesheet" href="../../style.css" />
+
   <style>
     /* ensure anchored headings/notes aren't hidden under the fixed header */
     .prose.docx [id], .prose.docx [name] { scroll-margin-top: 84px; }
+
+    /* Safety: if TOC is hidden/empty for any reason, collapse grid so text doesn't get stuck in the left column */
+    body.dirty-growth-article .article-layout.toc-hidden{
+      grid-template-columns: 1fr !important;
+    }
+    body.dirty-growth-article .article-layout.toc-hidden .article-toc{
+      display: none !important;
+    }
   </style>
 </head>
-<body>
+
+<body class="article-page dirty-growth-article">
   <header class="site-header solid" data-header>
     <div class="container header-inner">
-      <a class="logo" href="../../index.html" aria-label="Carbon-Sense">
-        <!-- logo lives at assets/logo3.png (one level up from this page) -->
-        <img src="../logo3.png" alt="Carbon-Sense">
+      <a class="logo" href="../../index.html" aria-label="Carbon Sense">
+        <img src="../logo3.png" alt="Carbon Sense">
       </a>
+
       <nav class="nav" data-nav>
         <a href="../../index.html">Home</a>
         <a href="../../about.html">About</a>
@@ -33,6 +42,7 @@
         <a href="../../coffee.html">Support Us</a>
         <a href="../../contact.html" class="btn btn-outline pill">Contact Us</a>
       </nav>
+
       <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" data-menu-btn>
         <span></span><span></span><span></span>
       </button>
@@ -45,7 +55,6 @@
 
       <div class="article-meta" data-animate>
         <span class="meta-item">
-          <!-- authors folder is sibling of this page's folder -->
           <img class="meta-avatar" src="../authors/lucien-vargas-bse-photo-nb.png" alt="" onerror="this.style.display='none'">
           <span class="meta-label">By</span>
           <a class="meta-value" href="../../authors/lucien-vargas.html">Lucien Vargas</a>
@@ -57,40 +66,35 @@
       </div>
 
       <p class="lead">The importance of innovation</p>
-      <!-- no Download the .docx link -->
+
       <div class="article-share">
         <span class="article-share-label">Share</span>
-      
+
         <div class="article-share-buttons" data-share-buttons>
-          <a href="#" class="btn btn-outline pill share-btn share-btn--linkedin"
-             data-network="linkedin">
-            LinkedIn
-          </a>
-      
-          <a href="#" class="btn btn-outline pill share-btn share-btn--x"
-             data-network="x">
-            X - formerly Twitter
-          </a>
-      
-          <a href="#" class="btn btn-outline pill share-btn share-btn--whatsapp"
-             data-network="whatsapp">
-            WhatsApp
-          </a>
+          <a href="#" class="btn btn-outline pill share-btn share-btn--linkedin" data-network="linkedin">LinkedIn</a>
+          <a href="#" class="btn btn-outline pill share-btn share-btn--x" data-network="x">X - formerly Twitter</a>
+          <a href="#" class="btn btn-outline pill share-btn share-btn--whatsapp" data-network="whatsapp">WhatsApp</a>
         </div>
-      
+
         <span class="article-share-status" data-share-status aria-live="polite"></span>
       </div>
-
-    </div>
     </div>
   </section>
 
-  <section class="section" data-animate>
+  <!-- Article layout with sticky TOC (matches your other article pages) -->
+  <section class="section article-section" data-animate>
     <div class="container">
-      <div id="docx-status" class="muted" style="margin-bottom:12px">Loading document…</div>
-      <article id="docx-root" class="prose docx"></article>
+      <div class="article-layout" id="article-layout">
+        <aside class="article-toc" id="article-toc" aria-label="On this page"></aside>
+
+        <div class="article-main">
+          <div id="docx-status" class="muted" style="margin-bottom:12px">Loading document…</div>
+          <article id="docx-root" class="prose docx"></article>
+        </div>
+      </div>
     </div>
   </section>
+
   <section class="section" id="newsletter" data-animate>
     <div class="container">
       <h2 class="section-title">Subscribe to our Newsletter</h2>
@@ -105,56 +109,64 @@
     </div>
   </section>
 
-<!-- Footer -->
-<footer class="site-footer site-footer-dark">
-  <div class="container footer-inner">
-    <div>
-      <a class="logo logo-foot" href="index.html" aria-label="Carbon Sense">
-        <img src="assets/logo3.png" alt="Carbon Sense">
-      </a>
-      <p class="muted">
-        Clear insights and analysis on where climate economics and policy are taking us
-      </p>
+  <footer class="site-footer site-footer-dark">
+    <div class="container footer-inner">
+      <div>
+        <a class="logo logo-foot" href="../../index.html" aria-label="Carbon Sense">
+          <img src="../logo3.png" alt="Carbon Sense">
+        </a>
+        <p class="muted">
+          Clear insights and analysis on where climate economics and policy are taking us
+        </p>
+      </div>
+
+      <div>
+        <div class="foot-title">Explore</div>
+        <ul class="foot-links">
+          <li><a href="../../about.html">About</a></li>
+          <li><a href="../../articles.html">All Articles</a></li>
+          <li><a href="../../coffee.html">Support Us</a></li>
+          <li><a href="../../privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="foot-title">Contact</div>
+        <p class="muted">
+          <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
+        </p>
+      </div>
     </div>
 
-    <div>
-      <div class="foot-title">Explore</div>
-      <ul class="foot-links">
-        <li><a href="about.html">About</a></li>
-        <li><a href="articles.html">All Articles</a></li>
-        <li><a href="coffee.html">Support Us</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-      </ul>
+    <div class="container foot-bottom">
+      <small><span data-year></span> Carbon Sense</small>
     </div>
+  </footer>
 
-    <div>
-      <div class="foot-title">Contact</div>
-      <p class="muted">
-        <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
-      </p>
-    </div>
-  </div>
-
-  <div class="container foot-bottom">
-    <small><span data-year></span> Carbon Sense</small>
-  </div>
-</footer>
-
-  <!-- scripts are two levels up -->
-  <!-- scripts at bottom -->
   <script src="../../vendor/mammoth.browser.min.js"></script>
   <script src="../../scripts.js"></script>
-  <script>
-    renderDocx(
-      "#docx-root",
-      "../Escaping Dirty Growth.docx",
-      "#docx-status"
-    )
-    .then(() => requestAnimationFrame(() =>
-      setReadingTime("#docx-root", "#reading-time")
-    ))
-    .catch(console.error);
-  </script>
 
+  <script>
+    (function () {
+      const DOCX_PATH = "../Escaping Dirty Growth.docx";
+
+      renderDocx("#docx-root", DOCX_PATH, "#docx-status")
+        .then(() => requestAnimationFrame(() => {
+          setReadingTime("#docx-root", "#reading-time");
+          buildDocxToc("#docx-root", "#article-toc");
+
+          // If TOC gets hidden/empty, avoid the narrow-left-column layout
+          const toc = document.getElementById("article-toc");
+          const layout = document.getElementById("article-layout");
+          const tocHidden = !toc || getComputedStyle(toc).display === "none";
+          const tocEmpty = !toc || toc.children.length === 0;
+
+          if (layout && (tocHidden || tocEmpty)) {
+            layout.classList.add("toc-hidden");
+          }
+        }))
+        .catch(console.error);
+    })();
+  </script>
 </body>
 </html>
