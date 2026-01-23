@@ -31,6 +31,26 @@
     body.article-page .article-layout.toc-hidden .article-toc {
       display: none !important;
     }
+
+    /* Multi-author layout: stack authors vertically */
+    .authors-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-left: 6px; /* small offset from "By" */
+    }
+    .author-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.2;
+    }
+    .author-item .meta-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
   </style>
 </head>
 
@@ -61,6 +81,12 @@
           avatar: "../authors/andrew-wells-bse-photo-nb.png"
         }
       ],
+
+      // Optional backward compatibility (older single-author pages)
+      // If you don't use `authors`, these will be used instead.
+      authorName: "",
+      authorPage: "",
+      authorAvatar: "",
 
       docxPath: "../The Orinoco Belt Tightens.docx"
     };
@@ -95,7 +121,7 @@
       <div class="article-meta" data-animate>
         <span class="meta-item" id="authors-meta">
           <span class="meta-label">By</span>
-          <span id="authors-wrap" class="meta-value"></span>
+          <div id="authors-wrap" class="authors-list"></div>
         </span>
 
         <span class="meta-sep">•</span>
@@ -212,30 +238,26 @@
       if (authorsWrap) {
         authorsWrap.innerHTML = "";
 
-        // Avatars (show up to 3 to keep it tidy)
-        const maxAvatars = 3;
-        authors.slice(0, maxAvatars).forEach(a => {
-          if (!a.avatar) return;
-          const img = document.createElement("img");
-          img.className = "meta-avatar";
-          img.src = a.avatar;
-          img.alt = a.name || "Author";
-          img.onerror = () => (img.style.display = "none");
-          authorsWrap.appendChild(img);
-        });
+        authors.forEach(a => {
+          const row = document.createElement("div");
+          row.className = "author-item";
 
-        // Names as links with commas / ampersand
-        authors.forEach((a, i) => {
+          if (a.avatar) {
+            const img = document.createElement("img");
+            img.className = "meta-avatar";
+            img.src = a.avatar;
+            img.alt = a.name || "Author";
+            img.onerror = () => (img.style.display = "none");
+            row.appendChild(img);
+          }
+
           const link = document.createElement("a");
           link.className = "meta-value";
           link.textContent = a.name || "Author";
           link.href = a.page || "#";
 
-          if (i > 0) {
-            const sep = document.createTextNode(i === authors.length - 1 ? " & " : ", ");
-            authorsWrap.appendChild(sep);
-          }
-          authorsWrap.appendChild(link);
+          row.appendChild(link);
+          authorsWrap.appendChild(row);
         });
 
         // If no authors provided, hide the whole "By" block to avoid awkward empty UI
@@ -270,4 +292,5 @@
   </script>
 </body>
 </html>
+
 
