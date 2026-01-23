@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- These are populated automatically -->
+  <title>Carbon Sense Article</title>
+  <meta name="description" content="" />
+
+  <!-- Favicons (stable across site) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo3.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/logo3.png">
+  <link rel="apple-touch-icon" href="/assets/logo3.png">
+
+  <!-- Fonts & global CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css" />
+
+  <style>
+    /* ensure anchored headings/notes aren't hidden under the fixed header */
+    .prose.docx [id],
+    .prose.docx [name] {
+      scroll-margin-top: 84px;
+    }
+
+    /* If TOC is empty, collapse to single column */
+    body.article-page .article-layout.toc-hidden {
+      grid-template-columns: 1fr !important;
+    }
+    body.article-page .article-layout.toc-hidden .article-toc {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body class="article-page">
+
+  <!-- =========================
+       ARTICLE CONFIG (EDIT ONLY THIS)
+       ========================= -->
+  <script>
+    const ARTICLE = {
+      title: "The Orinoco Belt Tightens",
+      subtitle: "Venezuela's heavy crude and the narrowing climate margin",
+      description: "Venezuela's heavy crude and the narrowing climate margin",
+
+      dateISO: "2026-01-27",
+      dateText: "Tue 27, 2026",
+
+      // Preferred: multi-author support
+      authors: [
+        {
+          name: "Charles Nicholson",
+          page: "../../authors/charles-nicholson.html",
+          avatar: "../authors/charles-nicholson-bse-photo-nb.png"
+        },
+        {
+          name: "Andrew Wells",
+          page: "../../authors/andrew-wells.html",
+          avatar: "../authors/andrew-wells-bse-photo-nb.png"
+        }
+      ],
+
+      docxPath: "../The Orinoco Belt Tightens.docx"
+    };
+  </script>
+
+  <!-- Header (stable across site) -->
+  <header class="site-header solid" data-header>
+    <div class="container header-inner">
+      <a class="logo" href="../../index.html" aria-label="Carbon Sense">
+        <img src="../logo3.png" alt="Carbon Sense">
+      </a>
+
+      <nav class="nav" data-nav>
+        <a href="../../index.html">Home</a>
+        <a href="../../about.html">About</a>
+        <a class="active" href="../../articles.html">All Articles</a>
+        <a href="../../coffee.html">Support Us</a>
+        <a href="../../contact.html" class="btn btn-outline pill">Contact Us</a>
+      </nav>
+
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" data-menu-btn>
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="page-hero hero-compact" data-animate>
+    <div class="container">
+      <h1 id="hero-title"></h1>
+
+      <div class="article-meta" data-animate>
+        <span class="meta-item" id="authors-meta">
+          <span class="meta-label">By</span>
+          <span id="authors-wrap" class="meta-value"></span>
+        </span>
+
+        <span class="meta-sep">•</span>
+        <time id="article-date" class="meta-item" datetime=""></time>
+        <span class="meta-sep">•</span>
+        <span class="meta-item" id="reading-time">—</span>
+      </div>
+
+      <p id="hero-subtitle" class="lead"></p>
+
+      <div class="article-share">
+        <span class="article-share-label">Share</span>
+        <div class="article-share-buttons" data-share-buttons>
+          <a href="#" class="btn btn-outline pill share-btn share-btn--linkedin" data-network="linkedin">LinkedIn</a>
+          <a href="#" class="btn btn-outline pill share-btn share-btn--x" data-network="x">X - formerly Twitter</a>
+          <a href="#" class="btn btn-outline pill share-btn share-btn--whatsapp" data-network="whatsapp">WhatsApp</a>
+        </div>
+        <span class="article-share-status" data-share-status aria-live="polite"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Article with Contents -->
+  <section class="section article-section" data-animate>
+    <div class="container">
+      <div class="article-layout" id="article-layout">
+        <aside class="article-toc" id="article-toc" aria-label="On this page"></aside>
+
+        <div class="article-main">
+          <div id="docx-status" class="muted" style="margin-bottom:12px">
+            Loading document…
+          </div>
+          <article id="docx-root" class="prose docx"></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="section" id="newsletter" data-animate>
+    <div class="container">
+      <h2 class="section-title">Subscribe to our Newsletter</h2>
+      <div class="substack-embed-wrap">
+        <iframe
+          src="https://carbonsense.substack.com/embed"
+          frameborder="0"
+          scrolling="no"
+          title="Subscribe to Carbon Sense on Substack">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (stable across site) -->
+  <footer class="site-footer site-footer-dark">
+    <div class="container footer-inner">
+      <div>
+        <a class="logo logo-foot" href="../../index.html" aria-label="Carbon Sense">
+          <img src="../logo3.png" alt="Carbon Sense">
+        </a>
+        <p class="muted">
+          Clear insights and analysis on where climate economics and policy are taking us
+        </p>
+      </div>
+
+      <div>
+        <div class="foot-title">Explore</div>
+        <ul class="foot-links">
+          <li><a href="../../about.html">About</a></li>
+          <li><a href="../../articles.html">All Articles</a></li>
+          <li><a href="../../coffee.html">Support Us</a></li>
+          <li><a href="../../privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="foot-title">Contact</div>
+        <p class="muted">
+          <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="container foot-bottom">
+      <small><span data-year></span> Carbon Sense</small>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../../vendor/mammoth.browser.min.js"></script>
+  <script src="../../scripts.js"></script>
+
+  <script>
+    (function initArticle() {
+      // Title + meta
+      document.title = `${ARTICLE.title} — Carbon Sense`;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.content = ARTICLE.description || ARTICLE.subtitle || "";
+
+      // Hero
+      document.getElementById("hero-title").textContent = ARTICLE.title;
+      document.getElementById("hero-subtitle").textContent = ARTICLE.subtitle || "";
+
+      // Authors (supports 1+). Backward compatible with authorName/authorPage/authorAvatar
+      const authorsWrap = document.getElementById("authors-wrap");
+      const authors =
+        Array.isArray(ARTICLE.authors) ? ARTICLE.authors :
+        (ARTICLE.authorName ? [{
+          name: ARTICLE.authorName,
+          page: ARTICLE.authorPage,
+          avatar: ARTICLE.authorAvatar
+        }] : []);
+
+      if (authorsWrap) {
+        authorsWrap.innerHTML = "";
+
+        // Avatars (show up to 3 to keep it tidy)
+        const maxAvatars = 3;
+        authors.slice(0, maxAvatars).forEach(a => {
+          if (!a.avatar) return;
+          const img = document.createElement("img");
+          img.className = "meta-avatar";
+          img.src = a.avatar;
+          img.alt = a.name || "Author";
+          img.onerror = () => (img.style.display = "none");
+          authorsWrap.appendChild(img);
+        });
+
+        // Names as links with commas / ampersand
+        authors.forEach((a, i) => {
+          const link = document.createElement("a");
+          link.className = "meta-value";
+          link.textContent = a.name || "Author";
+          link.href = a.page || "#";
+
+          if (i > 0) {
+            const sep = document.createTextNode(i === authors.length - 1 ? " & " : ", ");
+            authorsWrap.appendChild(sep);
+          }
+          authorsWrap.appendChild(link);
+        });
+
+        // If no authors provided, hide the whole "By" block to avoid awkward empty UI
+        if (authors.length === 0) {
+          const authorsMeta = document.getElementById("authors-meta");
+          if (authorsMeta) authorsMeta.style.display = "none";
+        }
+      }
+
+      // Date
+      const dateEl = document.getElementById("article-date");
+      dateEl.dateTime = ARTICLE.dateISO;
+      dateEl.textContent = ARTICLE.dateText;
+
+      // Render DOCX + TOC
+      renderDocx("#docx-root", ARTICLE.docxPath, "#docx-status")
+        .then(() => requestAnimationFrame(() => {
+          setReadingTime("#docx-root", "#reading-time");
+          buildDocxToc("#docx-root", "#article-toc");
+
+          const toc = document.getElementById("article-toc");
+          const layout = document.getElementById("article-layout");
+          const tocHidden = !toc || getComputedStyle(toc).display === "none";
+          const tocEmpty = !toc || toc.children.length === 0;
+
+          if (layout && (tocHidden || tocEmpty)) {
+            layout.classList.add("toc-hidden");
+          }
+        }))
+        .catch(console.error);
+    })();
+  </script>
+</body>
+</html>
+
