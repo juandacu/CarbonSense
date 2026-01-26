@@ -3,32 +3,96 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Escaping Dirty Growth</title>
-  <meta name="description" content="The importance of innovation" />
 
-  <!-- Favicons -->
+  <!-- These are populated automatically -->
+  <title>Carbon Sense Article</title>
+  <meta name="description" content="" />
+
+  <!-- Favicons (stable across site) -->
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo3.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/assets/logo3.png">
   <link rel="apple-touch-icon" href="/assets/logo3.png">
 
+  <!-- Fonts & global CSS -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../style.css" />
 
   <style>
     /* ensure anchored headings/notes aren't hidden under the fixed header */
-    .prose.docx [id], .prose.docx [name] { scroll-margin-top: 84px; }
+    .prose.docx [id],
+    .prose.docx [name] {
+      scroll-margin-top: 84px;
+    }
 
-    /* Safety: if TOC is hidden/empty for any reason, collapse grid so text doesn't get stuck in the left column */
-    body.dirty-growth-article .article-layout.toc-hidden{
+    /* If TOC is empty, collapse to single column */
+    body.article-page .article-layout.toc-hidden {
       grid-template-columns: 1fr !important;
     }
-    body.dirty-growth-article .article-layout.toc-hidden .article-toc{
+    body.article-page .article-layout.toc-hidden .article-toc {
       display: none !important;
+    }
+
+    /* Multi-author layout: stack authors vertically */
+    .authors-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-left: 6px; /* small offset from "By" */
+    }
+    .author-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.2;
+    }
+    .author-item .meta-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
     }
   </style>
 </head>
 
-<body class="article-page dirty-growth-article">
+<body class="article-page">
+
+  <!-- =========================
+       ARTICLE CONFIG (EDIT ONLY THIS)
+       ========================= -->
+  <script>
+    const ARTICLE = {
+      title: "The Orinoco Belt Tightens",
+      subtitle: "Venezuela's heavy crude and the narrowing climate margin",
+      description: "Venezuela's heavy crude and the narrowing climate margin",
+
+      dateISO: "2026-01-27",
+      dateText: "Tue 27, 2026",
+
+      // Preferred: multi-author support
+      authors: [
+        {
+          name: "Charles Nicholson",
+          page: "../../authors/charles-nicholson.html",
+          avatar: "../authors/charles-nicholson-bse-photo-nb.png"
+        },
+        {
+          name: "Andrew Wells",
+          page: "../../authors/andrew-wells.html",
+          avatar: "../authors/andrew-wells-bse-photo-nb.png"
+        }
+      ],
+
+      // Optional backward compatibility (older single-author pages)
+      // If you don't use `authors`, these will be used instead.
+      authorName: "",
+      authorPage: "",
+      authorAvatar: "",
+
+      docxPath: "../The Orinoco Belt Tightens.docx"
+    };
+  </script>
+
+  <!-- Header (stable across site) -->
   <header class="site-header solid" data-header>
     <div class="container header-inner">
       <a class="logo" href="../../index.html" aria-label="Carbon Sense">
@@ -49,52 +113,54 @@
     </div>
   </header>
 
+  <!-- Hero -->
   <section class="page-hero hero-compact" data-animate>
     <div class="container">
-      <h1>Escaping Dirty Growth</h1>
+      <h1 id="hero-title"></h1>
 
       <div class="article-meta" data-animate>
-        <span class="meta-item">
-          <img class="meta-avatar" src="../authors/lucien-vargas-bse-photo-nb.png" alt="" onerror="this.style.display='none'">
+        <span class="meta-item" id="authors-meta">
           <span class="meta-label">By</span>
-          <a class="meta-value" href="../../authors/lucien-vargas.html">Lucien Vargas</a>
+          <div id="authors-wrap" class="authors-list"></div>
         </span>
+
         <span class="meta-sep">•</span>
-        <time class="meta-item" datetime="2026-01-20">Jan 20, 2026</time>
+        <time id="article-date" class="meta-item" datetime=""></time>
         <span class="meta-sep">•</span>
         <span class="meta-item" id="reading-time">—</span>
       </div>
 
-      <p class="lead">The importance of innovation</p>
+      <p id="hero-subtitle" class="lead"></p>
 
       <div class="article-share">
         <span class="article-share-label">Share</span>
-
         <div class="article-share-buttons" data-share-buttons>
           <a href="#" class="btn btn-outline pill share-btn share-btn--linkedin" data-network="linkedin">LinkedIn</a>
           <a href="#" class="btn btn-outline pill share-btn share-btn--x" data-network="x">X - formerly Twitter</a>
           <a href="#" class="btn btn-outline pill share-btn share-btn--whatsapp" data-network="whatsapp">WhatsApp</a>
         </div>
-
         <span class="article-share-status" data-share-status aria-live="polite"></span>
       </div>
     </div>
   </section>
 
-  <!-- Article layout with sticky TOC (matches your other article pages) -->
+  <!-- Article with Contents -->
   <section class="section article-section" data-animate>
     <div class="container">
       <div class="article-layout" id="article-layout">
         <aside class="article-toc" id="article-toc" aria-label="On this page"></aside>
 
         <div class="article-main">
-          <div id="docx-status" class="muted" style="margin-bottom:12px">Loading document…</div>
+          <div id="docx-status" class="muted" style="margin-bottom:12px">
+            Loading document…
+          </div>
           <article id="docx-root" class="prose docx"></article>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Newsletter -->
   <section class="section" id="newsletter" data-animate>
     <div class="container">
       <h2 class="section-title">Subscribe to our Newsletter</h2>
@@ -109,6 +175,7 @@
     </div>
   </section>
 
+  <!-- Footer (stable across site) -->
   <footer class="site-footer site-footer-dark">
     <div class="container footer-inner">
       <div>
@@ -143,19 +210,74 @@
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script src="../../vendor/mammoth.browser.min.js"></script>
   <script src="../../scripts.js"></script>
 
   <script>
-    (function () {
-      const DOCX_PATH = "../Escaping Dirty Growth.docx";
+    (function initArticle() {
+      // Title + meta
+      document.title = `${ARTICLE.title} — Carbon Sense`;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.content = ARTICLE.description || ARTICLE.subtitle || "";
 
-      renderDocx("#docx-root", DOCX_PATH, "#docx-status")
+      // Hero
+      document.getElementById("hero-title").textContent = ARTICLE.title;
+      document.getElementById("hero-subtitle").textContent = ARTICLE.subtitle || "";
+
+      // Authors (supports 1+). Backward compatible with authorName/authorPage/authorAvatar
+      const authorsWrap = document.getElementById("authors-wrap");
+      const authors =
+        Array.isArray(ARTICLE.authors) ? ARTICLE.authors :
+        (ARTICLE.authorName ? [{
+          name: ARTICLE.authorName,
+          page: ARTICLE.authorPage,
+          avatar: ARTICLE.authorAvatar
+        }] : []);
+
+      if (authorsWrap) {
+        authorsWrap.innerHTML = "";
+
+        authors.forEach(a => {
+          const row = document.createElement("div");
+          row.className = "author-item";
+
+          if (a.avatar) {
+            const img = document.createElement("img");
+            img.className = "meta-avatar";
+            img.src = a.avatar;
+            img.alt = a.name || "Author";
+            img.onerror = () => (img.style.display = "none");
+            row.appendChild(img);
+          }
+
+          const link = document.createElement("a");
+          link.className = "meta-value";
+          link.textContent = a.name || "Author";
+          link.href = a.page || "#";
+
+          row.appendChild(link);
+          authorsWrap.appendChild(row);
+        });
+
+        // If no authors provided, hide the whole "By" block to avoid awkward empty UI
+        if (authors.length === 0) {
+          const authorsMeta = document.getElementById("authors-meta");
+          if (authorsMeta) authorsMeta.style.display = "none";
+        }
+      }
+
+      // Date
+      const dateEl = document.getElementById("article-date");
+      dateEl.dateTime = ARTICLE.dateISO;
+      dateEl.textContent = ARTICLE.dateText;
+
+      // Render DOCX + TOC
+      renderDocx("#docx-root", ARTICLE.docxPath, "#docx-status")
         .then(() => requestAnimationFrame(() => {
           setReadingTime("#docx-root", "#reading-time");
           buildDocxToc("#docx-root", "#article-toc");
 
-          // If TOC gets hidden/empty, avoid the narrow-left-column layout
           const toc = document.getElementById("article-toc");
           const layout = document.getElementById("article-layout");
           const tocHidden = !toc || getComputedStyle(toc).display === "none";
@@ -170,3 +292,5 @@
   </script>
 </body>
 </html>
+
+
