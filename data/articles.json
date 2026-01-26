@@ -76,6 +76,21 @@
         "url": "authors/lucien-vargas.html"
       }
     }
+    {
+      "title": "The Orinoco Belt Tightens",
+      "deck": "Venezuela's heavy crude and the narrowing climate margin",
+      "date": "2026-01-27",
+      "goLive": "2026-01-27",
+      "readTime": 16,
+      "href": "assets/articles/the-orinoco-belt-tightens.html",
+      "image": "assets/article_imgs/flaring-venezuela.png",
+      "tags": ["Climate change"],
+      "author": {
+        "name": "Charles Nicholson",
+        "avatar": "assets/authors/charles-nicholson-bse-photo-nb.png",
+        "url": "authors/charles-nicholson.html"
+      }
+    }
   ]
 }
 
