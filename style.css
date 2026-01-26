@@ -2470,3 +2470,19 @@ html, body { overflow-x: hidden; }
   overflow-wrap: anywhere;
   word-break: normal;
 }
+.hero-stats{
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr;   /* was 3 columns */
+  gap: 12px;
+  max-width: 420px;            /* optional: keeps it readable */
+}
+
+.hero-stat{
+  border-radius: 18px;
+  padding: 14px 14px 12px;
+}
+
+.hero-stat .v{
+  font-size: 1.55rem;
+}
