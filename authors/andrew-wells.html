@@ -131,7 +131,17 @@
 
       const articles = raw
         .map(normalizeArticle)
-        .filter(a => norm(a.author) === norm(AUTHOR));
+        .filter(a => {
+          const names = Array.isArray(a.authors) && a.authors.length
+            ? a.authors.map(p => p && p.name).filter(Boolean)
+            : String(a.author || "")
+                .split(",")
+                .map(s => s.trim())
+                .filter(Boolean);
+
+          return names.some(n => norm(n) === norm(AUTHOR));
+        });
+
 
       if (!articles.length) {
         grid.innerHTML = `<div class="muted">No articles yet.</div>`;
