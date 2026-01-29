@@ -73,7 +73,17 @@ function normalizeArticle(a){
 
   const title  = a.title || "Untitled";
   const deck   = a.deck  || a.excerpt || "";
-  const author = (a.author && (a.author.name || a.author.full || a.author)) || a.author || "Carbon Sense";
+
+  // UPDATED: support `authors: [...]` as well as legacy `author`
+  const author =
+    (Array.isArray(a.authors) && a.authors.length
+      ? a.authors
+          .map(p => (p && (p.name || p.full || p)) || "")
+          .filter(Boolean)
+          .join(", ")
+      : (a.author && (a.author.name || a.author.full || a.author)) || a.author
+    ) || "Carbon Sense";
+
   const tag    = (a.tags && a.tags[0]) || a.tag || "";
 
   const href   = a.href || a.url || a.path || "";
@@ -99,7 +109,6 @@ function normalizeArticle(a){
     comingSoon: live ? "" : comingSoonText(a)
   };
 }
-
 
 // tiny image retry (handles occasional aborts on GitHub Pages)
 function imgWithRetry(src, tries=2){
