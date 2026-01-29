@@ -62,6 +62,7 @@ function normalizeArticle(a){
     title: "Untitled",
     deck: "",
     author: "Carbon Sense",
+    authors: [],
     tag: "",
     dateISO: "",
     dateTxt: "",
@@ -74,15 +75,23 @@ function normalizeArticle(a){
   const title  = a.title || "Untitled";
   const deck   = a.deck  || a.excerpt || "";
 
-  // UPDATED: support `authors: [...]` as well as legacy `author`
-  const author =
-    (Array.isArray(a.authors) && a.authors.length
+  // NEW: normalize authors into an array (supports `authors: [...]` and legacy `author`)
+  const authors =
+    Array.isArray(a.authors) && a.authors.length
       ? a.authors
-          .map(p => (p && (p.name || p.full || p)) || "")
-          .filter(Boolean)
-          .join(", ")
-      : (a.author && (a.author.name || a.author.full || a.author)) || a.author
-    ) || "Carbon Sense";
+          .map(p => (p && typeof p === "object")
+            ? { name: (p.name || p.full || "").trim(), url: p.url }
+            : { name: String(p).trim() }
+          )
+          .filter(p => p.name)
+      : (a.author && typeof a.author === "object" && (a.author.name || a.author.full))
+        ? [{ name: (a.author.name || a.author.full || "").trim(), url: a.author.url }]
+        : (typeof a.author === "string" && a.author.trim())
+          ? [{ name: a.author.trim() }]
+          : [];
+
+  // NEW: keep existing `author` string that your card template expects
+  const author = (authors.length ? authors.map(p => p.name).join(", ") : "Carbon Sense");
 
   const tag    = (a.tags && a.tags[0]) || a.tag || "";
 
@@ -99,6 +108,7 @@ function normalizeArticle(a){
     title,
     deck,
     author,
+    authors, // NEW: preserve for any renderer that uses it
     tag,
     dateISO,
     dateTxt,
@@ -109,6 +119,7 @@ function normalizeArticle(a){
     comingSoon: live ? "" : comingSoonText(a)
   };
 }
+
 
 // tiny image retry (handles occasional aborts on GitHub Pages)
 function imgWithRetry(src, tries=2){
