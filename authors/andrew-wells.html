@@ -125,6 +125,13 @@
       const AUTHOR = "Andrew Wells";
       const norm = s => (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu,"");
 
+      function asset(p) {
+        if (!p) return "";
+        if (/^https?:\/\//i.test(p)) return p;
+        const needsUp = location.pathname.includes("/authors/");
+        return (needsUp ? "../" : "") + String(p).replace(/^\/+/, "");
+      }
+
       const raw = await fetch("../data/articles.json?v=" + Date.now(), { cache:"no-store" })
                         .then(r => r.json())
                         .then(d => Array.isArray(d) ? d : d.articles);
@@ -142,7 +149,6 @@
           return names.some(n => norm(n) === norm(AUTHOR));
         });
 
-
       if (!articles.length) {
         grid.innerHTML = `<div class="muted">No articles yet.</div>`;
         return;
@@ -150,7 +156,7 @@
 
       grid.innerHTML = articles.map(a => `
         <article class="article-card ${a.live ? "" : "is-locked"}">
-          <img class="article-thumb" src="../${a.image}" alt="">
+          <img class="article-thumb" src="${asset(a.image)}" alt="">
           
           <div class="article-body">
             <h3>${a.title}</h3>
@@ -164,7 +170,7 @@
             </div>
           </div>
 
-          ${a.live ? `<a class="cover" href="../${a.href}"></a>` : ""}
+          ${a.live && a.href ? `<a class="cover" href="${asset(a.href)}"></a>` : ""}
           ${a.live ? "" : `<div class="article-lock-overlay">${a.comingSoon}</div>`}
         </article>
       `).join("");
