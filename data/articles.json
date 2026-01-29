@@ -86,14 +86,14 @@
       "tags": ["Climate change"],
       "authors": [
         {
-          "name": "Andrew Wells",
-          "avatar": "assets/authors/andrew-wells-bse-photo-nb.png",
-          "url": "authors/andrew-wells.html"
-        },
-        {
           "name": "Charles Nicholson",
           "avatar": "assets/authors/charles-nicholson-bse-photo-nb.png",
           "url": "authors/charles-nicholson.html"
+        },
+        {
+          "name": "Andrew Wells",
+          "avatar": "assets/authors/andrew-wells-bse-photo-nb.png",
+          "url": "authors/andrew-wells.html"
         }
       ]
     }
