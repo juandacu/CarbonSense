@@ -141,30 +141,16 @@
       const grid = document.getElementById("articles-grid");
       if (!grid) return;
 
-      // NEW: render a byline that supports either `author` (string)
-      // or `authors` (array of {name,url}) or `author` (object)
-      function renderByline(a) {
-        if (Array.isArray(a.authors) && a.authors.length) {
-          return a.authors
-            .map(p => (p && p.url ? `<a href="${p.url}">${p.name}</a>` : (p && p.name ? p.name : "")))
-            .filter(Boolean)
-            .join(", ");
-        }
-
-        if (a.author && typeof a.author === "object") {
-          const name = a.author.name || "";
-          const url = a.author.url;
-          return url ? `<a href="${url}">${name}</a>` : name;
-        }
-
-        if (typeof a.author === "string" && a.author) return a.author;
-
-        return "Carbon Sense";
-      }
-
       try {
         const raw = await fetch("data/articles.json", { cache: "no-store" }).then(r => r.json());
-        const articles = (Array.isArray(raw) ? raw : raw.articles || []).map(normalizeArticle);
+        const articles = (Array.isArray(raw) ? raw : raw.articles || [])
+        .map(normalizeArticle)
+        .sort((a, b) => {
+          if (!a.dateISO) return 1;
+          if (!b.dateISO) return -1;
+          return new Date(b.dateISO) - new Date(a.dateISO);
+        });
+
 
         grid.innerHTML = articles.map(a => {
           const locked = !a.live;
@@ -180,7 +166,7 @@
 
               <div class="article-meta">
                 <div class="meta-left">
-                  <span class="byline">${renderByline(a)}</span>
+                  <span class="byline">${a.author}</span>
                 </div>
                 <div class="meta-right">
                   ${a.tag ? `<span class="tag">${a.tag}</span>` : ""}
