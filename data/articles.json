@@ -96,6 +96,21 @@
           "url": "authors/andrew-wells.html"
         }
       ]
+    },
+    {
+      "title": "Carbon Budgets: From Concept to Implementation",
+      "deck": "Bridging the gap between climate goals and concrete policy",
+      "date": "2026-02-10",
+      "goLive": "2026-02-10",
+      "readTime": 16,
+      "href": "assets/articles/carbon-budgets-from-concept-to-implementation.html",
+      "image": "assets/article_imgs/tcre.png",
+      "tags": ["Carbon budgets"],
+      "author": {
+        "name": "Pau Orive Vidal",
+        "avatar": "assets/authors/pau-orive-bio.png",
+        "url": "authors/pau-orive.html"
+      }
     }
   ]
 }
