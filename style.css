@@ -167,6 +167,13 @@
   .prose.docx img { max-width: 100%; height: auto; border-radius: 8px; }
   .prose.docx a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
   
+  /* Allowed inline colour overrides coming from DOCX character styles */
+  .prose.docx .t-orange { color: #ff6719; }
+  .prose.docx .t-blue   { color: #0a66c2; }
+  .prose.docx .t-red    { color: #b00020; }
+  .prose.docx .t-grey   { color: #6d7a75; }
+
+
   /* Responsive embed box */
 .embed {
     aspect-ratio: 16 / 9;

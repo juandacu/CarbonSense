@@ -292,17 +292,29 @@ function renderDocx(targetSelector, docxUrl, statusSelector){
 
           // Subtitle (EN + ES)
           "p[style-name='Subtitle'] => p.subtitle:fresh",
-          "p[style-name='Subtítulo'] => p.subtitle:fresh"
+          "p[style-name='Subtítulo'] => p.subtitle:fresh",
+          
+          // NEW: character styles (run-level)
+          "r[style-name='Text Orange'] => span.t-orange",
+          "r[style-name='Text Blue'] => span.t-blue",
+          "r[style-name='Text Red'] => span.t-red",
+          "r[style-name='Text Grey'] => span.t-grey"
+          
         ]
       }
     ))
     .then(result => {
       target.innerHTML = result.value;
+    
+      // NEW: convert [orange]...[/orange] and [c:#hex]...[/c] into spans
+      applyInlineColorTokens(target);
+    
       injectDocxEmbeds(target);
       fixDocxAnchors && fixDocxAnchors(target);
       status && (status.textContent = "");
       return target;
     })
+    
     .catch(err => {
       status && (status.textContent = "Could not display the document.");
       console.error("DOCX render error:", err);
@@ -1044,3 +1056,98 @@ if (window.scrollY >= maxFixedScrollY){
   onScroll();
 })();
 
+function applyInlineColorTokens(root){
+  if (!root) return;
+
+  // 1) Named tokens: [orange]text[/orange], [blue]...[/blue], etc.
+  const named = {
+    orange: "t-orange",
+    blue: "t-blue",
+    red: "t-red",
+    grey: "t-grey"
+  };
+
+  // 2) Arbitrary hex token: [c:#ff6719]text[/c]
+  const hexOpen = /^\[c:\s*(#[0-9a-fA-F]{6})\s*\]$/;
+
+  // Walk text nodes only
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => {
+      if (!n.nodeValue || n.nodeValue.indexOf("[") === -1) return NodeFilter.FILTER_REJECT;
+      // avoid inside <script>/<style>
+      const p = n.parentElement;
+      if (!p) return NodeFilter.FILTER_REJECT;
+      const tag = p.tagName;
+      if (tag === "SCRIPT" || tag === "STYLE") return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  nodes.forEach(node => {
+    const text = node.nodeValue;
+    // Quick exit if no closing bracket token
+    if (text.indexOf("]") === -1) return;
+
+    // Split by tokens while keeping them
+    const parts = text.split(/(\[[^\]]+\])/g).filter(Boolean);
+    if (parts.length === 1) return;
+
+    const frag = document.createDocumentFragment();
+    let stack = [];
+
+    function appendText(s){
+      if (!s) return;
+      const t = document.createTextNode(s);
+      (stack.length ? stack[stack.length - 1] : frag).appendChild(t);
+    }
+
+    parts.forEach(part => {
+      // Opening named token
+      const mOpenNamed = part.match(/^\[(orange|blue|red|grey)\]$/i);
+      if (mOpenNamed){
+        const cls = named[mOpenNamed[1].toLowerCase()];
+        const span = document.createElement("span");
+        span.className = cls;
+        (stack.length ? stack[stack.length - 1] : frag).appendChild(span);
+        stack.push(span);
+        return;
+      }
+
+      // Closing named token
+      const mCloseNamed = part.match(/^\[\/(orange|blue|red|grey)\]$/i);
+      if (mCloseNamed){
+        // pop until we close one span
+        for (let i = stack.length - 1; i >= 0; i--){
+          const el = stack[i];
+          stack.pop();
+          break;
+        }
+        return;
+      }
+
+      // Opening hex token
+      const mOpenHex = part.match(hexOpen);
+      if (mOpenHex){
+        const span = document.createElement("span");
+        span.style.color = mOpenHex[1];
+        (stack.length ? stack[stack.length - 1] : frag).appendChild(span);
+        stack.push(span);
+        return;
+      }
+
+      // Closing hex token
+      if (part === "[/c]"){
+        if (stack.length) stack.pop();
+        return;
+      }
+
+      // Normal text
+      appendText(part);
+    });
+
+    node.parentNode.replaceChild(frag, node);
+  });
+}
