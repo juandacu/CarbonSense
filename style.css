@@ -14,7 +14,8 @@
   }
   
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0}
+  html, body { margin: 0; padding: 0; width: 100%; height: auto; }
+
   body{
     font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     color:var(--text); background:var(--bg); line-height:1.6; padding-top: var(--header-h);   /* ADD THIS */
@@ -2492,4 +2493,8 @@ html, body { overflow-x: hidden; }
 
 .hero-stat .v{
   font-size: 1.55rem;
+}
+.article-page .article-main iframe.plot-embed{
+  min-height: 560px;
+  display: block;
 }

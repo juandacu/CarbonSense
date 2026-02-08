@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Spain — Emissions Intensity (Stacked)</title>
+  <style>
+    body { margin:0; padding:16px; font-family: Arial, sans-serif; background:#fff; }
+    .topbar { display:flex; gap:12px; align-items:center; margin-bottom:12px; }
+    .tabs { display:flex; gap:8px; }
+    .tab-btn {
+      border: 1px solid #d0d0d0;
+      background: #f7f7f7;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .tab-btn.active { background:#fff; }
+    .panel { display:none; }
+    .panel.active { display:block; }
+    iframe { width:100%; height:980px; border:0; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="abs">Absolute</button>
+      <button class="tab-btn" data-tab="rel">Relative</button>
+    </div>
+  </div>
+
+  <div id="abs" class="panel active">
+    <iframe id="frameAbs" src="es_intensity_abs_stacked.html"></iframe>
+  </div>
+
+  <div id="rel" class="panel">
+    <iframe id="frameRel" src="es_intensity_rel_stacked.html"></iframe>
+  </div>
+
+  <script>
+    const btns = document.querySelectorAll(".tab-btn");
+    const panels = document.querySelectorAll(".panel");
+
+    function activate(id) {
+      panels.forEach(p => p.classList.toggle("active", p.id === id));
+      btns.forEach(b => b.classList.toggle("active", b.dataset.tab === id));
+    }
+
+    btns.forEach(b => b.addEventListener("click", () => activate(b.dataset.tab)));
+  </script>
+
+</body>
+</html>

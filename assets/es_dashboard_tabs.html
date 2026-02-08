@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>EXIOBASE Dashboard</title>
+  <style>
+    body { margin:0; padding:16px; font-family: Arial, sans-serif; background:#fff; }
+    .tabs { display:flex; gap:8px; margin-bottom:12px; }
+    .tab-btn {
+      border: 1px solid #d0d0d0;
+      background: #f7f7f7;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .tab-btn.active { background:#fff; }
+    .panel { display:none; }
+    .panel.active { display:block; }
+    iframe { width:100%; height:980px; border:0; }
+  </style>
+</head>
+<body>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="p1">GVA & Employment</button>
+    <button class="tab-btn" data-tab="p2">Emissions</button>
+    <button class="tab-btn" data-tab="p3">Emissions intensity (kg CO2e/EUR)</button>
+  </div>
+
+  <div id="p1" class="panel active">
+    <iframe id="frame1"></iframe>
+  </div>
+
+  <div id="p2" class="panel">
+    <iframe id="frame2"></iframe>
+  </div>
+
+  <div id="p3" class="panel">
+    <iframe id="frame3"></iframe>
+  </div>
+
+  <script>
+    const f1 = document.getElementById("frame1");
+    const f2 = document.getElementById("frame2");
+    const f3 = document.getElementById("frame3");
+
+    // relative file names (must be in same folder as this dashboard html)
+    const SRC1 = "es_gva_employment.html";
+    const SRC2 = "es_emissions_by_scope.html";
+    // this must be the absolute intensity stacked html you generated
+    const SRC3 = "es_intensity_abs_stacked.html";
+
+    // load first immediately, lazy-load others
+    f1.src = SRC1;
+
+    const btns = document.querySelectorAll(".tab-btn");
+    const panels = document.querySelectorAll(".panel");
+
+    function activate(id) {
+      panels.forEach(p => p.classList.toggle("active", p.id === id));
+      btns.forEach(b => b.classList.toggle("active", b.dataset.tab === id));
+      if (id === "p2" && !f2.src) f2.src = SRC2;
+      if (id === "p3" && !f3.src) f3.src = SRC3;
+    }
+
+    btns.forEach(b => b.addEventListener("click", () => activate(b.dataset.tab)));
+  </script>
+
+</body>
+</html>

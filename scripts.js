@@ -407,39 +407,74 @@ function injectDocxEmbeds(root){
     "[ SANKEY PLOT]": "../climate_finance_sankey.html",
     "[ SANKEY PLOT ]": "../climate_finance_sankey.html",
     "[MAP PLOT]": "../climate_finance_map.html",
-    "[ MAP PLOT ]": "../climate_finance_map.html"
+    "[ MAP PLOT ]": "../climate_finance_map.html",
+      // Spain IO article embeds
+    "[ES_DASHBOARD_TABS.HTML]": "../es_dashboard_tabs.html",
+    "[ ES_DASHBOARD_TABS.HTML ]": "../es_dashboard_tabs.html",
+
+    "[ES_SCC_DAMAGE_INTERACTIVE]": "../es_scc_damage_interactive.html",
+    "[ ES_SCC_DAMAGE_INTERACTIVE ]": "../es_scc_damage_interactive.html",
+
+    "[SCOPE1_CENTER_2D_WITH_YEAR_SLIDER]": "../scope1_center_2d_with_year_slider.html",
+    "[ SCOPE1_CENTER_2D_WITH_YEAR_SLIDER ]": "../scope1_center_2d_with_year_slider.html"
+
   };
   Array.from(root.querySelectorAll("p, div, li")).forEach(function(el){
     var key = el.textContent.trim().toUpperCase();
     if (EMBEDS[key]) {
       var iframe = document.createElement("iframe");
       iframe.className = "plot-embed";
-      iframe.title = key.includes("SANKEY") ? "Climate finance Sankey" : "Climate finance map";
+      iframe.title = key.replace(/[\[\]]/g, "").trim();
       iframe.src = EMBEDS[key];
-      iframe.style.width = "100%";   // full width of the article column
+      
+      iframe.style.width = "100%";
       iframe.style.border = "0";
-      iframe.setAttribute("scrolling", "yes");
-      // no fixed height; the child posts its height
+      
+      // fallback so it doesn't start tiny
+      var isSpainIO =
+        /\/assets\/articles\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname) ||
+        /\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname);
+
+    iframe.style.height = isSpainIO ? "980px" : "680px";
+
+      
+      // remove internal scrollbar (you want the parent page to scroll, not the iframe)
+      iframe.setAttribute("scrolling", "no");
+      
       el.replaceWith(iframe);
+      
     }
   });
 }
 
  // Auto-resize incoming plot iframes
+// Auto-resize incoming plot iframes
 window.addEventListener("message", function (e) {
-    // tighten this if you serve from your domain: if (e.origin !== location.origin) return;
-    var data = e.data || {};
-    if (data.type !== "plot-size") return;
-  
-    // find the iframe that sent this message
-    document.querySelectorAll("iframe.plot-embed").forEach(function (ifr) {
-      try {
-        if (ifr.contentWindow === e.source) {
-          ifr.style.height = (data.height|0) + "px";
-        }
-      } catch (_) {}
-    });
+  var data = e.data || {};
+  if (data.type !== "plot-size") return;
+
+  var h = Number(data.height);
+  if (!Number.isFinite(h) || h < 300) return;
+
+  // Only this article gets extra padding + higher minimum
+  var isSpainIO =
+    /\/assets\/articles\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname) ||
+    /\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname);
+
+  if (isSpainIO) {
+    h = Math.max(h + 220, 980);
+  }
+
+  // Find the iframe that sent this message
+  document.querySelectorAll("iframe.plot-embed").forEach(function (ifr) {
+    try {
+      if (ifr.contentWindow === e.source) {
+        ifr.style.height = Math.ceil(h) + "px";
+      }
+    } catch (_) {}
   });
+});
+
 
 // Add body padding only after we scroll past the hero
 (function(){
