@@ -2499,3 +2499,16 @@ html, body { overflow-x: hidden; }
   display: block;
 }
 iframe.plot-embed { display: block; }
+/* Mobile: make embeds use viewport height and avoid huge dead space */
+@media (max-width: 640px) {
+  .prose.docx iframe.plot-embed {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: clamp(520px, 72vh, 760px) !important;
+    display: block;
+  }
+
+  /* If your dashboard tabs are inside the iframe page */
+  .tabs { flex-wrap: wrap; gap: 6px; }
+  .tab-btn { font-size: 13px; padding: 6px 10px; }
+}
