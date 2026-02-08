@@ -261,9 +261,35 @@ function escapeHtml(s){
   });
 })();
 
+
+
 // Render a DOCX inline (no content changes)
 // Render a DOCX inline (no content changes)
-function renderDocx(targetSelector, docxUrl, statusSelector){
+function pruneEmptyDocxParas(root) {
+  root.querySelectorAll("p").forEach(p => {
+    if (p.querySelector("iframe, img, table, ul, ol, blockquote")) return;
+    const t = (p.textContent || "").replace(/\u00a0/g, " ").trim();
+    if (!t) p.remove();
+  });
+}
+
+function tightenPlotEmbedsForSpainArticle(root) {
+  const isSpainIO =
+    /\/assets\/articles\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname) ||
+    /\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname);
+
+  if (!isSpainIO) return;
+
+  // Match your Plotly layout height (e.g., 820) plus some breathing room
+  const H = 880;
+
+  root.querySelectorAll("iframe.plot-embed").forEach(ifr => {
+    ifr.style.height = H + "px";
+    ifr.dataset.fixed = "1"; // prevent later postMessage auto-resize from expanding it
+  });
+}
+
+function renderDocx(targetSelector, docxUrl, statusSelector) {
   const target = document.querySelector(targetSelector);
   const status = statusSelector ? document.querySelector(statusSelector) : null;
   if (!target || !window.mammoth) {
@@ -281,7 +307,6 @@ function renderDocx(targetSelector, docxUrl, statusSelector){
       { arrayBuffer: buf },
       {
         styleMap: [
-          // Existing
           "p[style-name='Red emphasis'] => p.red-emphasis:fresh",
 
           // Quotes (EN + ES)
@@ -293,28 +318,42 @@ function renderDocx(targetSelector, docxUrl, statusSelector){
           // Subtitle (EN + ES)
           "p[style-name='Subtitle'] => p.subtitle:fresh",
           "p[style-name='Subtítulo'] => p.subtitle:fresh",
-          
-          // NEW: character styles (run-level)
+
+          // Character styles (run-level)
           "r[style-name='Text Orange'] => span.t-orange",
           "r[style-name='Text Blue'] => span.t-blue",
           "r[style-name='Text Red'] => span.t-red",
           "r[style-name='Text Grey'] => span.t-grey"
-          
         ]
       }
     ))
     .then(result => {
       target.innerHTML = result.value;
-    
-      // NEW: convert [orange]...[/orange] and [c:#hex]...[/c] into spans
-      applyInlineColorTokens(target);
-    
-      injectDocxEmbeds(target);
-      fixDocxAnchors && fixDocxAnchors(target);
+
+      // Convert [orange]...[/orange] and [c:#hex]...[/c] into spans (if you use them)
+      if (typeof applyInlineColorTokens === "function") {
+        applyInlineColorTokens(target);
+      }
+
+      // Replace embed tokens with iframes
+      if (typeof injectDocxEmbeds === "function") {
+        injectDocxEmbeds(target);
+      }
+
+      // Remove empty paragraphs Mammoth leaves around embeds
+      pruneEmptyDocxParas(target);
+
+      // Force a smaller, fixed height for plot embeds only on this article
+      tightenPlotEmbedsForSpainArticle(target);
+
+      // Fix anchors (if defined)
+      if (typeof fixDocxAnchors === "function") {
+        fixDocxAnchors(target);
+      }
+
       status && (status.textContent = "");
       return target;
     })
-    
     .catch(err => {
       status && (status.textContent = "Could not display the document.");
       console.error("DOCX render error:", err);
@@ -457,13 +496,16 @@ window.addEventListener("message", function (e) {
   if (!Number.isFinite(h) || h < 300) return;
 
   // Only this article gets extra padding + higher minimum
-  var isSpainIO =
-    /\/assets\/articles\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname) ||
-    /\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname);
+// inside injectDocxEmbeds, right after you set iframe.src / iframe.title
+var isSpainIO =
+  /\/assets\/articles\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname) ||
+  /\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname);
 
-  if (isSpainIO) {
-    h = Math.max(h + 220, 980);
-  }
+if (isSpainIO) {
+  iframe.style.height = "780px";     // was 980px
+  iframe.dataset.fixed = "1";        // NEW
+}
+
 
   // Find the iframe that sent this message
   document.querySelectorAll("iframe.plot-embed").forEach(function (ifr) {

@@ -2495,6 +2495,7 @@ html, body { overflow-x: hidden; }
   font-size: 1.55rem;
 }
 .article-page .article-main iframe.plot-embed{
-  min-height: 560px;
+  min-height: 500px;
   display: block;
 }
+iframe.plot-embed { display: block; }
