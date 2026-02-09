@@ -453,10 +453,15 @@ function injectDocxEmbeds(root){
     "[ES_DASHBOARD_TABS.HTML]": "../es_dashboard_tabs.html",
     "[ ES_DASHBOARD_TABS.HTML ]": "../es_dashboard_tabs.html",
 
-    "[ES_SCC_DAMAGE_INTERACTIVE]": "../es_scc_damage_interactive.html",
+    "[es_scc_damage_interactive_gva_xcap.html]": "../es_scc_damage_interactive_gva_xcap.html",
+    "[ES_SCC_DAMAGE_INTERACTIVE_GVA_XCAP]": "../es_scc_damage_interactive_gva_xcap.html",
+
+    "[ES_SCC_DAMAGE_INTERACTIVE.HTML]": "../es_scc_damage_interactive.html",
     "[ ES_SCC_DAMAGE_INTERACTIVE ]": "../es_scc_damage_interactive.html",
 
-    "[SCOPE1_CENTER_2D_WITH_YEAR_SLIDER]": "../scope1_center_2d_with_year_slider.html",
+
+
+    "[SCOPE1_CENTER_2D_WITH_YEAR_SLIDER.HTML]": "../scope1_center_2d_with_year_slider.html",
     "[ SCOPE1_CENTER_2D_WITH_YEAR_SLIDER ]": "../scope1_center_2d_with_year_slider.html"
 
   };
