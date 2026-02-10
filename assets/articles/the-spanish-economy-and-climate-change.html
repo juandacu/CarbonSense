@@ -290,42 +290,8 @@
         .catch(console.error);
     })();
   </script>
-  <script>
-    (function () {
-      function height() {
-        return Math.max(
-          document.documentElement.scrollHeight || 0,
-          document.body ? document.body.scrollHeight : 0
-        );
-      }
-    
-      function send() {
-        var h = height();
-        window.parent.postMessage({ type: "plot-size", height: h }, "*");
-      }
-    
-      // Fire multiple times to catch late rendering (Plotly, fonts, tabs)
-      window.addEventListener("load", function () {
-        send();
-        requestAnimationFrame(send);
-        setTimeout(send, 150);
-        setTimeout(send, 500);
-        setTimeout(send, 1200);
-      });
-    
-      window.addEventListener("resize", send);
-    
-      // Auto-fire on layout/content changes
-      var ro = new ResizeObserver(function () { requestAnimationFrame(send); });
-      ro.observe(document.documentElement);
-      if (document.body) ro.observe(document.body);
-    
-      var mo = new MutationObserver(function () { requestAnimationFrame(send); });
-      mo.observe(document.documentElement, { subtree: true, childList: true, attributes: true });
-    })();
-    </script>
-    
-    
+
+          
 </body>
 </html>
 

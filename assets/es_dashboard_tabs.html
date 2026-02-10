@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>EXIOBASE Dashboard</title>
   <style>
-    :root { --frame-h: 980px; }
+    :root { --frame-h: 600; }
     body { margin:0; padding:16px; font-family: Arial, sans-serif; background:#fff; }
     .tabs { display:flex; gap:8px; margin-bottom:12px; }
     .tab-btn {
@@ -14,7 +14,7 @@
       padding: 8px 12px;
       cursor: pointer;
       border-radius: 6px;
-      font-size: 14px;
+      font-size: 11px;
     }
     .tab-btn.active { background:#fff; }
     .panel { display:none; }
@@ -60,12 +60,12 @@
 
     // Standardize: pick ONE height for all tabs.
     // Option A (simplest): fixed height only
-    const FIXED_H = 980;
+    const FIXED_H = 600;
 
     // Option B: clamp to max of reported heights (still standardized across tabs)
     const USE_MAX_REPORTED = true;
-    const MIN_H = 980;
-    const MAX_H = 1300;
+    const MIN_H = 600;
+    const MAX_H = 600;
 
     const reported = { frame1: 0, frame2: 0, frame3: 0 };
 

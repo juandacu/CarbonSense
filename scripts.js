@@ -273,23 +273,6 @@ function pruneEmptyDocxParas(root) {
   });
 }
 
-function tightenPlotEmbedsForSpainArticle(root) {
-  const isSpainIO =
-    /\/assets\/articles\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname) ||
-    /\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname);
-
-  if (!isSpainIO) return;
-
-  // Match your Plotly layout height (e.g., 820) plus some breathing room
-  const mobile = window.matchMedia("(max-width: 640px)").matches;
-  const H = mobile ? 620 : 860;
-
-
-  root.querySelectorAll("iframe.plot-embed").forEach(ifr => {
-    ifr.style.height = H + "px";
-    ifr.dataset.fixed = "1"; // prevent later postMessage auto-resize from expanding it
-  });
-}
 
 function renderDocx(targetSelector, docxUrl, statusSelector) {
   const target = document.querySelector(targetSelector);
@@ -442,6 +425,72 @@ function setReadingTime(rootSelector, outSelector){
 }
     
 // Replace [ SANKEY PLOT ] and [ MAP PLOT ] placeholders with iframes
+function autofitIframeToContent(ifr){
+  function measure(){
+    try{
+      const w = ifr.contentWindow;
+      const d = ifr.contentDocument;
+      if (!w || !d) return null;
+
+      // Kill default margins inside embedded HTML
+      if (d.documentElement) d.documentElement.style.margin = "0";
+      if (d.body) d.body.style.margin = "0";
+
+      // Prefer Plotly container height (avoids huge blank body/viewport sizing)
+      const plots = d.querySelectorAll(".js-plotly-plot, .plotly-graph-div");
+      let h = 0;
+
+      if (plots.length){
+        plots.forEach(el => {
+          const r = el.getBoundingClientRect();
+          const bottom = r.bottom + w.scrollY;
+          if (bottom > h) h = bottom;
+        });
+        h = Math.ceil(h + 12);
+      } else {
+        const de = d.documentElement;
+        const b  = d.body;
+        h = Math.ceil(Math.max(
+          de ? de.scrollHeight : 0,
+          b  ? b.scrollHeight  : 0
+        ) + 2);
+      }
+
+      return (h && h > 200) ? h : null;
+    } catch(_) {
+      return null;
+    }
+  }
+
+  function apply(){
+    const h = measure();
+    if (h) ifr.style.height = h + "px";
+  }
+
+  ifr.addEventListener("load", () => {
+    apply();
+    setTimeout(apply, 50);
+    setTimeout(apply, 200);
+    setTimeout(apply, 800);
+
+    // Track future changes (Plotly renders after load, tabs switch, etc.)
+    try{
+      const w = ifr.contentWindow;
+      const d = ifr.contentDocument;
+      if (w && d && "ResizeObserver" in w){
+        const ro = new w.ResizeObserver(() => apply());
+        ro.observe(d.documentElement);
+        if (d.body) ro.observe(d.body);
+        ifr.__ro = ro; // keep reference
+      }
+    } catch(_) {}
+  });
+
+  window.addEventListener("resize", () => setTimeout(apply, 80));
+}
+
+
+
 function injectDocxEmbeds(root){
   if (!root) return;
   var EMBEDS = {
@@ -481,7 +530,8 @@ function injectDocxEmbeds(root){
         /\/assets\/articles\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname) ||
         /\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname);
 
-    iframe.style.height = isSpainIO ? "980px" : "680px";
+        iframe.style.height = "420px"; // small fallback only
+        autofitIframeToContent(iframe);
 
       
       // remove internal scrollbar (you want the parent page to scroll, not the iframe)
@@ -495,26 +545,14 @@ function injectDocxEmbeds(root){
 
  // Auto-resize incoming plot iframes
 // Auto-resize incoming plot iframes
+// Auto-resize plot iframes (from child postMessage, if present)
 window.addEventListener("message", function (e) {
   var data = e.data || {};
   if (data.type !== "plot-size") return;
 
   var h = Number(data.height);
-  if (!Number.isFinite(h) || h < 300) return;
+  if (!Number.isFinite(h) || h < 200) return;
 
-  // Only this article gets extra padding + higher minimum
-// inside injectDocxEmbeds, right after you set iframe.src / iframe.title
-var isSpainIO =
-  /\/assets\/articles\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname) ||
-  /\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname);
-
-if (isSpainIO) {
-  iframe.style.height = "780px";     // was 980px
-  iframe.dataset.fixed = "1";        // NEW
-}
-
-
-  // Find the iframe that sent this message
   document.querySelectorAll("iframe.plot-embed").forEach(function (ifr) {
     try {
       if (ifr.contentWindow === e.source) {
@@ -569,7 +607,7 @@ if (isSpainIO) {
         header.classList.remove("transparent");
         header.classList.add("solid");
       }
-    }, { rootMargin: "-64px 0px 0px 0px", threshold: 0.01 });
+    }, { rootMargin: "0px 0px 0px 0px", threshold: 0.01 });
     io.observe(hero);
   } else {
     // Fallback: solid after first viewport
