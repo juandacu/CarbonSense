@@ -2498,3 +2498,81 @@ html, body { overflow-x: hidden; }
 iframe.plot-embed { display: block; }
 /* Mobile: make embeds use viewport height and avoid huge dead space */
 
+/* ===== Mobile plot screenshots + carousel ===== */
+
+.prose.docx img.plot-static-img{
+  display:block;
+  width:100%;
+  height:auto;
+  border:1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background:#fff;
+  margin: 8px 0 10px;
+}
+
+/* Carousel container */
+.prose.docx .plot-carousel{
+  border:1px solid var(--border);
+  border-radius: var(--radius);
+  overflow:hidden;
+  background:#fff;
+  box-shadow: var(--shadow);
+  margin: 8px 0 10px;
+}
+.plot-carousel__track{
+  display:flex;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling: touch;
+}
+.plot-carousel__track::-webkit-scrollbar{ height: 4px; }
+.plot-carousel__track::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,0.16);
+  border-radius: 999px;
+}
+
+.plot-carousel__slide{
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+.plot-carousel__slide img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+.plot-carousel__dots{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  padding: 8px 0 10px;
+}
+.plot-carousel__dot{
+  width:8px;
+  height:8px;
+  border-radius:999px;
+  border:0;
+  padding:0;
+  background: rgba(0,0,0,0.18);
+}
+.plot-carousel__dot.is-active{
+  background: rgba(0,0,0,0.55);
+}
+
+/* Full-bleed like your iframes, but for screenshots/carousels */
+.prose.docx img.plot-static-img,
+.prose.docx .plot-carousel{
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+@media (min-width: 900px) {
+  .prose.docx img.plot-static-img,
+  .prose.docx .plot-carousel{
+    width: min(100vw, var(--container));
+    margin-left: calc((min(100vw, var(--container)) - 100vw) / 2 * -1);
+  }
+}

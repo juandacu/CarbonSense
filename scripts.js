@@ -273,6 +273,23 @@ function pruneEmptyDocxParas(root) {
   });
 }
 
+function tightenPlotEmbedsForSpainArticle(root) {
+  const isSpainIO =
+    /\/assets\/articles\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname) ||
+    /\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname);
+
+  if (!isSpainIO) return;
+
+  // Match your Plotly layout height (e.g., 820) plus some breathing room
+  const mobile = window.matchMedia("(max-width: 640px)").matches;
+  const H = mobile ? 620 : 860;
+
+
+  root.querySelectorAll("iframe.plot-embed").forEach(ifr => {
+    ifr.style.height = H + "px";
+    ifr.dataset.fixed = "1"; // prevent later postMessage auto-resize from expanding it
+  });
+}
 
 function renderDocx(targetSelector, docxUrl, statusSelector) {
   const target = document.querySelector(targetSelector);
@@ -425,137 +442,169 @@ function setReadingTime(rootSelector, outSelector){
 }
     
 // Replace [ SANKEY PLOT ] and [ MAP PLOT ] placeholders with iframes
-function autofitIframeToContent(ifr){
-  function measure(){
-    try{
-      const w = ifr.contentWindow;
-      const d = ifr.contentDocument;
-      if (!w || !d) return null;
-
-      // Kill default margins inside embedded HTML
-      if (d.documentElement) d.documentElement.style.margin = "0";
-      if (d.body) d.body.style.margin = "0";
-
-      // Prefer Plotly container height (avoids huge blank body/viewport sizing)
-      const plots = d.querySelectorAll(".js-plotly-plot, .plotly-graph-div");
-      let h = 0;
-
-      if (plots.length){
-        plots.forEach(el => {
-          const r = el.getBoundingClientRect();
-          const bottom = r.bottom + w.scrollY;
-          if (bottom > h) h = bottom;
-        });
-        h = Math.ceil(h + 12);
-      } else {
-        const de = d.documentElement;
-        const b  = d.body;
-        h = Math.ceil(Math.max(
-          de ? de.scrollHeight : 0,
-          b  ? b.scrollHeight  : 0
-        ) + 2);
-      }
-
-      return (h && h > 200) ? h : null;
-    } catch(_) {
-      return null;
-    }
-  }
-
-  function apply(){
-    const h = measure();
-    if (h) ifr.style.height = h + "px";
-  }
-
-  ifr.addEventListener("load", () => {
-    apply();
-    setTimeout(apply, 50);
-    setTimeout(apply, 200);
-    setTimeout(apply, 800);
-
-    // Track future changes (Plotly renders after load, tabs switch, etc.)
-    try{
-      const w = ifr.contentWindow;
-      const d = ifr.contentDocument;
-      if (w && d && "ResizeObserver" in w){
-        const ro = new w.ResizeObserver(() => apply());
-        ro.observe(d.documentElement);
-        if (d.body) ro.observe(d.body);
-        ifr.__ro = ro; // keep reference
-      }
-    } catch(_) {}
-  });
-
-  window.addEventListener("resize", () => setTimeout(apply, 80));
+function normalizeKey(s){
+  return String(s || "").replace(/\u00a0/g, " ").trim().toUpperCase();
+}
+function normalizeMap(raw){
+  const out = {};
+  Object.keys(raw || {}).forEach(k => { out[normalizeKey(k)] = raw[k]; });
+  return out;
 }
 
+function createPlotScreenshot(src, title){
+  const img = document.createElement("img");
+  img.className = "plot-static-img";
+  img.loading = "lazy";
+  img.decoding = "async";
+  img.alt = title || "Chart";
+  img.src = absUrl(src);
+  return img;
+}
 
+function createPlotCarousel(images, title){
+  const wrap = document.createElement("div");
+  wrap.className = "plot-carousel";
+  wrap.setAttribute("role", "region");
+  wrap.setAttribute("aria-label", title || "Chart screenshots");
 
+  const track = document.createElement("div");
+  track.className = "plot-carousel__track";
+  wrap.appendChild(track);
+
+  images.forEach((src, i) => {
+    const slide = document.createElement("div");
+    slide.className = "plot-carousel__slide";
+
+    const img = document.createElement("img");
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.alt = (title ? `${title} (${i + 1}/${images.length})` : `Screenshot ${i + 1}`);
+    img.src = absUrl(src);
+
+    slide.appendChild(img);
+    track.appendChild(slide);
+  });
+
+  // Dots (only if 2+ slides)
+  if (images.length > 1) {
+    const dots = document.createElement("div");
+    dots.className = "plot-carousel__dots";
+    wrap.appendChild(dots);
+
+    const dotEls = images.map((_, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "plot-carousel__dot" + (i === 0 ? " is-active" : "");
+      b.setAttribute("aria-label", `Slide ${i + 1}`);
+      b.addEventListener("click", () => {
+        track.children[i].scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+      });
+      dots.appendChild(b);
+      return b;
+    });
+
+    // Keep active dot in sync while swiping
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        const idx = Array.prototype.indexOf.call(track.children, e.target);
+        dotEls.forEach((d, j) => d.classList.toggle("is-active", j === idx));
+      }
+    }, { root: track, threshold: 0.6 });
+
+    Array.from(track.children).forEach(slide => io.observe(slide));
+  }
+
+  return wrap;
+}
+
+// Replace [ ... ] placeholders with iframes on desktop, screenshots on mobile
 function injectDocxEmbeds(root){
   if (!root) return;
-  var EMBEDS = {
+
+  const RAW_EMBEDS = {
     "[ SANKEY PLOT]": "../climate_finance_sankey.html",
     "[ SANKEY PLOT ]": "../climate_finance_sankey.html",
     "[MAP PLOT]": "../climate_finance_map.html",
     "[ MAP PLOT ]": "../climate_finance_map.html",
-      // Spain IO article embeds
+
+    // Spain IO article embeds
     "[ES_DASHBOARD_TABS.HTML]": "../es_dashboard_tabs.html",
     "[ ES_DASHBOARD_TABS.HTML ]": "../es_dashboard_tabs.html",
 
-    "[es_scc_damage_interactive_gva_xcap.html]": "../es_scc_damage_interactive_gva_xcap.html",
     "[ES_SCC_DAMAGE_INTERACTIVE_GVA_XCAP]": "../es_scc_damage_interactive_gva_xcap.html",
-
     "[ES_SCC_DAMAGE_INTERACTIVE.HTML]": "../es_scc_damage_interactive.html",
     "[ ES_SCC_DAMAGE_INTERACTIVE ]": "../es_scc_damage_interactive.html",
 
-
-
     "[SCOPE1_CENTER_2D_WITH_YEAR_SLIDER.HTML]": "../scope1_center_2d_with_year_slider.html",
     "[ SCOPE1_CENTER_2D_WITH_YEAR_SLIDER ]": "../scope1_center_2d_with_year_slider.html"
-
   };
-  Array.from(root.querySelectorAll("p, div, li")).forEach(function(el){
-    var key = el.textContent.trim().toUpperCase();
-    if (EMBEDS[key]) {
-      var iframe = document.createElement("iframe");
-      iframe.className = "plot-embed";
-      iframe.title = key.replace(/[\[\]]/g, "").trim();
-      iframe.src = EMBEDS[key];
-      
-      iframe.style.width = "100%";
-      iframe.style.border = "0";
-      
-      // fallback so it doesn't start tiny
-      var isSpainIO =
-        /\/assets\/articles\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname) ||
-        /\/the-spanish-economy-and-climate-change\.html$/i.test(location.pathname);
 
-        iframe.style.height = "420px"; // small fallback only
-        autofitIframeToContent(iframe);
+  // Mobile screenshots (put these files where the paths point)
+  const RAW_SHOTS = {
+    // Dashboard tabs: carousel (one image per tab)
+    "[ES_DASHBOARD_TABS.HTML]": [
+      "../gross_value_emploment.png",
+      "../em_scope.png",
+      "../emission_intensity_plot.png"
+    ],
 
-      
-      // remove internal scrollbar (you want the parent page to scroll, not the iframe)
-      iframe.setAttribute("scrolling", "no");
-      
-      el.replaceWith(iframe);
-      
+    // Single-plot pages: single screenshot
+    "[ES_SCC_DAMAGE_INTERACTIVE_GVA_XCAP]": "../scc.png",
+    "[ES_SCC_DAMAGE_INTERACTIVE.HTML]": "../scc.png",
+    "[SCOPE1_CENTER_2D_WITH_YEAR_SLIDER.HTML]": "../network_plot.png"
+  };
+
+  const EMBEDS = normalizeMap(RAW_EMBEDS);
+  const SHOTS  = normalizeMap(RAW_SHOTS);
+
+  const isMobile = window.matchMedia("(max-width: 760px)").matches;
+
+  Array.from(root.querySelectorAll("p, div, li")).forEach((el) => {
+    const key = normalizeKey(el.textContent);
+    const src = EMBEDS[key];
+    if (!src) return;
+
+    const title = key.replace(/[\[\]]/g, "").trim();
+    const shot = SHOTS[key];
+
+    // Mobile: use screenshots if configured
+    if (isMobile && shot) {
+      const node = Array.isArray(shot)
+        ? createPlotCarousel(shot, title)
+        : createPlotScreenshot(shot, title);
+
+      el.replaceWith(node);
+      return;
     }
+
+    // Desktop: iframe
+    const iframe = document.createElement("iframe");
+    iframe.className = "plot-embed";
+    iframe.title = title;
+    iframe.src = src;
+    iframe.style.width = "100%";
+    iframe.style.border = "0";
+    iframe.style.height = "720px";       // fallback; your Spain-article fixer can override
+    iframe.setAttribute("scrolling", "no");
+    el.replaceWith(iframe);
   });
 }
 
+
  // Auto-resize incoming plot iframes
 // Auto-resize incoming plot iframes
-// Auto-resize plot iframes (from child postMessage, if present)
 window.addEventListener("message", function (e) {
-  var data = e.data || {};
+  const data = e.data || {};
   if (data.type !== "plot-size") return;
 
-  var h = Number(data.height);
-  if (!Number.isFinite(h) || h < 200) return;
+  const h = Number(data.height);
+  if (!Number.isFinite(h) || h < 300) return;
 
   document.querySelectorAll("iframe.plot-embed").forEach(function (ifr) {
     try {
       if (ifr.contentWindow === e.source) {
+        if (ifr.dataset.fixed === "1") return; // respect fixed height
         ifr.style.height = Math.ceil(h) + "px";
       }
     } catch (_) {}
