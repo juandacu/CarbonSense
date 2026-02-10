@@ -2576,3 +2576,52 @@ iframe.plot-embed { display: block; }
     margin-left: calc((min(100vw, var(--container)) - 100vw) / 2 * -1);
   }
 }
+
+/* ===== Mobile: plots full-bleed, no card box ===== */
+@media (max-width: 760px){
+
+  /* If some plots are wrapped in .embed (card styling), remove it on mobile */
+  .article-page .embed,
+  .prose.docx .embed{
+    width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+
+    overflow: visible !important;
+    height: auto !important;          /* stop clamp() forcing a tall box */
+    aspect-ratio: auto !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Plot iframes: go full-bleed and no “card” treatment */
+  .article-page .article-main iframe.plot-embed{
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  /* If you’re using screenshot mode on mobile */
+  .prose.docx img.plot-static-img,
+  .prose.docx .plot-carousel{
+    width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+}
