@@ -281,14 +281,10 @@ function tightenPlotEmbedsForSpainArticle(root) {
   if (!isSpainIO) return;
 
   // Match your Plotly layout height (e.g., 820) plus some breathing room
-  const mobile = window.matchMedia("(max-width: 640px)").matches;
-  const H = mobile ? 620 : 860;
-
-
   root.querySelectorAll("iframe.plot-embed").forEach(ifr => {
-    ifr.style.height = H + "px";
-    ifr.dataset.fixed = "1"; // prevent later postMessage auto-resize from expanding it
+    ifr.dataset.fixed = ""; // allow auto-resize
   });
+  
 }
 
 function renderDocx(targetSelector, docxUrl, statusSelector) {
