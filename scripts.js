@@ -24,6 +24,29 @@ async function fetchJSON(rel, { tries = 3, signal } = {}) {
   throw lastErr;
 }
 
+async function fetchArrayBuffer(rel, { tries = 3, signal } = {}) {
+  const url = absUrl(rel);
+  let lastErr;
+
+  for (let i = 0; i < tries; i++) {
+    try {
+      const res = await fetch(url, {
+        // no-cache lets the browser revalidate without forcing a full re-download every time
+        cache: "no-cache",
+        signal
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+      return await res.arrayBuffer();
+    } catch (err) {
+      if (signal?.aborted) throw err;
+      lastErr = err;
+      await new Promise(r => setTimeout(r, 200 * (i + 1) * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
+
+
 // Resolve any relative path against the current <base>
 function absUrl(rel){ return new URL(rel, document.baseURI).toString(); }
 
@@ -300,42 +323,81 @@ function tightenPlotEmbedsForSpainArticle(root) {
 function renderDocx(targetSelector, docxUrl, statusSelector) {
   const target = document.querySelector(targetSelector);
   const status = statusSelector ? document.querySelector(statusSelector) : null;
-  if (!target || !window.mammoth) {
-    return Promise.reject(new Error("renderDocx: missing target or mammoth"));
+
+  if (!target) {
+    return Promise.reject(new Error("renderDocx: missing target"));
   }
 
   status && (status.textContent = "Loading document…");
 
-  return fetch(docxUrl, { cache: "no-store" })
-    .then(r => {
-      if (!r.ok) throw new Error("HTTP " + r.status + " " + docxUrl);
-      return r.arrayBuffer();
-    })
-    .then(buf => window.mammoth.convertToHtml(
-      { arrayBuffer: buf },
-      {
-        styleMap: [
-          "p[style-name='Red emphasis'] => p.red-emphasis:fresh",
+  // Wait briefly for Mammoth in case scripts load slightly later on mobile
+  function waitForMammoth(timeoutMs = 3000, pollMs = 50) {
+    if (window.mammoth) return Promise.resolve();
+    const t0 = Date.now();
+    return new Promise((resolve, reject) => {
+      const tick = () => {
+        if (window.mammoth) return resolve();
+        if (Date.now() - t0 >= timeoutMs) {
+          return reject(new Error("renderDocx: mammoth not available"));
+        }
+        setTimeout(tick, pollMs);
+      };
+      tick();
+    });
+  }
 
-          // Quotes (EN + ES)
-          "p[style-name='Quote'] => blockquote:fresh",
-          "p[style-name='Intense Quote'] => blockquote:fresh",
-          "p[style-name='Cita'] => blockquote:fresh",
-          "p[style-name='Cita intensa'] => blockquote:fresh",
+  // Fetch .docx as ArrayBuffer with retries (mobile networks drop requests)
+  function fetchArrayBufferWithRetry(url, tries = 3) {
+    let lastErr;
 
-          // Subtitle (EN + ES)
-          "p[style-name='Subtitle'] => p.subtitle:fresh",
-          "p[style-name='Subtítulo'] => p.subtitle:fresh",
+    const attempt = (i) =>
+      fetch(url, { cache: "no-cache" })
+        .then((r) => {
+          if (!r.ok) throw new Error("HTTP " + r.status + " " + url);
+          return r.arrayBuffer();
+        })
+        .catch((err) => {
+          lastErr = err;
+          if (i >= tries - 1) throw lastErr;
 
-          // Character styles (run-level)
-          "r[style-name='Text Orange'] => span.t-orange",
-          "r[style-name='Text Blue'] => span.t-blue",
-          "r[style-name='Text Red'] => span.t-red",
-          "r[style-name='Text Grey'] => span.t-grey"
-        ]
-      }
-    ))
-    .then(result => {
+          // Quadratic backoff: 200ms, 800ms, 1800ms...
+          const delay = 200 * (i + 1) * (i + 1);
+          status && (status.textContent = "Loading document…");
+          return new Promise((res) => setTimeout(res, delay)).then(() => attempt(i + 1));
+        });
+
+    return attempt(0);
+  }
+
+  return waitForMammoth()
+    .then(() => fetchArrayBufferWithRetry(docxUrl, 3))
+    .then((buf) =>
+      window.mammoth.convertToHtml(
+        { arrayBuffer: buf },
+        {
+          styleMap: [
+            "p[style-name='Red emphasis'] => p.red-emphasis:fresh",
+
+            // Quotes (EN + ES)
+            "p[style-name='Quote'] => blockquote:fresh",
+            "p[style-name='Intense Quote'] => blockquote:fresh",
+            "p[style-name='Cita'] => blockquote:fresh",
+            "p[style-name='Cita intensa'] => blockquote:fresh",
+
+            // Subtitle (EN + ES)
+            "p[style-name='Subtitle'] => p.subtitle:fresh",
+            "p[style-name='Subtítulo'] => p.subtitle:fresh",
+
+            // Character styles (run-level)
+            "r[style-name='Text Orange'] => span.t-orange",
+            "r[style-name='Text Blue'] => span.t-blue",
+            "r[style-name='Text Red'] => span.t-red",
+            "r[style-name='Text Grey'] => span.t-grey",
+          ],
+        }
+      )
+    )
+    .then((result) => {
       target.innerHTML = result.value;
 
       // Convert [orange]...[/orange] and [c:#hex]...[/c] into spans (if you use them)
@@ -349,13 +411,19 @@ function renderDocx(targetSelector, docxUrl, statusSelector) {
       }
 
       // Remove empty paragraphs Mammoth leaves around embeds
-      pruneEmptyDocxParas(target);
+      if (typeof pruneEmptyDocxParas === "function") {
+        pruneEmptyDocxParas(target);
+      }
 
-      // NEW: render LaTeX-style math if present (KaTeX/MathJax)
-      typesetMath(target);
+      // Render LaTeX-style math if present (KaTeX/MathJax)
+      if (typeof typesetMath === "function") {
+        typesetMath(target);
+      }
 
-      // Force a smaller, fixed height for plot embeds only on this article
-      tightenPlotEmbedsForSpainArticle(target);
+      // Article-specific plot embed sizing
+      if (typeof tightenPlotEmbedsForSpainArticle === "function") {
+        tightenPlotEmbedsForSpainArticle(target);
+      }
 
       // Fix anchors (if defined)
       if (typeof fixDocxAnchors === "function") {
@@ -365,12 +433,13 @@ function renderDocx(targetSelector, docxUrl, statusSelector) {
       status && (status.textContent = "");
       return target;
     })
-    .catch(err => {
+    .catch((err) => {
       status && (status.textContent = "Could not display the document.");
       console.error("DOCX render error:", err);
       throw err;
     });
 }
+
 
 /**
  * Build a sticky "On this page" table of contents from headings inside
