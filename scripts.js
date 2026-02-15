@@ -280,12 +280,22 @@ function tightenPlotEmbedsForSpainArticle(root) {
 
   if (!isSpainIO) return;
 
-  // Match your Plotly layout height (e.g., 820) plus some breathing room
   root.querySelectorAll("iframe.plot-embed").forEach(ifr => {
-    ifr.dataset.fixed = ""; // allow auto-resize
+    const src = (ifr.getAttribute("src") || "").toLowerCase();
+
+    // Fix the network plot: you exported it at ~500px
+    if (src.endsWith("scope1_center_2d_with_year_slider.html")) {
+      ifr.style.height = "500px";
+      ifr.dataset.fixed = "1";
+      return;
+    }
+
+    // Everything else: let auto-fit handle it
+    ifr.dataset.fixed = "";
+    autoFitPlotIframe(ifr);
   });
-  
 }
+
 
 function renderDocx(targetSelector, docxUrl, statusSelector) {
   const target = document.querySelector(targetSelector);
@@ -340,6 +350,9 @@ function renderDocx(targetSelector, docxUrl, statusSelector) {
 
       // Remove empty paragraphs Mammoth leaves around embeds
       pruneEmptyDocxParas(target);
+
+      // NEW: render LaTeX-style math if present (KaTeX/MathJax)
+      typesetMath(target);
 
       // Force a smaller, fixed height for plot embeds only on this article
       tightenPlotEmbedsForSpainArticle(target);
@@ -514,6 +527,43 @@ function createPlotCarousel(images, title){
   return wrap;
 }
 
+function autoFitPlotIframe(ifr, { min = 320, max = 2600, tries = 14, delay = 140 } = {}) {
+  if (!ifr) return;
+  let n = 0;
+  let last = 0;
+
+  function tick() {
+    n++;
+    if (!document.body.contains(ifr)) return;
+    if (ifr.dataset.fixed === "1") return; // respect explicit height
+
+    try {
+      const doc = ifr.contentDocument;
+      if (!doc) throw 0;
+
+      const h = Math.max(
+        doc.body ? doc.body.scrollHeight : 0,
+        doc.documentElement ? doc.documentElement.scrollHeight : 0
+      );
+
+      if (Number.isFinite(h) && h >= min) {
+        const hh = Math.min(max, Math.ceil(h));
+        if (hh !== last) {
+          ifr.style.height = hh + "px";
+          last = hh;
+        }
+      }
+    } catch (_) {
+      // cross-origin or not ready yet: ignore
+    }
+
+    if (n < tries) setTimeout(tick, delay);
+  }
+
+  setTimeout(tick, 60);
+}
+
+
 // Replace [ ... ] placeholders with iframes on desktop, screenshots on mobile
 function injectDocxEmbeds(root){
   if (!root) return;
@@ -581,7 +631,10 @@ function injectDocxEmbeds(root){
     iframe.src = src;
     iframe.style.width = "100%";
     iframe.style.border = "0";
-    iframe.style.height = "720px";       // fallback; your Spain-article fixer can override
+    iframe.style.height = "320px";       // small fallback; real height will be measured
+    iframe.addEventListener("load", () => autoFitPlotIframe(iframe), { once: true });
+    setTimeout(() => autoFitPlotIframe(iframe), 250);
+       // fallback; your Spain-article fixer can override
     iframe.setAttribute("scrolling", "no");
     el.replaceWith(iframe);
   });
@@ -1317,4 +1370,31 @@ function applyInlineColorTokens(root){
 
     node.parentNode.replaceChild(frag, node);
   });
+}
+function typesetMath(root, tries = 8){
+  if (!root) return;
+
+  // Prefer KaTeX auto-render
+  if (typeof window.renderMathInElement === "function"){
+    window.renderMathInElement(root, {
+      delimiters: [
+        { left: "\\[", right: "\\]", display: true },
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+    return;
+  }
+
+  // Fallback: MathJax v3 if you ever use it instead
+  if (window.MathJax && typeof window.MathJax.typesetPromise === "function"){
+    window.MathJax.typesetPromise([root]).catch(() => {});
+    return;
+  }
+
+  // If the library is still loading (defer), retry a few times
+  if (tries > 0){
+    setTimeout(() => typesetMath(root, tries - 1), 120);
+  }
 }
