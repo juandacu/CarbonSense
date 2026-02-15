@@ -138,9 +138,11 @@
   .muted{color:var(--muted); margin:8px 0 0}
   .foot-bottom{display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-top:1px solid var(--border)}
   
-  /* Scroll reveal */
-  [data-animate]{opacity: 0; transition: opacity .6s ease;}
-  [data-animate].in{opacity:1;}
+  /* Scroll reveal (fail-open) */
+  [data-animate]{ opacity: 1; }                 /* default: visible */
+  html.js [data-animate]{ opacity: 0; transition: opacity .6s ease; }
+  html.js [data-animate].in{ opacity: 1; }
+
 
   /* Better article typography (no text edits) */
 .prose.docx {
