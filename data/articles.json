@@ -111,6 +111,28 @@
         "avatar": "assets/authors/pau-orive-bio.png",
         "url": "authors/pau-orive.html"
       }
+    },
+    {
+      "title": "A trip to Spain: Emissions by Scope using Input-Output analysis",
+      "deck": "How can Input-Output analysis help us calculate emissions by Scope",
+      "date": "2026-02-15",
+      "goLive": "2026-02-17",
+      "readTime": 16,
+      "href": "assets/articles/the-spanish-economy-and-climate-change.html",
+      "image": "assets/article_imgs/InputOutput_Spain.png",
+      "tags": ["Emissions by Scope", "Input-Output analysis"],
+      "authors": [
+        {
+          "name": "Juan Acuña-Román",
+          "avatar": "assets/authors/juan-daniel-removebg-preview.png",
+          "url": "authors/Juan-Acuna.html"
+        },
+        {
+          "name": "Lucien Vargas",
+          "avatar": "assets/authors/lucien-vargas-bse-photo.png",
+          "url": "authors/lucien-vargas.html"
+        }
+      ]
     }
   ]
 }
