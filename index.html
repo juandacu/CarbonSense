@@ -168,7 +168,7 @@
       <!-- LIVE COUNTERS (now full-width under BOTH columns) -->
       <div class="hero-counters" aria-label="Climate indicators">
         <div class="counter-card">
-          <div class="k">CO₂ emitted since Jan 1</div>
+          <div class="k">GHG emitted since Jan 1</div>
           <div class="v mono" id="co2-since-year">—</div>
           <div class="s mono" id="co2-per-second">—</div>
         </div>
@@ -305,14 +305,14 @@
         const emittedTonnes = elapsedSeconds * TONNES_PER_SECOND;
 
         if (SHOW_UNITS === "Gt") {
-          elSince.textContent = formatGtFromTonnes(emittedTonnes) + " GtCO₂";
+          elSince.textContent = formatGtFromTonnes(emittedTonnes) + " GtCO₂e";
         } else {
-          elSince.textContent = formatNumber(emittedTonnes) + " tCO₂";
+          elSince.textContent = formatNumber(emittedTonnes) + " tCO₂e";
         }
 
         elRate.textContent = "Now: " + TONNES_PER_SECOND.toLocaleString(undefined, {
           maximumFractionDigits: 0
-        }) + " tCO₂ / second";
+        }) + " tCO₂e / second";
 
         requestAnimationFrame(update);
       }
