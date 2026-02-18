@@ -8,6 +8,8 @@
       "readTime": 7,
       "href": "assets/articles/the-social-cost-of-carbon-and-why-it-is-no-longer-counted.html",
       "image": "assets/article_imgs/Climate-Stripes.png",
+      "ogImage": "https://www.carbonsense.net/assets/article_imgs/Climate-Stripes.png",
+      "canonical": "https://www.carbonsense.net/assets/articles/the-social-cost-of-carbon-and-why-it-is-no-longer-counted.html",
       "tags": ["Macroeconomic modelling"],
       "author": {
         "name": "Charles Nicholson",
@@ -23,6 +25,8 @@
       "readTime": 12,
       "href": "assets/articles/carbon-taxes-a-libertarians-secret-love.html",
       "image": "assets/article_imgs/power-plant-smoke.png",
+      "ogImage": "https://www.carbonsense.net/assets/article_imgs/power-plant-smoke.png",
+      "canonical": "https://www.carbonsense.net/assets/articles/carbon-taxes-a-libertarians-secret-love.html",
       "tags": ["Carbon taxes"],
       "author": {
         "name": "Vaibhav Jain",
@@ -38,6 +42,8 @@
       "readTime": 7,
       "href": "assets/articles/counting-megawatts-missing-people.html",
       "image": "assets/article_imgs/just_transition.jpg",
+      "ogImage": "https://www.carbonsense.net/assets/article_imgs/just_transition.jpg",
+      "canonical": "https://www.carbonsense.net/assets/articles/counting-megawatts-missing-people.html",
       "tags": ["Just transition"],
       "author": {
         "name": "Juan Acuña-Román",
@@ -53,6 +59,8 @@
       "readTime": 10,
       "href": "assets/articles/a-short-history-of-the-voluntary-carbon-market.html",
       "image": "assets/article_imgs/carbon-emissions.jpg",
+      "ogImage": "https://www.carbonsense.net/assets/article_imgs/carbon-emissions.jpg",
+      "canonical": "https://www.carbonsense.net/assets/articles/a-short-history-of-the-voluntary-carbon-market.html",
       "tags": ["Voluntary carbon market"],
       "author": {
         "name": "Andrew Wells",
@@ -68,6 +76,8 @@
       "readTime": 9,
       "href": "assets/articles/escaping-dirty-growth.html",
       "image": "assets/article_imgs/dirty-growth.jpg",
+      "ogImage": "https://www.carbonsense.net/assets/article_imgs/dirty-growth.jpg",
+      "canonical": "https://www.carbonsense.net/assets/articles/escaping-dirty-growth.html",
       "tags": ["Innovation"],
       "author": {
         "name": "Lucien Vargas",
@@ -83,6 +93,8 @@
       "readTime": 16,
       "href": "assets/articles/the-orinoco-belt-tightens.html",
       "image": "assets/article_imgs/flaring-venezuela.png",
+      "ogImage": "https://www.carbonsense.net/assets/article_imgs/flaring-venezuela.png",
+      "canonical": "https://www.carbonsense.net/assets/articles/the-orinoco-belt-tightens.html",
       "tags": ["Climate change"],
       "authors": [
         {
@@ -105,6 +117,8 @@
       "readTime": 16,
       "href": "assets/articles/carbon-budgets-from-concept-to-implementation.html",
       "image": "assets/article_imgs/tcre.png",
+      "ogImage": "https://www.carbonsense.net/assets/article_imgs/tcre.png",
+      "canonical": "https://www.carbonsense.net/assets/articles/carbon-budgets-from-concept-to-implementation.html",
       "tags": ["Carbon budgets"],
       "author": {
         "name": "Pau Orive Vidal",
@@ -120,6 +134,8 @@
       "readTime": 10,
       "href": "assets/articles/the-spanish-economy-and-climate-change.html",
       "image": "assets/article_imgs/InputOutput_Spain.png",
+      "ogImage": "https://www.carbonsense.net/assets/article_imgs/InputOutput_Spain.png",
+      "canonical": "https://www.carbonsense.net/assets/articles/the-spanish-economy-and-climate-change.html",
       "tags": ["Emissions by Scope", "Input-Output analysis"],
       "authors": [
         {
@@ -133,6 +149,23 @@
           "url": "authors/lucien-vargas.html"
         }
       ]
+    },
+    {
+      "title": "Climate Economics 101",
+      "deck": "Must-knows",
+      "date": "2026-03-03",
+      "goLive": "2026-03-03",
+      "readTime": 10,
+      "href": "assets/articles/climate-economics-101.html",
+      "image": "assets/article_imgs/climate-econ-101.png",
+      "ogImage": "https://www.carbonsense.net/assets/article_imgs/climate-econ-101.png",
+      "canonical": "https://www.carbonsense.net/assets/articles/climate-economics-101.html",
+      "tags": ["Explainers"],
+      "author": {
+        "name": "Charles Nicholson",
+        "avatar": "assets/authors/charles-nicholson-bse-photo-nb.png",
+        "url": "authors/charles-nicholson.html"
+      }
     }
   ]
 }
