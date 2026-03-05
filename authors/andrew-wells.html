@@ -1,88 +1,210 @@
-<script>
-  (function () {
-    const grid = document.getElementById("author-articles");
-    if (!grid) return;
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Andrew Wells — Carbon Sense</title>
 
-    const AUTHOR = "Andrew Wells";
-    const norm = s => (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css"/>
 
-    // Prefix relative assets correctly when this page lives in /authors/
-    function asset(p) {
-      if (!p) return "";
-      if (/^https?:\/\//i.test(p)) return p;
-      const needsUp = location.pathname.includes("/authors/");
-      return (needsUp ? "../" : "") + String(p).replace(/^\/+/, "");
-    }
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/logo3.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/logo3.png">
+  <link rel="apple-touch-icon" href="../assets/logo3.png">
+</head>
 
-    // Live filter (prevents future goLive items showing on author pages)
-    const now = new Date();
-    function isLive(a) {
-      if (!a || !a.goLive) return true; // backwards-compatible: no goLive => treat as live
-      const d = new Date(String(a.goLive) + "T00:00:00"); // stable parse of YYYY-MM-DD
-      return !Number.isNaN(d.getTime()) && d <= now;
-    }
+<body>
+  <!-- Header -->
+  <header class="site-header solid" data-header>
+    <div class="container header-inner">
+      <a class="logo" href="../index.html" aria-label="Carbon Sense">
+        <img src="../assets/logo3.png" alt="Carbon Sense">
+      </a>
+      <nav class="nav" data-nav>
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a class="active" href="../articles.html">All Articles</a>
+        <a href="../coffee.html">Support Us</a>
+        <a href="../contact.html" class="btn btn-outline pill">Contact Us</a>
+      </nav>
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" data-menu-btn>
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
 
-    const url = "../data/articles.json?v=" + Date.now();
+  <!-- Hero -->
+  <section class="page-hero hero-compact" data-animate>
+    <div class="container">
+      <h1>Andrew Wells</h1>
+      <p class="lead">Electricity markets, investment, and climate policy</p>
+    </div>
+  </section>
 
-    fetch(url, { cache: "no-store" })
-      .then(r => {
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        return r.json();
-      })
-      .then(payload => {
-        const list = Array.isArray(payload) ? payload : (payload.articles || []);
+  <!-- Bio + Articles -->
+  <section class="section" data-animate>
+    <div class="container">
+      <div class="bio-card">
+        <div class="bio-side">
+          <img
+            src="../assets/authors/andrew-wells-bse-photo-nb.png"
+            alt="Portrait of Andrew Wells"
+            class="bio-avatar"
+            onerror="this.style.display='none'">
 
-        // Support co-authored articles (`authors: [...]`) as well as legacy `author`
-        const mine = list
-          .filter(isLive)
-          .filter(a => {
-            const names = Array.isArray(a.authors) && a.authors.length
-              ? a.authors.map(p => p && p.name).filter(Boolean)
-              : String(a.author?.name || a.author || "")
-                  .split(",")
-                  .map(s => s.trim())
-                  .filter(Boolean);
+          <a
+            href="https://www.linkedin.com/in/andrew-wells-48409b139/"
+            class="btn btn-outline pill btn-linkedin-profile"
+            target="_blank" rel="noopener">
+            LinkedIn
+          </a>
+        </div>
 
-            return names.some(n => norm(n) === norm(AUTHOR));
-          });
+        <div class="prose">
+          <div id="bio-status" class="muted" style="margin-bottom: 12px;">Loading bio…</div>
+          <article id="bio-root" class="prose docx"></article>
+        </div>
+      </div>
 
-        grid.classList.add("article-grid");
-        grid.innerHTML = mine.length
-          ? mine.map(renderAuthorCard).join("")
-          : '<div class="muted">No articles yet.</div>';
-      })
-      .catch(() => {
-        grid.innerHTML = '<div class="muted">Failed to load articles.</div>';
-      });
+      <h2 class="section-title">Articles</h2>
+      <div id="author-articles">
+        <p class="muted">
+          <a href="../articles.html">View all Carbon Sense articles</a>
+        </p>
+      </div>
+    </div>
+  </section>
 
-    function renderAuthorCard(a) {
-      const thumb = asset(a.image || "../assets/mangrove.jpg");
-      const dateText = a.date ? new Date(a.date + "T00:00:00").toDateString() : "";
-      const tag   = a.tags?.[0] ? `<span class="tag">${a.tags[0]}</span>` : "";
-      const read  = a.readTime ? `${a.readTime} min` : "";
-      const href  = a.href || a.url || "#";
+  <!-- Standard Footer -->
+  <footer class="site-footer site-footer-dark">
+    <div class="container footer-inner">
+      <div>
+        <a class="logo logo-foot" href="../index.html" aria-label="Carbon Sense">
+          <img src="../assets/logo3.png" alt="Carbon Sense">
+        </a>
+        <p class="muted">
+          Clear insights and analysis to understand where climate economics and policy are taking us
+        </p>
+      </div>
 
-      // Fix relative link when inside /authors/
-      const link = location.pathname.includes("/authors/") && href && !/^https?:\/\//.test(href)
-        ? "../" + href.replace(/^\/+/, "")
-        : href;
+      <div>
+        <div class="foot-title">Explore</div>
+        <ul class="foot-links">
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../articles.html">All Articles</a></li>
+          <li><a href="../coffee.html">Support Us</a></li>
+          <li><a href="../privacy.html">Privacy</a></li>
+        </ul>
+      </div>
 
-      return `
-        <article class="article-card">
-          <img class="article-thumb" src="${thumb}" alt="">
-          <div class="article-body">
-            <h3>${a.title || "Untitled"}</h3>
-            <p class="article-deck">${a.deck || a.excerpt || ""}</p>
-          </div>
-          <div class="article-meta only-right">
-            <div class="meta-right">
-              ${tag}
-              ${read ? `<span>${read}</span><span aria-hidden="true">•</span>` : ""}
-              ${dateText ? `<time datetime="${a.date}">${dateText}</time>` : ""}
+      <div>
+        <div class="foot-title">Contact</div>
+        <p class="muted">
+          <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="container foot-bottom">
+      <small><span data-year></span> Carbon Sense</small>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../vendor/mammoth.browser.min.js"></script>
+  <script src="../scripts.js"></script>
+  <script>
+    renderDocx("#bio-root", "andrew-wells-bio.docx", "#bio-status")
+      .catch(console.error);
+  </script>
+
+  <script>
+    (function () {
+      const grid = document.getElementById("author-articles");
+      if (!grid) return;
+
+      const AUTHOR = "Andrew Wells";
+      const norm = s => (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+
+      // Prefix relative assets correctly when this page lives in /authors/
+      function asset(p) {
+        if (!p) return "";
+        if (/^https?:\/\//i.test(p)) return p;
+        const needsUp = location.pathname.includes("/authors/");
+        return (needsUp ? "../" : "") + String(p).replace(/^\/+/, "");
+      }
+
+      // Live filter (prevents future goLive items showing on author pages)
+      const now = new Date();
+      function isLive(a) {
+        if (!a || !a.goLive) return true; // backwards-compatible: no goLive => treat as live
+        const d = new Date(String(a.goLive) + "T00:00:00"); // stable parse of YYYY-MM-DD
+        return !Number.isNaN(d.getTime()) && d <= now;
+      }
+
+      const url = "../data/articles.json?v=" + Date.now();
+
+      fetch(url, { cache: "no-store" })
+        .then(r => {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.json();
+        })
+        .then(payload => {
+          const list = Array.isArray(payload) ? payload : (payload.articles || []);
+
+          // Support co-authored articles (`authors: [...]`) as well as legacy `author`
+          const mine = list
+            .filter(isLive)
+            .filter(a => {
+              const names = Array.isArray(a.authors) && a.authors.length
+                ? a.authors.map(p => p && p.name).filter(Boolean)
+                : String(a.author?.name || a.author || "")
+                    .split(",")
+                    .map(s => s.trim())
+                    .filter(Boolean);
+
+              return names.some(n => norm(n) === norm(AUTHOR));
+            });
+
+          grid.classList.add("article-grid");
+          grid.innerHTML = mine.length
+            ? mine.map(renderAuthorCard).join("")
+            : '<div class="muted">No articles yet.</div>';
+        })
+        .catch(() => {
+          grid.innerHTML = '<div class="muted">Failed to load articles.</div>';
+        });
+
+      function renderAuthorCard(a) {
+        const thumb = asset(a.image || "../assets/mangrove.jpg");
+        const dateText = a.date ? new Date(a.date + "T00:00:00").toDateString() : "";
+        const tag   = a.tags?.[0] ? `<span class="tag">${a.tags[0]}</span>` : "";
+        const read  = a.readTime ? `${a.readTime} min` : "";
+        const href  = a.href || a.url || "#";
+
+        // Fix relative link when inside /authors/
+        const link = location.pathname.includes("/authors/") && href && !/^https?:\/\//.test(href)
+          ? "../" + href.replace(/^\/+/, "")
+          : href;
+
+        return `
+          <article class="article-card">
+            <img class="article-thumb" src="${thumb}" alt="">
+            <div class="article-body">
+              <h3>${a.title || "Untitled"}</h3>
+              <p class="article-deck">${a.deck || a.excerpt || ""}</p>
             </div>
-          </div>
-          <a class="cover" href="${link}">Read</a>
-        </article>`;
-    }
-  })();
-</script>
+            <div class="article-meta only-right">
+              <div class="meta-right">
+                ${tag}
+                ${read ? `<span>${read}</span><span aria-hidden="true">•</span>` : ""}
+                ${dateText ? `<time datetime="${a.date}">${dateText}</time>` : ""}
+              </div>
+            </div>
+            <a class="cover" href="${link}">Read</a>
+          </article>`;
+      }
+    })();
+  </script>
+</body>
+</html>
