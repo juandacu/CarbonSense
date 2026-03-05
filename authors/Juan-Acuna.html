@@ -117,49 +117,101 @@
   <script src="../scripts.js"></script>
 
   <script>
-    renderDocx("#bio-root", "juan-acuna-bio.docx", "#bio-status")
-      .catch(console.error);
+  renderDocx("#bio-root", "juan-acuna-bio.docx", "#bio-status")
+    .catch(console.error);
 
-    (async function(){
-      const grid = document.getElementById("author-articles");
-      const AUTHOR = "Juan Acuña-Román";
-      const norm = s => (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu,"");
+  (async function () {
+    const grid = document.getElementById("author-articles");
+    if (!grid) return;
 
-      const raw = await fetch("../data/articles.json?v=" + Date.now(), { cache:"no-store" })
-                        .then(r => r.json())
-                        .then(d => Array.isArray(d) ? d : d.articles);
+    // IMPORTANT: must match the name used in articles.json (diacritics don't matter)
+    const AUTHOR = "Juan Acuña-Román";
+    const norm = s => (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
-      const articles = raw
-        .map(normalizeArticle)
-        .filter(a => norm(a.author) === norm(AUTHOR));
+    // Asset/path helper (supports absolute URLs and pages living under /authors/)
+    function asset(p) {
+      if (!p) return "";
+      if (/^https?:\/\//i.test(p)) return p;
+      const needsUp = location.pathname.includes("/authors/");
+      return (needsUp ? "../" : "") + String(p).replace(/^\/+/, "");
+    }
 
-      if (!articles.length) {
-        grid.innerHTML = `<div class="muted">No articles yet.</div>`;
-        return;
+    function linkify(href) {
+      if (!href) return "#";
+      if (/^https?:\/\//i.test(href)) return href;
+      const needsUp = location.pathname.includes("/authors/");
+      return (needsUp ? "../" : "") + String(href).replace(/^\/+/, "");
+    }
+
+    const now = new Date();
+    function isLive(a) {
+      if (!a || !a.goLive) return true; // backwards compatible
+      const d = new Date(String(a.goLive) + "T00:00:00");
+      return !Number.isNaN(d.getTime()) && d <= now;
+    }
+
+    function getNames(a) {
+      if (Array.isArray(a.authors) && a.authors.length) {
+        return a.authors.map(p => p && p.name).filter(Boolean);
       }
+      const single = a.author?.name ?? a.author ?? "";
+      return String(single)
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean);
+    }
 
-      grid.innerHTML = articles.map(a => `
-        <article class="article-card ${a.live ? "" : "is-locked"}">
-          <img class="article-thumb" src="../${a.image}" alt="">
+    const raw = await fetch("../data/articles.json?v=" + Date.now(), { cache: "no-store" })
+      .then(r => {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(d => Array.isArray(d) ? d : (d.articles || []));
 
-          <div class="article-body">
-            <h3>${a.title}</h3>
-            <p class="article-deck">${a.deck || ""}</p>
+    const articles = raw
+      .filter(a => getNames(a).some(n => norm(n) === norm(AUTHOR)))
+      .map(a => {
+        const live = isLive(a);
+        const dateISO = a.date || "";
+        const dateTxt = dateISO ? new Date(dateISO + "T00:00:00").toDateString() : "";
+        const tag = a.tags?.[0] || "";
+        return {
+          title: a.title || "Untitled",
+          deck: a.deck || a.excerpt || "",
+          image: asset(a.image || "../assets/mangrove.jpg"),
+          href: linkify(a.href || a.url || "#"),
+          live,
+          comingSoon: a.goLive ? `Coming ${a.goLive}` : "Coming soon",
+          dateISO,
+          dateTxt,
+          tag
+        };
+      });
+
+    if (!articles.length) {
+      grid.innerHTML = `<div class="muted">No articles yet.</div>`;
+      return;
+    }
+
+    grid.innerHTML = articles.map(a => `
+      <article class="article-card ${a.live ? "" : "is-locked"}">
+        <img class="article-thumb" src="${a.image}" alt="">
+        <div class="article-body">
+          <h3>${a.title}</h3>
+          <p class="article-deck">${a.deck}</p>
+        </div>
+        <div class="article-meta only-right">
+          <div class="meta-right">
+            ${a.tag ? `<span class="tag">${a.tag}</span>` : ""}
+            ${a.dateTxt ? `<time datetime="${a.dateISO}">${a.dateTxt}</time>` : ""}
           </div>
-
-          <div class="article-meta only-right">
-            <div class="meta-right">
-              ${a.tag ? `<span class="tag">${a.tag}</span>` : ""}
-              ${a.dateTxt ? `<time datetime="${a.dateISO}">${a.dateTxt}</time>` : ""}
-            </div>
-          </div>
-
-          ${a.live ? `<a class="cover" href="../${a.href}"></a>` : ""}
-          ${a.live ? "" : `<div class="article-lock-overlay">${a.comingSoon}</div>`}
-        </article>
-      `).join("");
-    })();
-  </script>
+        </div>
+        ${a.live ? `<a class="cover" href="${a.href}"></a>` : ""}
+        ${a.live ? "" : `<div class="article-lock-overlay">${a.comingSoon}</div>`}
+      </article>
+    `).join("");
+  })();
+</script>
 
 </body>
 </html>
