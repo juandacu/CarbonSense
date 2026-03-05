@@ -15,205 +15,212 @@
 
 <body>
 
-  <!-- Header -->
-  <header class="site-header solid" data-header>
-    <div class="container header-inner">
-      <a class="logo" href="../index.html" aria-label="Carbon Sense">
+<!-- Header -->
+<header class="site-header solid" data-header>
+  <div class="container header-inner">
+    <a class="logo" href="../index.html" aria-label="Carbon Sense">
+      <img src="../assets/logo3.png" alt="Carbon Sense">
+    </a>
+
+    <nav class="nav" data-nav>
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a class="active" href="../articles.html">All Articles</a>
+      <a href="../coffee.html">Support Us</a>
+      <a href="../contact.html" class="btn btn-outline pill">Contact Us</a>
+    </nav>
+
+    <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" data-menu-btn>
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="page-hero hero-compact" data-animate>
+  <div class="container">
+    <h1>Pau Orive</h1>
+    <p class="lead">Sustainable development, energy, and climate policy</p>
+  </div>
+</section>
+
+<!-- Bio -->
+<section class="section" data-animate>
+  <div class="container">
+    <div class="bio-card">
+
+      <div class="bio-side">
+        <img
+          src="../assets/authors/pau-orive-bio.png"
+          alt="Portrait of Pau Orive"
+          class="bio-avatar"
+          onerror="this.style.display='none'">
+
+        <a
+          href="https://www.linkedin.com/in/pau-orive-vidal-204a54229/"
+          class="btn btn-outline pill btn-linkedin-profile"
+          target="_blank" rel="noopener">
+          LinkedIn
+        </a>
+      </div>
+
+      <div class="prose">
+        <div id="bio-status" class="muted" style="margin-bottom:12px">Loading bio…</div>
+        <article id="bio-root" class="prose docx"></article>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Articles -->
+<section class="section" data-animate>
+  <div class="container">
+    <h2 class="section-title">Articles</h2>
+    <div id="author-articles" class="article-grid"></div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer site-footer-dark">
+  <div class="container footer-inner">
+
+    <div>
+      <a class="logo logo-foot" href="../index.html">
         <img src="../assets/logo3.png" alt="Carbon Sense">
       </a>
-      <nav class="nav" data-nav>
-        <a href="../index.html">Home</a>
-        <a href="../about.html">About</a>
-        <a class="active" href="../articles.html">All Articles</a>
-        <a href="../coffee.html">Support Us</a>
-        <a href="../contact.html" class="btn btn-outline pill">Contact Us</a>
-      </nav>
-      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" data-menu-btn>
-        <span></span><span></span><span></span>
-      </button>
+      <p class="muted">
+        Clear insights and analysis to understand where climate economics and policy are taking us
+      </p>
     </div>
-  </header>
 
-  <!-- Hero -->
-  <section class="page-hero hero-compact" data-animate>
-    <div class="container">
-      <h1>Pau Orive</h1>
-      <p class="lead">Sustainable development, energy, and climate policy</p>
+    <div>
+      <div class="foot-title">Explore</div>
+      <ul class="foot-links">
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../articles.html">All Articles</a></li>
+        <li><a href="../coffee.html">Support Us</a></li>
+        <li><a href="../privacy.html">Privacy</a></li>
+      </ul>
     </div>
-  </section>
 
-  <!-- Bio -->
-  <section class="section" data-animate>
-    <div class="container">
-      <div class="bio-card">
-        <div class="bio-side">
-          <img
-            src="../assets/authors/pau-orive-bio.png"
-            alt="Portrait of Pau Orive"
-            class="bio-avatar"
-            onerror="this.style.display='none'">
+    <div>
+      <div class="foot-title">Contact</div>
+      <p class="muted">
+        <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
+      </p>
+    </div>
 
-          <!-- If you have Pau's LinkedIn URL, replace the href. Otherwise remove this <a>. -->
-          <a
-            href="https://www.linkedin.com/in/pau-orive-vidal-204a54229/"
-            class="btn btn-outline pill btn-linkedin-profile"
-            target="_blank" rel="noopener">
-            LinkedIn
-          </a>
-        </div>
+  </div>
 
-        <div class="prose">
-          <div id="bio-status" class="muted" style="margin-bottom:12px">Loading bio…</div>
-          <article id="bio-root" class="prose docx"></article>
+  <div class="container foot-bottom">
+    <small><span data-year></span> Carbon Sense</small>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="../vendor/mammoth.browser.min.js"></script>
+<script src="../scripts.js"></script>
+
+<script>
+renderDocx("#bio-root", "pau-orive-bio.docx", "#bio-status")
+  .catch(console.error);
+
+(async function () {
+
+  const grid = document.getElementById("author-articles");
+  if (!grid) return;
+
+  const AUTHOR_URL = "authors/pau-orive.html";
+
+  function asset(p){
+    if(!p) return "";
+    if(/^https?:\/\//i.test(p)) return p;
+    const needsUp = location.pathname.includes("/authors/");
+    return (needsUp ? "../" : "") + String(p).replace(/^\/+/,"");
+  }
+
+  function linkify(href){
+    if(!href) return "#";
+    if(/^https?:\/\//i.test(href)) return href;
+    const needsUp = location.pathname.includes("/authors/");
+    return (needsUp ? "../" : "") + String(href).replace(/^\/+/,"");
+  }
+
+  const now = new Date();
+
+  function isLive(a){
+    if(!a || !a.goLive) return true;
+    const d = new Date(String(a.goLive)+"T00:00:00");
+    return !Number.isNaN(d.getTime()) && d <= now;
+  }
+
+  function getAuthorUrls(a){
+    if(Array.isArray(a.authors) && a.authors.length){
+      return a.authors.map(p => p && p.url).filter(Boolean);
+    }
+    const single = a.author?.url ?? "";
+    return single ? [String(single)] : [];
+  }
+
+  const raw = await fetch("../data/articles.json?v="+Date.now(), {cache:"no-store"})
+    .then(r=>{
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      return r.json();
+    })
+    .then(d=>Array.isArray(d)?d:(d.articles||[]));
+
+  const articles = raw
+    .filter(a=>getAuthorUrls(a).some(u=>String(u).toLowerCase()===AUTHOR_URL.toLowerCase()))
+    .map(a=>{
+      const live = isLive(a);
+      const dateISO = a.date || "";
+      const dateTxt = dateISO ? new Date(dateISO+"T00:00:00").toDateString() : "";
+      const tag = a.tags?.[0] || "";
+      const image = asset(a.ogImage || a.image || "../assets/mangrove.jpg");
+
+      return {
+        title: a.title || "Untitled",
+        deck: a.deck || a.excerpt || "",
+        image,
+        href: linkify(a.href || a.url || "#"),
+        live,
+        comingSoon: a.goLive ? `Coming ${a.goLive}` : "Coming soon",
+        dateISO,
+        dateTxt,
+        tag
+      };
+    });
+
+  if(!articles.length){
+    grid.innerHTML = `<div class="muted">No articles yet.</div>`;
+    return;
+  }
+
+  grid.innerHTML = articles.map(a=>`
+    <article class="article-card ${a.live?"":"is-locked"}">
+
+      <img class="article-thumb" src="${a.image}" alt="">
+
+      <div class="article-body">
+        <h3>${a.title}</h3>
+        <p class="article-deck">${a.deck}</p>
+      </div>
+
+      <div class="article-meta only-right">
+        <div class="meta-right">
+          ${a.tag?`<span class="tag">${a.tag}</span>`:""}
+          ${a.dateTxt?`<time datetime="${a.dateISO}">${a.dateTxt}</time>`:""}
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Articles -->
-  <section class="section" data-animate>
-    <div class="container">
-      <h2 class="section-title">Articles</h2>
-      <div id="author-articles" class="article-grid"></div>
-    </div>
-  </section>
+      ${a.live?`<a class="cover" href="${a.href}"></a>`:""}
+      ${a.live?"":`<div class="article-lock-overlay">${a.comingSoon}</div>`}
 
-  <!-- Footer -->
-  <footer class="site-footer site-footer-dark">
-    <div class="container footer-inner">
-      <div>
-        <a class="logo logo-foot" href="../index.html" aria-label="Carbon Sense">
-          <img src="../assets/logo3.png" alt="Carbon Sense">
-        </a>
-        <p class="muted">
-          Clear insights and analysis to understand where climate economics and policy are taking us
-        </p>
-      </div>
+    </article>
+  `).join("");
 
-      <div>
-        <div class="foot-title">Explore</div>
-        <ul class="foot-links">
-          <li><a href="../about.html">About</a></li>
-          <li><a href="../articles.html">All Articles</a></li>
-          <li><a href="../coffee.html">Support Us</a></li>
-          <li><a href="../privacy.html">Privacy</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <div class="foot-title">Contact</div>
-        <p class="muted">
-          <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
-        </p>
-      </div>
-    </div>
-
-    <div class="container foot-bottom">
-      <small><span data-year></span> Carbon Sense</small>
-    </div>
-  </footer>
-
-  <!-- Scripts -->
-  <script src="../vendor/mammoth.browser.min.js"></script>
-  <script src="../scripts.js"></script>
-
-  <script>
-  renderDocx("#bio-root", "pau-orive-bio.docx", "#bio-status")
-    .catch(console.error);
-
-  (async function () {
-    const grid = document.getElementById("author-articles");
-    if (!grid) return;
-
-    // MUST match articles.json (Pau's entry is "Pau Orive Vidal")
-    const AUTHOR = "Pau Orive Vidal";
-    const norm = s => (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
-
-    function asset(p) {
-      if (!p) return "";
-      if (/^https?:\/\//i.test(p)) return p;
-      const needsUp = location.pathname.includes("/authors/");
-      return (needsUp ? "../" : "") + String(p).replace(/^\/+/, "");
-    }
-
-    function linkify(href) {
-      if (!href) return "#";
-      if (/^https?:\/\//i.test(href)) return href;
-      const needsUp = location.pathname.includes("/authors/");
-      return (needsUp ? "../" : "") + String(href).replace(/^\/+/, "");
-    }
-
-    const now = new Date();
-    function isLive(a) {
-      if (!a || !a.goLive) return true; // backwards compatible
-      const d = new Date(String(a.goLive) + "T00:00:00");
-      return !Number.isNaN(d.getTime()) && d <= now;
-    }
-
-    function getNames(a) {
-      if (Array.isArray(a.authors) && a.authors.length) {
-        return a.authors.map(p => p && p.name).filter(Boolean);
-      }
-      const single = a.author?.name ?? a.author ?? "";
-      return String(single)
-        .split(",")
-        .map(s => s.trim())
-        .filter(Boolean);
-    }
-
-    const raw = await fetch("../data/articles.json?v=" + Date.now(), { cache: "no-store" })
-      .then(r => {
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        return r.json();
-      })
-      .then(d => Array.isArray(d) ? d : (d.articles || []));
-
-    const articles = raw
-      .filter(a => getNames(a).some(n => norm(n) === norm(AUTHOR)))
-      .map(a => {
-        const live = isLive(a);
-        const dateISO = a.date || "";
-        const dateTxt = dateISO ? new Date(dateISO + "T00:00:00").toDateString() : "";
-        const tag = a.tags?.[0] || "";
-        return {
-          title: a.title || "Untitled",
-          deck: a.deck || a.excerpt || "",
-          image: asset(a.image || "../assets/mangrove.jpg"),
-          href: linkify(a.href || a.url || "#"),
-          live,
-          comingSoon: a.goLive ? `Coming ${a.goLive}` : "Coming soon",
-          dateISO,
-          dateTxt,
-          tag
-        };
-      });
-
-    if (!articles.length) {
-      grid.innerHTML = `<div class="muted">No articles yet.</div>`;
-      return;
-    }
-
-    grid.innerHTML = articles.map(a => `
-      <article class="article-card ${a.live ? "" : "is-locked"}">
-        <img class="article-thumb" src="${a.image}" alt="">
-
-        <div class="article-body">
-          <h3>${a.title}</h3>
-          <p class="article-deck">${a.deck}</p>
-        </div>
-
-        <div class="article-meta only-right">
-          <div class="meta-right">
-            ${a.tag ? `<span class="tag">${a.tag}</span>` : ""}
-            ${a.dateTxt ? `<time datetime="${a.dateISO}">${a.dateTxt}</time>` : ""}
-          </div>
-        </div>
-
-        ${a.live ? `<a class="cover" href="${a.href}"></a>` : ""}
-        ${a.live ? "" : `<div class="article-lock-overlay">${a.comingSoon}</div>`}
-      </article>
-    `).join("");
-  })();
+})();
 </script>
 
 </body>
