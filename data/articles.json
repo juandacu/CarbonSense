@@ -167,6 +167,23 @@
       }
     },
     {
+      "title": "How the European Union Built the World's Largest Carbon Market",
+      "deck": "From pilot programme to climate policy cornerstone",
+      "date": "2026-03-11",
+      "goLive": "2026-03-11",
+      "readTime": 10,
+      "href": "assets/articles/how-the-european-union-built-the-worlds-largest-carbon-market.html",
+      "image": "assets/article_imgs/eu_ets_emissions.png",
+      "ogImage": "https://www.carbonsense.net/assets/article_imgs/eu_ets_emissions.png",
+      "canonical": "https://www.carbonsense.net/assets/articles/how-the-european-union-built-the-worlds-largest-carbon-market.html",
+      "tags": ["Carbon markets"],
+      "author": {
+        "name": "Charles Nicholson",
+        "avatar": "assets/authors/charles-nicholson-bse-photo-nb.png",
+        "url": "authors/charles-nicholson.html"
+      }
+    },
+       {
       "title": "Climate Economics 101",
       "deck": "Must-knows",
       "date": "2026-03-17",
