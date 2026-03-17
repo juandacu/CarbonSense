@@ -184,10 +184,27 @@
       }
     },
        {
-      "title": "Climate Economics 101",
-      "deck": "Must-knows",
+      "title": "Skiing, EVs, and the Kaya Identity",
+      "deck": "What if green technology isn't good enough?",
       "date": "2026-03-17",
       "goLive": "2026-03-17",
+      "readTime": 10,
+      "href": "assets/articles/skiing-evs-and-the-kaya-identity.html",
+      "image": "assets/article_imgs/skiing.png",
+      "ogImage": "https://www.carbonsense.net/assets/article_imgs/skiing.png",
+      "canonical": "https://www.carbonsense.net/assets/articles/skiing-evs-and-the-kaya-identity.html",
+      "tags": ["Opinion"],
+      "author": {
+        "name": "Andew Wells",
+        "avatar": "assets/authors/andrew-wells-bse-photo-nb.png",
+        "url": "authors/andrew-wells.html"
+      }
+    },
+       {
+      "title": "Climate Economics 101",
+      "deck": "Must-knows",
+      "date": "2026-03-31",
+      "goLive": "2026-03-31",
       "readTime": 10,
       "href": "assets/articles/climate-economics-101.html",
       "image": "assets/article_imgs/climate-econ-101.png",
