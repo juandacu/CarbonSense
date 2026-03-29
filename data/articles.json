@@ -201,10 +201,27 @@
       }
     },
        {
-      "title": "Climate Economics 101",
-      "deck": "Must-knows",
+      "title": "Developing Countries Will Feel the Heat of Climate Mortality",
+      "deck": "Climate mortality is more complex, and globally unequal, than many assume",
       "date": "2026-03-31",
       "goLive": "2026-03-31",
+      "readTime": 10,
+      "href": "assets/articles/developing-countries-will-feel-the-eat-of-climate-mortality.html",
+      "image": "assets/article_imgs/mortality.png",
+      "ogImage": "https://www.carbonsense.net/assets/article_imgs/mortality.png",
+      "canonical": "https://www.carbonsense.net/assets/articles/developing-countries-will-feel-the-eat-of-climate-mortality.html",
+      "tags": ["Climate mortality"],
+      "author": {
+        "name": "Euan Gilchrist",
+        "avatar": "assets/authors/euan-g-removebg-preview.png",
+        "url": "authors/euan-gilchrist.html"
+      }
+    },
+       {
+      "title": "Climate Economics 101",
+      "deck": "Must-knows",
+      "date": "2026-04-28",
+      "goLive": "2026-04-28",
       "readTime": 10,
       "href": "assets/articles/climate-economics-101.html",
       "image": "assets/article_imgs/climate-econ-101.png",
