@@ -217,6 +217,23 @@
         "url": "authors/euan-gilchrist.html"
       }
     },
+    {
+      "title": "How Much Carbon Am I Allowed to Emit?",
+      "deck": "What is important when it comes to our personal emissions?",
+      "date": "2026-04-22",
+      "goLive": "2026-04-22",
+      "readTime": 10,
+      "href": "assets/articles/how-much-carbon-am-i-allowed-to-emit.html",
+      "image": "assets/article_imgs/flying.png",
+      "ogImage": "https://www.carbonsense.net/assets/article_imgs/flying.png",
+      "canonical": "https://www.carbonsense.net/assets/articles/how-much-carbon-am-i-allowed-to-emit.html",
+      "tags": ["Carbon budgets"],
+      "author": {
+        "name": "Pau Orive Vidal",
+        "avatar": "assets/authors/pay-orive-bio.png",
+        "url": "authors/pau-orive.html"
+      }
+    },
        {
       "title": "Climate Economics 101",
       "deck": "Must-knows",
