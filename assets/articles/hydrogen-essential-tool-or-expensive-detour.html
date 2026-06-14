@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- These are populated automatically -->
+  <title>Carbon Sense Article</title>
+  <meta name="description" content="" />
+
+  <!-- Open Graph + Twitter (populated automatically by the script below) -->
+  <meta property="og:title" content="" />
+  <meta property="og:description" content="" />
+  <meta property="og:image" content="" />
+  <meta property="og:url" content="" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Carbon Sense" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="" />
+  <meta name="twitter:description" content="" />
+  <meta name="twitter:image" content="" />
+
+  <!-- Canonical (populated automatically) -->
+  <link rel="canonical" href="" />
+
+  <!-- Favicons (stable across site) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo3.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/logo3.png">
+  <link rel="apple-touch-icon" href="/assets/logo3.png">
+
+  <!-- Fonts & global CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css" />
+
+  <style>
+    /* ensure anchored headings/notes aren't hidden under the fixed header */
+    .prose.docx [id],
+    .prose.docx [name] {
+      scroll-margin-top: 84px;
+    }
+
+    /* If TOC is empty, collapse to single column */
+    body.article-page .article-layout.toc-hidden {
+      grid-template-columns: 1fr !important;
+    }
+    body.article-page .article-layout.toc-hidden .article-toc {
+      display: none !important;
+    }
+  </style>
+
+  <!-- =========================
+       ARTICLE CONFIG (EDIT ONLY THIS)
+       ========================= -->
+  <script>
+    const ARTICLE = {
+      title: "Hydrogen: Essential Tool or Expensive Detour?",
+      subtitle: "Sorting climate value from industrial ambition",
+      description: "Sorting climate value from industrial ambition",
+
+      dateISO: "2026-06-16",
+      dateText: "Tue 16, 2026",
+
+      authorName: "Charles Nicholson",
+      authorPage: "../../authors/charles-nicholson.html",
+      authorAvatar: "../authors/charles-nicholson-bse-photo-nb.png",
+
+      docxPath: "../Hydrogen Essential Tool or Expensive Detour.docx",
+
+      // Required for link previews (absolute URLs)
+      url: "https://carbonsense.net/assets/articles/hydrogen-essential-tool-or-expensive-detour.html",
+      shareImage: "https://carbonsense.net/assets/article_imgs/green-hydrogen.png"
+    };
+  </script>
+
+  <script>
+    (function applySocialMeta() {
+      const title = ARTICLE.title || "Carbon Sense";
+      const desc = ARTICLE.description || ARTICLE.subtitle || "";
+      const url = ARTICLE.url || window.location.href;
+      const img = ARTICLE.shareImage || "https://carbonsense.net/assets/logo3.png";
+
+      // Standard meta description
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.content = desc;
+
+      // Document title
+      document.title = `${title} — Carbon Sense`;
+
+      // Canonical
+      const canonical = document.querySelector('link[rel="canonical"]');
+      if (canonical) canonical.href = url;
+
+      // Open Graph
+      const setOG = (prop, value) => {
+        const el = document.querySelector(`meta[property="${prop}"]`);
+        if (el) el.setAttribute("content", value);
+      };
+      setOG("og:title", title);
+      setOG("og:description", desc);
+      setOG("og:image", img);
+      setOG("og:url", url);
+
+      // Twitter
+      const setTW = (name, value) => {
+        const el = document.querySelector(`meta[name="${name}"]`);
+        if (el) el.setAttribute("content", value);
+      };
+      setTW("twitter:title", title);
+      setTW("twitter:description", desc);
+      setTW("twitter:image", img);
+    })();
+  </script>
+</head>
+
+<body class="article-page">
+
+  <!-- Header (stable across site) -->
+  <header class="site-header solid" data-header>
+    <div class="container header-inner">
+      <a class="logo" href="../../index.html" aria-label="Carbon Sense">
+        <img src="../logo3.png" alt="Carbon Sense">
+      </a>
+
+      <nav class="nav" data-nav>
+        <a href="../../index.html">Home</a>
+        <a href="../../about.html">About</a>
+        <a class="active" href="../../articles.html">All Articles</a>
+        <a href="../../coffee.html">Support Us</a>
+        <a href="../../contact.html" class="btn btn-outline pill">Contact Us</a>
+      </nav>
+
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" data-menu-btn>
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="page-hero hero-compact" data-animate>
+    <div class="container">
+      <h1 id="hero-title"></h1>
+
+      <div class="article-meta" data-animate>
+        <span class="meta-item">
+          <img id="author-avatar" class="meta-avatar" src="" alt="" onerror="this.style.display='none'">
+          <span class="meta-label">By</span>
+          <a id="author-link" class="meta-value" href="#"></a>
+        </span>
+
+        <span class="meta-sep">•</span>
+        <time id="article-date" class="meta-item" datetime=""></time>
+        <span class="meta-sep">•</span>
+        <span class="meta-item" id="reading-time">—</span>
+      </div>
+
+      <p id="hero-subtitle" class="lead"></p>
+
+      <div class="article-share">
+        <span class="article-share-label">Share</span>
+        <div class="article-share-buttons" data-share-buttons>
+          <a href="#" class="btn btn-outline pill share-btn share-btn--linkedin" data-network="linkedin">LinkedIn</a>
+          <a href="#" class="btn btn-outline pill share-btn share-btn--x" data-network="x">X - formerly Twitter</a>
+          <a href="#" class="btn btn-outline pill share-btn share-btn--whatsapp" data-network="whatsapp">WhatsApp</a>
+        </div>
+        <span class="article-share-status" data-share-status aria-live="polite"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Article with Contents -->
+  <section class="section article-section" data-animate>
+    <div class="container">
+      <div class="article-layout" id="article-layout">
+        <aside class="article-toc" id="article-toc" aria-label="On this page"></aside>
+
+        <div class="article-main">
+          <div id="docx-status" class="muted" style="margin-bottom:12px">
+            Loading document…
+          </div>
+          <article id="docx-root" class="prose docx"></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="section" id="newsletter" data-animate>
+    <div class="container">
+      <h2 class="section-title">Subscribe to our Newsletter</h2>
+      <div class="substack-embed-wrap">
+        <iframe
+          src="https://carbonsense.substack.com/embed"
+          frameborder="0"
+          scrolling="no"
+          title="Subscribe to Carbon Sense on Substack">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (stable across site) -->
+  <footer class="site-footer site-footer-dark">
+    <div class="container footer-inner">
+      <div>
+        <a class="logo logo-foot" href="../../index.html" aria-label="Carbon Sense">
+          <img src="../logo3.png" alt="Carbon Sense">
+        </a>
+        <p class="muted">
+          Clear insights and analysis on where climate economics and policy are taking us
+        </p>
+      </div>
+
+      <div>
+        <div class="foot-title">Explore</div>
+        <ul class="foot-links">
+          <li><a href="../../about.html">About</a></li>
+          <li><a href="../../articles.html">All Articles</a></li>
+          <li><a href="../../coffee.html">Support Us</a></li>
+          <li><a href="../../privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="foot-title">Contact</div>
+        <p class="muted">
+          <a href="mailto:info@carbonsense.net">info@carbonsense.net</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="container foot-bottom">
+      <small><span data-year></span> Carbon Sense</small>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../../vendor/mammoth.browser.min.js"></script>
+  <script src="../../scripts.js"></script>
+
+  <script>
+    (function initArticle() {
+      // Hero
+      document.getElementById("hero-title").textContent = ARTICLE.title;
+      document.getElementById("hero-subtitle").textContent = ARTICLE.subtitle || "";
+
+      // Author
+      document.getElementById("author-link").textContent = ARTICLE.authorName;
+      document.getElementById("author-link").href = ARTICLE.authorPage;
+      document.getElementById("author-avatar").src = ARTICLE.authorAvatar;
+
+      // Date
+      const dateEl = document.getElementById("article-date");
+      dateEl.dateTime = ARTICLE.dateISO;
+      dateEl.textContent = ARTICLE.dateText;
+
+      // Render DOCX + TOC
+      renderDocx("#docx-root", ARTICLE.docxPath, "#docx-status")
+        .then(() => requestAnimationFrame(() => {
+          setReadingTime("#docx-root", "#reading-time");
+          buildDocxToc("#docx-root", "#article-toc");
+
+          const toc = document.getElementById("article-toc");
+          const layout = document.getElementById("article-layout");
+          const tocHidden = !toc || getComputedStyle(toc).display === "none";
+          const tocEmpty = !toc || toc.children.length === 0;
+
+          if (layout && (tocHidden || tocEmpty)) {
+            layout.classList.add("toc-hidden");
+          }
+        }))
+        .catch(console.error);
+    })();
+  </script>
+</body>
+</html>
